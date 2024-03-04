@@ -1,6 +1,7 @@
 import prisma from "@/utils/db";
 import AddDeposito from "./addDeposito";
 import DashboardLineChartData from "./chartData";
+import DataTable from "./dataTable";
 
 export default async function Dashboard() {
   const deposit = await prisma.deposit.findMany();
@@ -13,6 +14,7 @@ export default async function Dashboard() {
     <div className="p-4">
       <AddDeposito totalAmount={totalAmount} />
       <DashboardLineChartData />
+      <DataTable />
     </div>
   );
 }
