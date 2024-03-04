@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import ButtonSubmit from "./buttonSubmit";
 import prisma from "@/utils/db";
+import Logout from "@/app/components/logout";
 
 export default function AddDeposito({ totalAmount }: { totalAmount: number }) {
   async function submitDeposit(formData: FormData) {
@@ -43,6 +44,7 @@ export default function AddDeposito({ totalAmount }: { totalAmount: number }) {
       >
         +
       </label>
+      <Logout />
       <input type="checkbox" id="my_modal_7" className="modal-toggle" />
 
       <div className="modal" role="dialog">
@@ -51,14 +53,14 @@ export default function AddDeposito({ totalAmount }: { totalAmount: number }) {
 
           <form className="mt-6 grid gap-4" action={submitDeposit}>
             <input
-              className="input input-bordered"
+              className="input input-bordered w-full"
               placeholder="Deposit"
               name="deposit"
               required
             />
 
             <input
-              className="input input-bordered"
+              className="input input-bordered w-full"
               placeholder="Total"
               name="amount"
               type="number"
