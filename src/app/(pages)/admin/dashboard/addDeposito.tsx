@@ -4,30 +4,30 @@ import prisma from "@/utils/db";
 import Logout from "@/app/components/logout";
 
 export default function AddDeposito({ totalAmount }: { totalAmount: number }) {
-  async function submitDeposit(formData: FormData) {
-    "use server";
-    const amountStr: any = formData.get("amount");
-    const deposit: any = formData.get("deposit");
-    const amount: any = parseInt(amountStr);
+  // async function submitDeposit(formData: FormData) {
+  //   "use server";
+  //   const amountStr: any = formData.get("amount");
+  //   const deposit: any = formData.get("deposit");
+  //   const amount: any = parseInt(amountStr);
 
-    async function addData() {
-      try {
-        const deposito = await prisma.deposit.create({
-          data: { deposit, amount },
-        });
-        return { message: "ok", deposito };
-      } catch (error) {
-        return { message: "error", error };
-      }
-    }
+  //   async function addData() {
+  //     try {
+  //       const deposito = await prisma.deposit.create({
+  //         data: { deposit, amount },
+  //       });
+  //       return { message: "ok", deposito };
+  //     } catch (error) {
+  //       return { message: "error", error };
+  //     }
+  //   }
 
-    const response = await addData();
-    if (response.message === "ok") {
-      redirect("/addDepositoSuccess");
-    } else {
-      redirect("/errorAddDeposito");
-    }
-  }
+  //   const response = await addData();
+  //   if (response.message === "ok") {
+  //     redirect("/addDepositoSuccess");
+  //   } else {
+  //     redirect("/errorAddDeposito");
+  //   }
+  // }
 
   return (
     <div className="flex items-center justify-center gap-2">
@@ -51,7 +51,7 @@ export default function AddDeposito({ totalAmount }: { totalAmount: number }) {
         <div className="modal-box">
           <h3 className="text-lg font-bold">Add New Deposit</h3>
 
-          <form className="mt-6 grid gap-4" action={submitDeposit}>
+          <form className="mt-6 grid gap-4">
             <input
               className="input input-bordered w-full"
               placeholder="Deposit"
