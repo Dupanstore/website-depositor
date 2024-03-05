@@ -37,7 +37,7 @@ export default async function AddNewDeposito() {
         try {
           const response = await prisma.deposit.create({
             data: {
-              nominal_deposit,
+              nominal_deposit: parseInt(nominal_deposit),
               proof_transaction: proof_transaction.name,
               status: "submit",
               sender_bank,
