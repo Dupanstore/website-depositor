@@ -41,7 +41,7 @@ export default async function AddNewDeposito() {
               proof_transaction: proof_transaction.name,
               status: "submit",
               sender_bank,
-              recipient_bank,
+              recipient_bank: parseInt(recipient_bank),
               author: { connect: { id: session.user.name } },
             },
             include: { author: true },
@@ -66,6 +66,7 @@ export default async function AddNewDeposito() {
 
   return (
     <>
+      <title>Add New Deposit</title>
       <Navbar />
       <div className="p-4">
         <h3 className="text-lg font-bold">Add New Deposit</h3>
