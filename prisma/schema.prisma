@@ -30,8 +30,8 @@ model deposit {
   status            String
   recipient_bank    Int
 
-  author   user @relation(fields: [authorId], references: [id])
-  authorId Int
+  author  user @relation(fields: [user_id], references: [id])
+  user_id Int
 }
 
 model rekening {
@@ -42,6 +42,6 @@ model rekening {
   no_rekening String
   bank        String
 
-  author   user @relation(fields: [authorId], references: [id])
-  authorId Int
+  author  user @relation(fields: [user_id], references: [id])
+  user_id Int
 }
