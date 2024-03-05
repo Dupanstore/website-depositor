@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FaPlusCircle } from "react-icons/fa";
 import prisma from "@/utils/db";
 import { ReactNode } from "react";
+import { redirect } from "next/navigation";
 
 export default async function DashboardLayout({
   children,
@@ -14,6 +15,9 @@ export default async function DashboardLayout({
   activeLink: string;
 }) {
   const session: any = await getServerSession();
+  if (!session) {
+    redirect("/login");
+  }
   const userData = await prisma.user.findUnique({
     where: { id: session.user.name },
     include: { deposit: true },
