@@ -35,19 +35,18 @@ export default async function AddNewDeposito() {
         return { message: "empty" };
       } else {
         try {
-          // const response = await prisma.deposit.create({
-          //   data: {
-          //     nominal_deposit,
-          //     proof_transaction,
-          //     status: "submit",
-          //     sender_bank,
-          //     recipient_bank,
-          //     author: { connect: { id: session.user.name } },
-          //   },
-          //   include: { author: true },
-          // });
-          // return { message: "success", response };
-          return { message: "success", proof_transaction };
+          const response = await prisma.deposit.create({
+            data: {
+              nominal_deposit,
+              proof_transaction: proof_transaction.name,
+              status: "submit",
+              sender_bank,
+              recipient_bank,
+              author: { connect: { id: session.user.name } },
+            },
+            include: { author: true },
+          });
+          return { message: "success", response };
         } catch (error) {
           return { message: "error", error };
         }
@@ -117,7 +116,7 @@ export default async function AddNewDeposito() {
                             type="radio"
                             name="recipient_bank"
                             className="radio checked:bg-blue-500"
-                            // required
+                            required
                             value={index}
                           />
                         </label>
