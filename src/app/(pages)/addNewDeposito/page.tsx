@@ -65,16 +65,6 @@ export default async function AddNewDeposito() {
           const pathFile = join(saveFileUpload, fileName);
           await writeFileAsync(pathFile, buffer);
 
-          const error = {
-            saveFileUpload,
-            fileName,
-            writeFileAsync,
-            bytes,
-            buffer,
-            pathFile,
-          };
-          console.log(error);
-
           return { message: "success" };
         } catch (error) {
           return { message: "error", error };
@@ -83,6 +73,7 @@ export default async function AddNewDeposito() {
     }
 
     const result = await handleSubmit();
+    console.log(result);
     if (result.message === "success") {
       redirect("/");
     } else if (result.message === "empty") {
