@@ -1,9 +1,17 @@
 import Navbar from "@/app/components/navbar";
 import PageRouteSecure from "@/app/components/pageRouteSecure";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { FaPlusCircle } from "react-icons/fa";
+import prisma from "@/utils/db";
 
 export default async function Dashboard() {
+  // const session: any = await getServerSession();
+  // const userData = await prisma.user.findUnique({
+  //   where: { id: session.user.name },
+  //   include: { rekening: true, deposit: true },
+  // });
+
   return (
     <PageRouteSecure>
       <Navbar />
