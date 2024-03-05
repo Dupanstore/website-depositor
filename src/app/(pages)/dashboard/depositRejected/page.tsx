@@ -3,9 +3,13 @@ import DashboardLayout from "../dashboardLayout";
 import prisma from "@/utils/db";
 import { getServerSession } from "next-auth";
 import { formatDate } from "@/utils/formatDate";
+import { redirect } from "next/navigation";
 
 export default async function DashboardRejected() {
   const session: any = await getServerSession();
+  if (!session) {
+    redirect("/login");
+  }
   const depositData = await prisma.deposit.findMany({
     where: { user_id: session.user.name, status: "reject" },
   });
