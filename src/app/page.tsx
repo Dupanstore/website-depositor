@@ -1,5 +1,5 @@
-import Dashboard from "./(pages)/dashboard/page";
+import DashboardSubmitted from "./(pages)/dashboard/depositSubmitted/page";
 
 export default function Home() {
-  return <Dashboard />;
+  return <DashboardSubmitted />;
 }

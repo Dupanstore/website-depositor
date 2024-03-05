@@ -73,7 +73,6 @@ export default async function AddNewDeposito() {
     }
 
     const result = await handleSubmit();
-    console.log(result);
     if (result.message === "success") {
       redirect("/");
     } else if (result.message === "empty") {
