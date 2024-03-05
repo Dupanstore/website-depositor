@@ -23,7 +23,7 @@ const authOptions: NextAuthOptions = {
           password: string;
         };
 
-        const user: any = await prisma.admin.findFirst({
+        const user: any = await prisma.user.findFirst({
           where: { username },
         });
 

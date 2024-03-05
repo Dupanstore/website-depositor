@@ -51,10 +51,8 @@ export default function FormLogin() {
       className="text-start w-full mt-8 flex flex-col gap-4"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="flex items-center justify-between input input-bordered rounded-2xl">
+      <div className="flex items-center justify-between input bg-transparent border-b border-b-slate-500">
         <input
-          id="Username"
-          type="text"
           placeholder="Username"
           className="w-full"
           required
@@ -63,9 +61,8 @@ export default function FormLogin() {
         <FaUserAlt size={"1.5em"} className="text-slate-500" />
       </div>
 
-      <div className="flex items-center justify-between input input-bordered rounded-2xl">
+      <div className="flex items-center justify-between input bg-transparent border-b border-b-slate-500">
         <input
-          id="Password"
           type="password"
           placeholder="Password"
           className="w-full"
@@ -77,13 +74,11 @@ export default function FormLogin() {
 
       <div className="flex flex-col items-center justify-center gap-4 mt-4">
         {buttonSubmit ? (
-          <div className="btn btn-primary rounded-2xl text-white w-full">
+          <div className="btn btn-primary w-full">
             <span className="loading loading-spinner"></span>
           </div>
         ) : (
-          <button className="btn btn-primary rounded-2xl text-white w-full">
-            Login
-          </button>
+          <button className="btn btn-primary w-full">Login</button>
         )}
       </div>
     </form>
