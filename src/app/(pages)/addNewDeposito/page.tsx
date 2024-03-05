@@ -47,17 +47,17 @@ export default async function AddNewDeposito() {
             proof_transaction.name
           }`;
 
-          // const response = await prisma.deposit.create({
-          //   data: {
-          //     nominal_deposit: parseInt(nominal_deposit),
-          //     proof_transaction: fileName,
-          //     status: "submit",
-          //     sender_bank,
-          //     recipient_bank: parseInt(recipient_bank),
-          //     user: { connect: { id: session.user.name } },
-          //   },
-          //   include: { user: true },
-          // });
+          const response = await prisma.deposit.create({
+            data: {
+              nominal_deposit: parseInt(nominal_deposit),
+              proof_transaction: fileName,
+              status: "submit",
+              sender_bank,
+              recipient_bank: parseInt(recipient_bank),
+              user: { connect: { id: session.user.name } },
+            },
+            include: { user: true },
+          });
 
           const writeFileAsync = promisify(writeFile);
           const bytes = await proof_transaction.arrayBuffer();
@@ -65,7 +65,7 @@ export default async function AddNewDeposito() {
           const pathFile = join(saveFileUpload, fileName);
           await writeFileAsync(pathFile, buffer);
 
-          return { message: "success" };
+          return { message: "success", response };
         } catch (error) {
           return { message: "error", error };
         }
@@ -73,7 +73,6 @@ export default async function AddNewDeposito() {
     }
 
     const result = await handleSubmit();
-    console.log(result);
     if (result.message === "success") {
       redirect("/");
     } else if (result.message === "empty") {
