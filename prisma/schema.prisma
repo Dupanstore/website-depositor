@@ -8,16 +8,15 @@ datasource db {
 }
 
 model user {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  username  String   @unique
+  id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  username  String     @unique
   password  String
   email     String
   role      String
-
-  deposit  deposit[]
-  rekening rekening[]
+  deposit   deposit[]
+  rekening  rekening[]
 }
 
 model deposit {
@@ -29,9 +28,8 @@ model deposit {
   proof_transaction String
   status            String
   recipient_bank    Int
-
-  user    user @relation(fields: [user_id], references: [id])
-  user_id Int
+  user              user     @relation(fields: [user_id], references: [id])
+  user_id           Int
 }
 
 model rekening {
@@ -41,7 +39,6 @@ model rekening {
   name        String
   no_rekening String
   bank        String
-
-  user    user @relation(fields: [user_id], references: [id])
-  user_id Int
+  user        user     @relation(fields: [user_id], references: [id])
+  user_id     Int
 }
