@@ -4,7 +4,7 @@ import DashboardLineChartData from "./chartData";
 import DataTable from "./dataTable";
 import PageRouteSecure from "@/app/components/pageRouteSecure";
 
-export default async function Dashboard() {
+export default async function AdminDashboard() {
   const deposit = await prisma.deposit.findMany();
   const totalAmount = deposit.reduce(
     (total, deposit) => total + deposit.nominal_deposit,
