@@ -6,6 +6,10 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import prisma from "@/utils/db";
 import { getServerSession } from "next-auth";
+import { join } from "path";
+import { writeFile } from "fs";
+import { promisify } from "util";
+import PageRouteSecure from "@/app/components/pageRouteSecure";
 
 const dataBank = [
   { name: "ADMIN", bank: "bri", noRek: "24267453653435" },
@@ -17,6 +21,9 @@ const dataBank = [
 
 export default async function AddNewDeposito() {
   const session: any = await getServerSession();
+  if (!session) {
+    redirect("/login");
+  }
 
   async function onSubmit(formData: FormData) {
     "use server";
@@ -35,17 +42,29 @@ export default async function AddNewDeposito() {
         return { message: "empty" };
       } else {
         try {
+          const saveFileUpload = join(process.cwd(), "./public/assets");
+          const fileName = `${Math.random()}_${Date.now()}_${
+            proof_transaction.name
+          }`;
+
           const response = await prisma.deposit.create({
             data: {
               nominal_deposit: parseInt(nominal_deposit),
-              proof_transaction: proof_transaction.name,
+              proof_transaction: fileName,
               status: "submit",
               sender_bank,
               recipient_bank: parseInt(recipient_bank),
-              author: { connect: { id: session.user.name } },
+              user: { connect: { id: session.user.name } },
             },
-            include: { author: true },
+            include: { user: true },
           });
+
+          const writeFileAsync = promisify(writeFile);
+          const bytes = await proof_transaction.arrayBuffer();
+          const buffer = Buffer.from(bytes);
+          const pathFile = join(saveFileUpload, fileName);
+          await writeFileAsync(pathFile, buffer);
+
           return { message: "success", response };
         } catch (error) {
           return { message: "error", error };
@@ -65,7 +84,7 @@ export default async function AddNewDeposito() {
   }
 
   return (
-    <>
+    <PageRouteSecure>
       <title>Add New Deposit</title>
       <Navbar />
       <div className="p-4">
@@ -148,6 +167,6 @@ export default async function AddNewDeposito() {
           </div>
         </form>
       </div>
-    </>
+    </PageRouteSecure>
   );
 }

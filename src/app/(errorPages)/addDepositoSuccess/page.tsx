@@ -1,10 +1,8 @@
 "use client";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { FaRegCheckCircle } from "react-icons/fa";
 
 export default function AddDepositoSuccess() {
-  const router = useRouter();
-
   return (
     <div className="flex items-center justify-center w-screen h-screen p-4">
       <title>Add Deposito Success</title>
@@ -14,12 +12,9 @@ export default function AddDepositoSuccess() {
           <FaRegCheckCircle size={100} className="text-success" />
           <h1 className="text-4xl font-semibold">Congratulations</h1>
           <p className="py-4 text-2xl">Add Deposito Success</p>
-          <div
-            className="btn btn-primary text-white text-lg"
-            onClick={() => router.push("/")}
-          >
+          <Link href={"/"} className="btn btn-primary text-white text-lg">
             OK
-          </div>
+          </Link>
         </div>
       </div>
     </div>

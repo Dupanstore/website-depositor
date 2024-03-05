@@ -1,10 +1,8 @@
 "use client";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { VscError } from "react-icons/vsc";
 
 export default function ErrorRegisterDataNotValid() {
-  const router = useRouter();
-
   return (
     <div className="flex items-center justify-center w-screen h-screen p-4">
       <title>Register Data Not Valid</title>
@@ -14,12 +12,12 @@ export default function ErrorRegisterDataNotValid() {
           <VscError size={100} className="text-error" />
           <h1 className="text-4xl font-semibold">Error Register</h1>
           <p className="py-4 text-2xl">Register Data Not Valid</p>
-          <div
+          <Link
+            href={"/register"}
             className="btn btn-primary text-white text-lg"
-            onClick={() => router.push("/register")}
           >
             OK
-          </div>
+          </Link>
         </div>
       </div>
     </div>

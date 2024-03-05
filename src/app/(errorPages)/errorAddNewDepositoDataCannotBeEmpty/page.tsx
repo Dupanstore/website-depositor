@@ -1,10 +1,8 @@
 "use client";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { VscError } from "react-icons/vsc";
 
 export default function ErrorAddNewDepositoDataCannotBeEmpty() {
-  const router = useRouter();
-
   return (
     <div className="flex items-center justify-center w-screen h-screen p-4">
       <title>Data Cannot Be Empty</title>
@@ -14,12 +12,12 @@ export default function ErrorAddNewDepositoDataCannotBeEmpty() {
           <VscError size={100} className="text-error" />
           <h1 className="text-4xl font-semibold">Error</h1>
           <p className="py-4 text-2xl">Data Cannot Be Empty</p>
-          <div
+          <Link
+            href={"/addNewDeposito"}
             className="btn btn-primary text-white text-lg"
-            onClick={() => router.push("/addNewDeposito")}
           >
             OK
-          </div>
+          </Link>
         </div>
       </div>
     </div>
