@@ -16,7 +16,7 @@ export default async function MainLayout({
 
   return (
     <>
-      <div className="flex items-center justify-between bg-info py-3 px-4 md:px-8 fixed w-full z-10">
+      <div className="flex items-center justify-between bg-info py-3 px-4 md:px-8 fixed w-full z-10 border-b-8 border-base-100">
         <Link href={"/"} className="font-semibold text-2xl text-base-100">
           DEPOSITOR
         </Link>

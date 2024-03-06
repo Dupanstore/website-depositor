@@ -2,7 +2,7 @@ import MainLayout from "@/app/components/mainLayout";
 import prisma from "@/utils/db";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import DeleteBank from "./deleteBank";
+import DeleteBank from "./delete";
 import ButtonForm from "@/app/components/button";
 import { IoIosSend } from "react-icons/io";
 
