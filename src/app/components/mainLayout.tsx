@@ -17,11 +17,11 @@ export default async function MainLayout({
   return (
     <>
       <div className="flex items-center justify-between bg-info py-3 px-4 md:px-8 fixed w-full">
-        <Link href={"/"} className="font-semibold text-2xl text-white">
+        <Link href={"/"} className="font-semibold text-2xl text-base-100">
           DEPOSITOR
         </Link>
 
-        <Link href={"/account"} className="text-white">
+        <Link href={"/account"} className="text-base-100">
           <FaUserCircle size={35} />
         </Link>
       </div>
