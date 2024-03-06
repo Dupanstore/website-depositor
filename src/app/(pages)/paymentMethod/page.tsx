@@ -2,9 +2,10 @@ import MainLayout from "@/app/components/mainLayout";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { FaPlusCircle } from "react-icons/fa";
+import { FaEdit, FaPlusCircle } from "react-icons/fa";
 import prisma from "@/utils/db";
 import DeletePaymentMethod from "./delete";
+import { MdDelete } from "react-icons/md";
 
 export default async function PaymentMethod() {
   const session: any = await getServerSession();
@@ -43,8 +44,13 @@ export default async function PaymentMethod() {
                 <td>{doc.name}</td>
                 <td>{doc.no_rekening}</td>
                 <td className="uppercase">{doc.bank}</td>
-                <td>
-                  <DeletePaymentMethod doc={doc} />
+                <td className="flex items-center justify-center gap-4">
+                  <Link href={`/editPaymentMethod/${doc.id}`}>
+                    <FaEdit className="text-info" size={30} />
+                  </Link>
+                  <Link href={`/deletePaymentMethod/${doc.id}`}>
+                    <MdDelete className="text-error" size={30} />
+                  </Link>
                 </td>
               </tr>
             ))}

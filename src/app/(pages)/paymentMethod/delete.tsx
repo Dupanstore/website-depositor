@@ -32,10 +32,7 @@ export default function DeletePaymentMethod({
   }
   return (
     <>
-      <label
-        htmlFor={doc.id.toString()}
-        className="cursor-pointer flex items-center justify-center"
-      >
+      <label htmlFor={doc.id.toString()} className="cursor-pointer">
         <MdDelete className="text-error" size={30} />
       </label>
 
