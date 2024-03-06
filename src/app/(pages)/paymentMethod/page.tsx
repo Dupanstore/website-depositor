@@ -1,29 +1,26 @@
 import MainLayout from "@/app/components/mainLayout";
 import { getServerSession } from "next-auth";
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { FaEdit, FaPlusCircle } from "react-icons/fa";
 import prisma from "@/utils/db";
-import { MdDelete } from "react-icons/md";
+import AddNewPaymentMethod from "./addNew";
+import DeletePaymentMethod from "./delete";
+import EditPaymentMethod from "./edit";
 
 export default async function PaymentMethod() {
   const session: any = await getServerSession();
   if (!session) {
     redirect("/login");
   }
-  const userData = await prisma.user.findUnique({
+  const userData: any = await prisma.user.findUnique({
     where: { id: session.user.name },
     include: { rekening: true },
   });
+  const bankList = await prisma.bank.findMany();
 
   return (
     <MainLayout>
       <title>Depositor - Payment Method</title>
-      <Link href={"/addNewPaymentMethod"} className="btn btn-success">
-        <FaPlusCircle size={20} />
-        <span>Add New Payment</span>
-      </Link>
-
+      <AddNewPaymentMethod session={session} bankList={bankList} />
       <div className="overflow-x-auto mt-6 rounded-xl text-white">
         <table className="table text-center">
           <thead className="text-white">
@@ -37,19 +34,19 @@ export default async function PaymentMethod() {
           </thead>
 
           <tbody>
-            {userData.rekening.map((doc, index) => (
+            {userData.rekening.map((doc: any, index: any) => (
               <tr className="bg-slate-800" key={index}>
                 <td>{index + 1}</td>
                 <td>{doc.name}</td>
                 <td>{doc.no_rekening}</td>
                 <td className="uppercase">{doc.bank}</td>
                 <td className="flex items-center justify-center gap-4">
-                  <Link href={`/editPaymentMethod/${doc.id}`}>
-                    <FaEdit className="text-info" size={30} />
-                  </Link>
-                  <Link href={`/deletePaymentMethod/${doc.id}`}>
-                    <MdDelete className="text-error" size={30} />
-                  </Link>
+                  <EditPaymentMethod
+                    session={session}
+                    id={doc.id}
+                    bankList={bankList}
+                  />
+                  <DeletePaymentMethod id={doc.id} />
                 </td>
               </tr>
             ))}

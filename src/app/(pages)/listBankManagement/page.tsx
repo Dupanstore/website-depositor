@@ -5,8 +5,19 @@ import { revalidatePath } from "next/cache";
 import DeleteBank from "./delete";
 import ButtonForm from "@/app/components/button";
 import { IoIosSend } from "react-icons/io";
+import { getServerSession } from "next-auth";
 
 export default async function ListBankManagement() {
+  const session: any = await getServerSession();
+  if (!session) {
+    redirect("/login");
+  }
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.name },
+  });
+  if (user?.role === "user") {
+    redirect("/");
+  }
   const bankList = await prisma.bank.findMany();
 
   async function onSubmit(formData: FormData) {

@@ -13,7 +13,7 @@ export default function ErrorAddDeposito() {
           <h1 className="text-4xl font-semibold">Error</h1>
           <p className="py-4 text-2xl">Error Add Data Deposito</p>
           <Link
-            href={"/addNewDeposito"}
+            href={"/"}
             className="btn btn-primary text-white text-lg"
           >
             OK

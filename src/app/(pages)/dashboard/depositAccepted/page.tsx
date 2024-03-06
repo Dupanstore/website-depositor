@@ -1,9 +1,9 @@
-import Link from "next/link";
 import DashboardLayout from "../dashboardLayout";
 import { getServerSession } from "next-auth";
 import prisma from "@/utils/db";
 import { formatDate } from "@/utils/formatDate";
 import { redirect } from "next/navigation";
+import ShowImage from "../showImage";
 
 export default async function DashboardAccepted() {
   const session: any = await getServerSession();
@@ -38,13 +38,7 @@ export default async function DashboardAccepted() {
                 <td>{doc.recipient_bank}</td>
                 <td>{doc.nominal_deposit.toLocaleString("id-ID")}</td>
                 <td>
-                  <Link
-                    className="link link-info"
-                    href={`/assets/${doc.proof_transaction}`}
-                    target="blank"
-                  >
-                    Show
-                  </Link>
+                  <ShowImage path={doc.proof_transaction} />
                 </td>
               </tr>
             ))}

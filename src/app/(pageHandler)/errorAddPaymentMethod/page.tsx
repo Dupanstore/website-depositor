@@ -13,7 +13,7 @@ export default function ErrorAddPaymentMethod() {
           <h1 className="text-4xl font-semibold">Error</h1>
           <p className="py-4 text-2xl">Data Cannot Be Empty</p>
           <Link
-            href={"/addNewPaymentMethod"}
+            href={"/paymentMethod"}
             className="btn btn-primary text-white text-lg"
           >
             OK

@@ -1,9 +1,22 @@
 import MainLayout from "@/app/components/mainLayout";
 import prisma from "@/utils/db";
+import { getServerSession } from "next-auth";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { MdDelete } from "react-icons/md";
+import DeleteUser from "./delete";
 
 export default async function UserManagement() {
+  const session: any = await getServerSession();
+  if (!session) {
+    redirect("/login");
+  }
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.name },
+  });
+  if (user?.role === "user") {
+    redirect("/");
+  }
   const users = await prisma.user.findMany({ where: { role: "user" } });
 
   return (
@@ -35,18 +48,8 @@ export default async function UserManagement() {
                 <td>{doc.username}</td>
                 <td>{doc.email}</td>
                 <td className="flex items-center justify-center gap-4">
-                  <Link href={`/deleteUser/${doc.id}`}>
-                    <MdDelete className="text-error" size={30} />
-                  </Link>
+                  <DeleteUser id={doc.id} />
                 </td>
-                {/* <td className="flex items-center justify-center gap-4">
-                  <Link href={`/editPaymentMethod/${doc.id}`}>
-                    <FaEdit className="text-info" size={30} />
-                  </Link>
-                  <Link href={`/deletePaymentMethod/${doc.id}`}>
-                    
-                  </Link>
-                </td> */}
               </tr>
             ))}
           </tbody>

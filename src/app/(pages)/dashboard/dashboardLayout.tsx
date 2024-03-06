@@ -5,6 +5,7 @@ import prisma from "@/utils/db";
 import { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import MainLayout from "@/app/components/mainLayout";
+import AddDeposito from "./addDeposito";
 
 export default async function DashboardLayout({
   children,
@@ -44,12 +45,7 @@ export default async function DashboardLayout({
               </span>
             </div>
 
-            <Link
-              href={"/addNewDeposito"}
-              className="text-green-500 hover:text-green-600 transition cursor-pointer text-5xl"
-            >
-              <FaPlusCircle />
-            </Link>
+            <AddDeposito />
           </div>
         </div>
       </div>

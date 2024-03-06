@@ -54,6 +54,12 @@ export default function DeleteBank({
           <form action={onSubmit}>
             <input name="id" value={doc.id} className="hidden" />
             <div className="modal-action">
+              <label
+                className="btn btn-warning cursor-pointer"
+                htmlFor={doc.id.toString()}
+              >
+                Close
+              </label>
               <ButtonForm
                 icon={<MdDelete size={20} />}
                 text="Delete"
@@ -62,7 +68,10 @@ export default function DeleteBank({
             </div>
           </form>
         </div>
-        <label className="modal-backdrop" htmlFor={doc.id.toString()}></label>
+        <label
+          className="modal-backdrop cursor-pointer"
+          htmlFor={doc.id.toString()}
+        ></label>
       </div>
     </>
   );
