@@ -4,13 +4,33 @@ import { redirect } from "next/navigation";
 import prisma from "@/utils/db";
 import Link from "next/link";
 import Logout from "@/app/components/logout";
-import { FaRegIdCard } from "react-icons/fa";
+import { FaRegIdCard, FaUserCog } from "react-icons/fa";
+import { BsBank2 } from "react-icons/bs";
+import { TbWorldWww } from "react-icons/tb";
 
 const menuLink = [
   {
-    path: "/userPayment",
+    path: "/paymentMethod",
     icon: <FaRegIdCard size={25} />,
-    name: "Informasi Bank",
+    name: "Payment Method",
+  },
+  {
+    path: "/webInfo",
+    icon: <TbWorldWww size={25} />,
+    name: "Web Info",
+  },
+];
+
+const menuLinkAdmin = [
+  {
+    path: "/userManagement",
+    icon: <FaUserCog size={25} />,
+    name: "User Management",
+  },
+  {
+    path: "/listBankManagement",
+    icon: <BsBank2 size={25} />,
+    name: "List Bank",
   },
 ];
 
@@ -63,6 +83,23 @@ export default async function Account() {
             <div className="text-info font-bold text-lg">{">"}</div>
           </Link>
         ))}
+
+        {userData?.role === "admin" &&
+          menuLinkAdmin.map((doc, index) => (
+            <Link
+              key={index}
+              href={doc.path}
+              className="flex items-center justify-between"
+            >
+              <div className="flex items-center gap-3">
+                <div className="bg-info text-base-100 p-3 rounded-xl">
+                  {doc.icon}
+                </div>
+                <p>{doc.name}</p>
+              </div>
+              <div className="text-info font-bold text-lg">{">"}</div>
+            </Link>
+          ))}
 
         <Logout />
       </div>

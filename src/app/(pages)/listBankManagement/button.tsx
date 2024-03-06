@@ -2,21 +2,17 @@
 import { useFormStatus } from "react-dom";
 import { IoIosSend } from "react-icons/io";
 
-export default function ButtonSubmit() {
+export default function ButtonSendNewBank() {
   const { pending } = useFormStatus();
 
   return (
     <button
-      className={`btn btn-success ${pending && "btn-disabled btn-square"}`}
+      className={`btn ${pending ? "btn-disabled" : "btn-success"}`}
       aria-disabled={pending}
     >
       {pending && <span className="loading loading-spinner"></span>}
-      {!pending && (
-        <>
-          <IoIosSend size={20} />
-          Submit
-        </>
-      )}
+      <IoIosSend size={20} />
+      <span>Send</span>
     </button>
   );
 }

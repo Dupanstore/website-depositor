@@ -10,9 +10,13 @@ import { writeFile } from "fs";
 import { promisify } from "util";
 import MainLayout from "@/app/components/mainLayout";
 
-const dataBank = [
+const dataBankSender = [
   { name: "ADMIN", bank: "bri", noRek: "24267453653435" },
   { name: "ADMIN", bank: "bca", noRek: "24267453653435" },
+  { name: "ADMIN", bank: "bri", noRek: "24267453653435" },
+];
+
+const dataBankRecipient = [
   { name: "ADMIN", bank: "bri", noRek: "24267453653435" },
   { name: "ADMIN", bank: "bca", noRek: "24267453653435" },
   { name: "ADMIN", bank: "bri", noRek: "24267453653435" },
@@ -84,84 +88,118 @@ export default async function AddNewDeposito() {
   return (
     <MainLayout>
       <title>Depositor - Add New Deposit</title>
-      <h3 className="text-lg font-bold">Add New Deposit</h3>
+      <div className="max-w-md m-auto">
+        <h3 className="text-lg font-bold">Add New Deposit</h3>
 
-      <form className="grid py-6 gap-4" action={onSubmit}>
-        <div>
-          <label htmlFor="Pengirim">Pengirim</label>
-          <input
-            id="Pengirim"
-            name="sender_bank"
-            required
-            className="input input-bordered w-full"
-          />
-        </div>
+        <form className="grid py-6 gap-4" action={onSubmit}>
+          <div>
+            <label htmlFor="Nominal">Nominal</label>
+            <input
+              id="Nominal"
+              name="nominal_deposit"
+              required
+              type="number"
+              className="input input-bordered w-full"
+            />
+          </div>
 
-        <div>
-          <label htmlFor="Nominal">Nominal</label>
-          <input
-            id="Nominal"
-            name="nominal_deposit"
-            required
-            type="number"
-            className="input input-bordered w-full"
-          />
-        </div>
+          <div>
+            <label htmlFor="transfer">Upload Bukti Transfer</label>
+            <input
+              type="file"
+              className="file-input file-input-bordered w-full"
+              id="transfer"
+              required
+              accept=".png, .jpg, .jpeg"
+              name="proof_transaction"
+            />
+          </div>
 
-        <div>
-          <label htmlFor="transfer">Upload Bukti Transfer</label>
-          <input
-            type="file"
-            className="file-input file-input-bordered w-full"
-            id="transfer"
-            required
-            accept=".png, .jpg, .jpeg"
-            name="proof_transaction"
-          />
-        </div>
-
-        <div className="grid grid-flow-col-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 mt-2">
-          {dataBank.map((doc, index) => (
-            <div className="card bg-base-300" key={index}>
-              <div className="card-body py-3 px-4">
-                <div className="flex items-center gap-1">
-                  <div className="form-control">
-                    <label className="label cursor-pointer">
-                      <input
-                        type="radio"
-                        name="recipient_bank"
-                        className="radio checked:bg-blue-500"
-                        required
-                        value={index}
-                      />
-                    </label>
-                  </div>
-                  <Image
-                    src={`/payment/${doc.bank}.png`}
-                    width={40}
-                    height={40}
-                    alt="bri"
-                  />
-                  <span className="flex flex-col uppercase">
-                    <span className="text-slate-500 text-sm">
-                      {doc.bank} - {doc.name}
+          <div className="grid gap-2 mt-2">
+            <span>Pengirim</span>
+            <span className="text-xs font-light italic text-error -mt-3">
+              *Rekening Anda
+            </span>
+            {dataBankSender.map((doc, index) => (
+              <div className="card bg-base-300" key={index}>
+                <div className="card-body py-3 px-4">
+                  <div className="flex items-center gap-1">
+                    <div className="form-control">
+                      <label className="label cursor-pointer">
+                        <input
+                          type="radio"
+                          name="sender_bank"
+                          className="radio checked:bg-blue-500"
+                          required
+                          value={index}
+                        />
+                      </label>
+                    </div>
+                    <Image
+                      src={`/payment/${doc.bank}.png`}
+                      width={40}
+                      height={40}
+                      alt="bri"
+                    />
+                    <span className="flex flex-col uppercase">
+                      <span className="text-slate-500 text-sm">
+                        {doc.bank} - {doc.name}
+                      </span>
+                      <span>{doc.noRek}</span>
                     </span>
-                    <span>{doc.noRek}</span>
-                  </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <div className="modal-action">
-          <Link className="btn btn-info" href={"/"}>
-            <IoMdArrowRoundBack size={20} />
-            <span>Back</span>
-          </Link>
-          <ButtonSendDeposit />
-        </div>
-      </form>
+          <div className="grid gap-2 mt-2">
+            <span>Penerima</span>
+            <span className="text-xs font-light italic text-error -mt-3">
+              *Rekening Tujuan
+            </span>
+            {dataBankRecipient.map((doc, index) => (
+              <div className="card bg-base-300" key={index}>
+                <div className="card-body py-3 px-4">
+                  <div className="flex items-center gap-1">
+                    <div className="form-control">
+                      <label className="label cursor-pointer">
+                        <input
+                          type="radio"
+                          name="recipient_bank"
+                          className="radio checked:bg-blue-500"
+                          required
+                          value={index}
+                        />
+                      </label>
+                    </div>
+                    <Image
+                      src={`/payment/${doc.bank}.png`}
+                      width={40}
+                      height={40}
+                      alt="bri"
+                    />
+                    <span className="flex flex-col uppercase">
+                      <span className="text-slate-500 text-sm">
+                        {doc.bank} - {doc.name}
+                      </span>
+                      <span>{doc.noRek}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="modal-action flex justify-between">
+            <Link className="btn btn-info" href={"/"}>
+              <IoMdArrowRoundBack size={20} />
+              <span>Back</span>
+            </Link>
+            <ButtonSendDeposit />
+          </div>
+        </form>
+      </div>
     </MainLayout>
   );
 }
