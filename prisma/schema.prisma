@@ -28,7 +28,7 @@ model deposit {
   status            String
   sender_bank       Int
   recipient_bank    Int
-  user              user     @relation(fields: [user_id], references: [id])
+  user              user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id           Int
 }
 
@@ -39,7 +39,7 @@ model rekening {
   name        String
   no_rekening String
   bank        String
-  user        user     @relation(fields: [user_id], references: [id])
+  user        user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id     Int
 }
 

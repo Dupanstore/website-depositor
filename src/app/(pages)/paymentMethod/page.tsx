@@ -4,7 +4,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { FaEdit, FaPlusCircle } from "react-icons/fa";
 import prisma from "@/utils/db";
-import DeletePaymentMethod from "./delete";
 import { MdDelete } from "react-icons/md";
 
 export default async function PaymentMethod() {
