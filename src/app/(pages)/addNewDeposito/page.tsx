@@ -1,6 +1,5 @@
 import Link from "next/link";
-import ButtonSendDeposit from "./button";
-import { IoMdArrowRoundBack } from "react-icons/io";
+import { IoIosSend, IoMdArrowRoundBack } from "react-icons/io";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import prisma from "@/utils/db";
@@ -9,6 +8,7 @@ import { join } from "path";
 import { writeFile } from "fs";
 import { promisify } from "util";
 import MainLayout from "@/app/components/mainLayout";
+import ButtonForm from "@/app/components/button";
 
 const dataBankSender = [
   { name: "ADMIN", bank: "bri", noRek: "24267453653435" },
@@ -196,7 +196,7 @@ export default async function AddNewDeposito() {
               <IoMdArrowRoundBack size={20} />
               <span>Back</span>
             </Link>
-            <ButtonSendDeposit />
+            <ButtonForm text="Send" icon={<IoIosSend size={20} />} />
           </div>
         </form>
       </div>

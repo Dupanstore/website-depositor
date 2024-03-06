@@ -9,7 +9,7 @@ export default function ButtonForm({
 }: {
   colors?: string;
   text: string;
-  icon: any;
+  icon?: any;
 }) {
   const { pending } = useFormStatus();
 
@@ -21,7 +21,7 @@ export default function ButtonForm({
       aria-disabled={pending}
     >
       {pending && <span className="loading loading-spinner"></span>}
-      {icon}
+      {icon && icon}
       <span>{text}</span>
     </button>
   );

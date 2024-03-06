@@ -1,7 +1,7 @@
 import MainLayout from "@/app/components/mainLayout";
 import Link from "next/link";
-import { IoMdArrowRoundBack } from "react-icons/io";
-import ButtonSendPaymentMethod from "./button";
+import { IoIosSend, IoMdArrowRoundBack } from "react-icons/io";
+import ButtonForm from "@/app/components/button";
 
 export default async function AddNewPaymentMethod() {
   return (
@@ -50,7 +50,7 @@ export default async function AddNewPaymentMethod() {
               <IoMdArrowRoundBack size={20} />
               <span>Back</span>
             </Link>
-            <ButtonSendPaymentMethod />
+            <ButtonForm icon={<IoIosSend size={20} />} text="Send" />
           </div>
         </form>
       </div>

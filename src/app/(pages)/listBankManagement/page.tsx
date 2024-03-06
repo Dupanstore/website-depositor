@@ -1,9 +1,10 @@
 import MainLayout from "@/app/components/mainLayout";
-import ButtonSendNewBank from "./button";
 import prisma from "@/utils/db";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import DeleteBank from "./deleteBank";
+import ButtonForm from "@/app/components/button";
+import { IoIosSend } from "react-icons/io";
 
 export default async function ListBankManagement() {
   const bankList = await prisma.bank.findMany();
@@ -42,7 +43,7 @@ export default async function ListBankManagement() {
             placeholder="New Bank"
             name="bank"
           />
-          <ButtonSendNewBank />
+          <ButtonForm icon={<IoIosSend size={20} />} text="Add" />
         </form>
 
         <div className="overflow-x-auto mt-6 rounded-xl text-white">

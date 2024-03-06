@@ -7,6 +7,7 @@ import bcrypt from "bcrypt";
 import prisma from "@/utils/db";
 import { redirect } from "next/navigation";
 import { isEmail } from "validator";
+import ButtonForm from "@/app/components/button";
 
 export default function Register() {
   async function onSubmit(formData: FormData) {
@@ -90,7 +91,7 @@ export default function Register() {
                 <FaKey size={"1.5em"} className="text-slate-500" />
               </div>
 
-              <ButtonRegister />
+              <ButtonForm text="Register" />
             </form>
 
             <Link

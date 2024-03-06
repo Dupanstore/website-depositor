@@ -1,8 +1,8 @@
 import { MdDelete } from "react-icons/md";
 import prisma from "@/utils/db";
-import ButtonDeleteBank from "./buttonDelete";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import ButtonForm from "@/app/components/button";
 
 export default function DeleteBank({
   doc,
@@ -54,7 +54,11 @@ export default function DeleteBank({
           <form action={onSubmit}>
             <input name="id" value={doc.id} className="hidden" />
             <div className="modal-action">
-              <ButtonDeleteBank />
+              <ButtonForm
+                icon={<MdDelete size={20} />}
+                text="Delete"
+                colors="btn-error"
+              />
             </div>
           </form>
         </div>
