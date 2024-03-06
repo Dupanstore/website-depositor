@@ -44,7 +44,6 @@ export default function AddDeposito({ totalAmount }: { totalAmount: number }) {
       >
         +
       </label>
-      <Logout />
       <input type="checkbox" id="my_modal_7" className="modal-toggle" />
 
       <div className="modal" role="dialog">

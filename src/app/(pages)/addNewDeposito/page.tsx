@@ -1,7 +1,6 @@
 import Link from "next/link";
 import ButtonSendDeposit from "./button";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import Navbar from "@/app/components/navbar";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import prisma from "@/utils/db";
@@ -9,7 +8,7 @@ import { getServerSession } from "next-auth";
 import { join } from "path";
 import { writeFile } from "fs";
 import { promisify } from "util";
-import PageRouteSecure from "@/app/components/pageRouteSecure";
+import MainLayout from "@/app/components/mainLayout";
 
 const dataBank = [
   { name: "ADMIN", bank: "bri", noRek: "24267453653435" },
@@ -83,89 +82,86 @@ export default async function AddNewDeposito() {
   }
 
   return (
-    <PageRouteSecure>
-      <title>Add New Deposit</title>
-      <Navbar />
-      <div className="p-4">
-        <h3 className="text-lg font-bold">Add New Deposit</h3>
+    <MainLayout>
+      <title>Depositor - Add New Deposit</title>
+      <h3 className="text-lg font-bold">Add New Deposit</h3>
 
-        <form className="grid py-6 gap-4" action={onSubmit}>
-          <div>
-            <label htmlFor="Pengirim">Pengirim</label>
-            <input
-              id="Pengirim"
-              name="sender_bank"
-              required
-              className="input input-bordered w-full"
-            />
-          </div>
+      <form className="grid py-6 gap-4" action={onSubmit}>
+        <div>
+          <label htmlFor="Pengirim">Pengirim</label>
+          <input
+            id="Pengirim"
+            name="sender_bank"
+            required
+            className="input input-bordered w-full"
+          />
+        </div>
 
-          <div>
-            <label htmlFor="Nominal">Nominal</label>
-            <input
-              id="Nominal"
-              name="nominal_deposit"
-              required
-              type="number"
-              className="input input-bordered w-full"
-            />
-          </div>
+        <div>
+          <label htmlFor="Nominal">Nominal</label>
+          <input
+            id="Nominal"
+            name="nominal_deposit"
+            required
+            type="number"
+            className="input input-bordered w-full"
+          />
+        </div>
 
-          <div>
-            <label htmlFor="transfer">Upload Bukti Transfer</label>
-            <input
-              type="file"
-              className="file-input file-input-bordered w-full"
-              id="transfer"
-              required
-              accept=".png, .jpg, .jpeg"
-              name="proof_transaction"
-            />
-          </div>
+        <div>
+          <label htmlFor="transfer">Upload Bukti Transfer</label>
+          <input
+            type="file"
+            className="file-input file-input-bordered w-full"
+            id="transfer"
+            required
+            accept=".png, .jpg, .jpeg"
+            name="proof_transaction"
+          />
+        </div>
 
-          <div className="grid grid-flow-col-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 mt-2">
-            {dataBank.map((doc, index) => (
-              <div className="card bg-base-300" key={index}>
-                <div className="card-body py-3 px-4">
-                  <div className="flex items-center gap-1">
-                    <div className="form-control">
-                      <label className="label cursor-pointer">
-                        <input
-                          type="radio"
-                          name="recipient_bank"
-                          className="radio checked:bg-blue-500"
-                          required
-                          value={index}
-                        />
-                      </label>
-                    </div>
-                    <Image
-                      src={`/payment/${doc.bank}.png`}
-                      width={40}
-                      height={40}
-                      alt="bri"
-                    />
-                    <span className="flex flex-col uppercase">
-                      <span className="text-slate-500 text-sm">
-                        {doc.bank} - {doc.name}
-                      </span>
-                      <span>{doc.noRek}</span>
-                    </span>
+        <div className="grid grid-flow-col-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 mt-2">
+          {dataBank.map((doc, index) => (
+            <div className="card bg-base-300" key={index}>
+              <div className="card-body py-3 px-4">
+                <div className="flex items-center gap-1">
+                  <div className="form-control">
+                    <label className="label cursor-pointer">
+                      <input
+                        type="radio"
+                        name="recipient_bank"
+                        className="radio checked:bg-blue-500"
+                        required
+                        value={index}
+                      />
+                    </label>
                   </div>
+                  <Image
+                    src={`/payment/${doc.bank}.png`}
+                    width={40}
+                    height={40}
+                    alt="bri"
+                  />
+                  <span className="flex flex-col uppercase">
+                    <span className="text-slate-500 text-sm">
+                      {doc.bank} - {doc.name}
+                    </span>
+                    <span>{doc.noRek}</span>
+                  </span>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
 
-          <div className="modal-action">
-            <Link className="btn btn-info" href={"/"}>
-              <IoMdArrowRoundBack size={20} />
-              <span>Back</span>
-            </Link>
-            <ButtonSendDeposit />
-          </div>
-        </form>
-      </div>
-    </PageRouteSecure>
+        <div className="modal-action">
+          <Link className="btn btn-info" href={"/"}>
+            <IoMdArrowRoundBack size={20} />
+            <span>Back</span>
+          </Link>
+          <ButtonSendDeposit />
+        </div>
+      </form>
+    </MainLayout>
   );
 }

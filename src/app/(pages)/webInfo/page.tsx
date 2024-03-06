@@ -2,7 +2,7 @@ import prisma from "@/utils/db";
 import AddDeposito from "./addDeposito";
 import DashboardLineChartData from "./chartData";
 import DataTable from "./dataTable";
-import PageRouteSecure from "@/app/components/pageRouteSecure";
+import MainLayout from "@/app/components/mainLayout";
 
 export default async function AdminDashboard() {
   const deposit = await prisma.deposit.findMany();
@@ -12,12 +12,11 @@ export default async function AdminDashboard() {
   );
 
   return (
-    <PageRouteSecure>
-      <div className="p-2">
-        <AddDeposito totalAmount={totalAmount} />
-        <DashboardLineChartData />
-        <DataTable />
-      </div>
-    </PageRouteSecure>
+    <MainLayout>
+      <title>Depositor - Web Info</title>
+      <AddDeposito totalAmount={totalAmount} />
+      <DashboardLineChartData />
+      <DataTable />
+    </MainLayout>
   );
 }
