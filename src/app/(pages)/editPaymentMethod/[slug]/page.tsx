@@ -56,7 +56,7 @@ export default async function EditPaymentMethod({ params }: any) {
     <MainLayout>
       <title>Depositor - Edit Payment Method</title>
       <div className="max-w-md m-auto">
-        <h3 className="text-lg font-bold">Add New Payment Method</h3>
+        <h3 className="text-lg font-bold">Edit Payment Method</h3>
 
         <form className="grid py-6 gap-4" action={onSubmit}>
           <div>
