@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import DeleteUser from "../delete";
+import EditUser from "../edit";
 
 export default async function UserManagement() {
   const session: any = await getServerSession();
@@ -47,7 +48,7 @@ export default async function UserManagement() {
                 <td>{doc.username}</td>
                 <td>{doc.email}</td>
                 <td className="flex gap-4 items-center justify-center">
-                  <DeleteUser id={doc.id} />
+                  <EditUser id={doc.id} />
                 </td>
               </tr>
             ))}

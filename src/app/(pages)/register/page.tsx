@@ -2,7 +2,6 @@ import LoginRegisterRouteSecure from "@/app/components/loginRegisterRouteSecure"
 import Link from "next/link";
 import { FaKey, FaUserAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import ButtonRegister from "./button";
 import bcrypt from "bcrypt";
 import prisma from "@/utils/db";
 import { redirect } from "next/navigation";

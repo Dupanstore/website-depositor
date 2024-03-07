@@ -11,7 +11,7 @@ export default function Logout() {
       onClick={() => (
         signOut({ redirect: false }),
         router.push("/login"),
-        setTimeout(() => window.location.reload(), 500)
+        setTimeout(() => window.location.reload(), 1000)
       )}
     >
       <div className="flex items-center gap-3">

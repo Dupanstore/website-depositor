@@ -5,6 +5,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { MdDelete } from "react-icons/md";
 import DeleteUser from "./delete";
+import EditUser from "./edit";
 
 export default async function UserManagement() {
   const session: any = await getServerSession();
@@ -48,6 +49,7 @@ export default async function UserManagement() {
                 <td>{doc.username}</td>
                 <td>{doc.email}</td>
                 <td className="flex items-center justify-center gap-4">
+                  <EditUser id={doc.id} />
                   <DeleteUser id={doc.id} />
                 </td>
               </tr>
