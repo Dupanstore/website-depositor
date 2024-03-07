@@ -11,7 +11,9 @@ export default async function WebInfoLayout({
   children: ReactNode;
   activeLink: string;
 }) {
-  const deposit = await prisma.deposit.findMany();
+  const deposit = await prisma.deposit.findMany({
+    where: { status: "accept" },
+  });
   const totalAmount = deposit.reduce(
     (total, deposit) => total + deposit.nominal_deposit,
     0
