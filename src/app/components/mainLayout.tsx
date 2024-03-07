@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
-import { FaUserCircle } from "react-icons/fa";
+import { FaHome, FaUserCircle } from "react-icons/fa";
 import prisma from "@/utils/db";
 import Logout from "./logout";
 import { FaRegIdCard, FaUserCog } from "react-icons/fa";
@@ -10,6 +10,11 @@ import { BsBank2 } from "react-icons/bs";
 import { TbWorldWww } from "react-icons/tb";
 
 const menuLink = [
+  {
+    path: "/",
+    icon: <FaHome size={25} />,
+    name: "Home",
+  },
   {
     path: "/paymentMethod",
     icon: <FaRegIdCard size={25} />,
@@ -71,9 +76,10 @@ export default async function MainLayout({
               <div className="card-body">
                 <div className="text-white">
                   <div>
-                    <h1 className="text-2xl font-medium text-base-100">
+                    <h1 className="text-2xl font-medium -mb-2 text-base-100">
                       {userData?.username}
                     </h1>
+                    <p className="text-base-100 text-sm mb-2">{userData?.email}</p>
                     <p className="text-xs -mb-2 text-base-100">Total Deposit</p>
                     <p className="text-3xl font-semibold text-base-100">
                       Rp. {totalAmount?.toLocaleString("id-ID")},-
