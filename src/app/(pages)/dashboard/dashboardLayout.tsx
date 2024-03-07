@@ -22,7 +22,13 @@ export default async function DashboardLayout({
     where: { id: session.user.name },
     include: { deposit: true },
   });
-  const totalAmount = userData?.deposit.reduce(
+  const userDepositSubmit = await prisma.deposit.findMany({
+    where: { user_id: session.user.name, status: "submit" },
+  });
+  const userDepositAccept = await prisma.deposit.findMany({
+    where: { user_id: session.user.name, status: "accept" },
+  });
+  const totalAmount = userDepositAccept?.reduce(
     (total, deposit) => total + deposit.nominal_deposit,
     0
   );
@@ -45,7 +51,7 @@ export default async function DashboardLayout({
               </span>
             </div>
 
-            <AddDeposito />
+            {userDepositSubmit.length === 0 && <AddDeposito />}
           </div>
         </div>
       </div>

@@ -27,7 +27,11 @@ export default async function AllDepositSubmitted() {
               <th>No</th>
               <th>Tanggal</th>
               <th>Pengirim</th>
+              <th>Rekening Pengirim</th>
+              <th>Bank Pengirim</th>
               <th>Penerima</th>
+              <th>Rekening Penerima</th>
+              <th>Bank Penerima</th>
               <th>Nominal</th>
               <th>Bukti Transfer</th>
               {roleUser?.role === "admin" && <th>Action</th>}
@@ -39,8 +43,12 @@ export default async function AllDepositSubmitted() {
               <tr className="bg-slate-800" key={index}>
                 <td>{index + 1}</td>
                 <td>{formatDate(doc.createdAt.toISOString())}</td>
-                <td>{doc.sender_bank}</td>
-                <td>{doc.recipient_bank}</td>
+                <td>{doc.sender_name}</td>
+                <td>{doc.sender_rekening}</td>
+                <td className="uppercase">{doc.sender_bank}</td>
+                <td>{doc.recipient_name}</td>
+                <td>{doc.recipient_rekening}</td>
+                <td className="uppercase">{doc.recipient_bank}</td>
                 <td>{doc.nominal_deposit.toLocaleString("id-ID")}</td>
                 <td>
                   <ShowImage path={doc.proof_transaction} />

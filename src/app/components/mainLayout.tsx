@@ -53,7 +53,10 @@ export default async function MainLayout({
     where: { id: session.user.name },
     include: { deposit: true },
   });
-  const totalAmount = userData?.deposit.reduce(
+  const userDepositAccept = await prisma.deposit.findMany({
+    where: { user_id: session.user.name, status: "accept" },
+  });
+  const totalAmount = userDepositAccept?.reduce(
     (total, deposit) => total + deposit.nominal_deposit,
     0
   );
@@ -79,7 +82,9 @@ export default async function MainLayout({
                     <h1 className="text-2xl font-medium -mb-2 text-base-100">
                       {userData?.username}
                     </h1>
-                    <p className="text-base-100 text-sm mb-2">{userData?.email}</p>
+                    <p className="text-base-100 text-sm mb-2">
+                      {userData?.email}
+                    </p>
                     <p className="text-xs -mb-2 text-base-100">Total Deposit</p>
                     <p className="text-3xl font-semibold text-base-100">
                       Rp. {totalAmount?.toLocaleString("id-ID")},-

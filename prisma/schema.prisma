@@ -26,10 +26,17 @@ model deposit {
   nominal_deposit   Int
   proof_transaction String
   status            String
-  sender_bank       Int
-  recipient_bank    Int
-  user              user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id           Int
+
+  sender_name     String
+  sender_rekening String
+  sender_bank     String
+
+  recipient_name     String
+  recipient_rekening String
+  recipient_bank     String
+
+  user    user @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id Int
 }
 
 model rekening {

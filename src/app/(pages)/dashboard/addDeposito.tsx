@@ -30,6 +30,13 @@ export default async function AddDeposito() {
     const nominal_deposit: any = formData.get("nominal_deposit");
     const proof_transaction: any = formData.get("proof_transaction");
 
+    const senderBankDetail: any = await prisma.rekening.findUnique({
+      where: { id: parseInt(sender_bank) },
+    });
+    const recipientBankDetail: any = await prisma.rekening.findUnique({
+      where: { id: parseInt(recipient_bank) },
+    });
+
     async function handleSubmit() {
       if (
         !sender_bank ||
@@ -50,8 +57,15 @@ export default async function AddDeposito() {
               nominal_deposit: parseInt(nominal_deposit),
               proof_transaction: fileName,
               status: "submit",
-              sender_bank: parseInt(sender_bank),
-              recipient_bank: parseInt(recipient_bank),
+
+              sender_name: senderBankDetail?.name,
+              sender_rekening: senderBankDetail?.no_rekening,
+              sender_bank: senderBankDetail?.bank,
+
+              recipient_name: recipientBankDetail?.name,
+              recipient_rekening: recipientBankDetail?.no_rekening,
+              recipient_bank: recipientBankDetail?.bank,
+
               user: { connect: { id: session.user.name } },
             },
             include: { user: true },
@@ -138,7 +152,7 @@ export default async function AddDeposito() {
                             name="sender_bank"
                             className="radio checked:bg-blue-500"
                             required
-                            value={index}
+                            value={doc.id}
                           />
                         </label>
                       </div>
@@ -159,7 +173,7 @@ export default async function AddDeposito() {
               <span className="text-xs font-light italic text-error -mt-3">
                 *Rekening Tujuan
               </span>
-              {recipientBank.map((doc, index) =>
+              {recipientBank.map((doc) =>
                 doc.rekening.map((subDoc, index) => (
                   <div className="card bg-base-300" key={index}>
                     <div className="card-body py-3 px-4">
