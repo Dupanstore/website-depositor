@@ -1,36 +1,25 @@
-import { getServerSession } from "next-auth";
-import WebInfoLayout from "./webInfoLayout";
-import prisma from "@/utils/db";
-import { redirect } from "next/navigation";
 import { formatDate } from "@/utils/formatDate";
-import ShowImage from "../dashboard/showImage";
-import UpdateStatusUserDeposit from "./updateStatus";
+import WebInfoLayout from "../webInfoLayout";
+import ShowImage from "../../dashboard/showImage";
+import prisma from "@/utils/db";
 
-export default async function AllDepositSubmitted() {
-  const session: any = await getServerSession();
-  if (!session) {
-    redirect("/login");
-  }
-  const roleUser = await prisma.user.findUnique({
-    where: { id: session.user.name },
-  });
+export default async function AllDepositAccepted() {
   const depositData = await prisma.deposit.findMany({
-    where: { status: "submit" },
+    where: { status: "accept" },
   });
 
   return (
-    <WebInfoLayout activeLink="submitted">
+    <WebInfoLayout activeLink="accepted">
       <div className="overflow-x-auto mt-6 rounded-xl text-white">
         <table className="table text-center">
           <thead className="text-white">
-            <tr className="bg-info">
+            <tr className="bg-success">
               <th>No</th>
               <th>Tanggal</th>
               <th>Pengirim</th>
               <th>Penerima</th>
               <th>Nominal</th>
               <th>Bukti Transfer</th>
-              {roleUser?.role === "admin" && <th>Action</th>}
             </tr>
           </thead>
 
@@ -45,11 +34,6 @@ export default async function AllDepositSubmitted() {
                 <td>
                   <ShowImage path={doc.proof_transaction} />
                 </td>
-                {roleUser?.role === "admin" && (
-                  <td className="flex items-center justify-center">
-                    <UpdateStatusUserDeposit id={doc.id} />
-                  </td>
-                )}
               </tr>
             ))}
           </tbody>
