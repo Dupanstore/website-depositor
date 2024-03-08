@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev": "next dev",
     "build": "next build",
+    "start": "next start -p 3001",
     "lint": "next lint",
     "initdb": "npx prisma migrate dev && npx prisma generate && npx prisma db push && npx prisma studio",
     "hostbuild": "next build && pm2 start npm --name website-depositor -- start",
-    "hoststart": "npx prisma migrate dev && npx prisma db push && npx prisma generate && next build && pm2 start npm --name website-depositor -- start",
-    "dev": "node server.js",
-    "start": "NODE_ENV=production node server.js"
+    "hoststart": "npx prisma migrate dev && npx prisma db push && npx prisma generate && next build && pm2 start npm --name website-depositor -- start"
   },
   "dependencies": {
     "@prisma/client": "^5.10.2",
