@@ -22,13 +22,20 @@ export default async function WebInfoLayout({
   return (
     <MainLayout>
       <title>Depositor - Web Info</title>
+      <div className="flex items-center text-xl text-white justify-center">
+        <span className="bg-black py-2 px-6 font-semibold rounded-xl flex items-center justify-center gap-2">
+          <span className="rounded-full bg-red-500 p-1 text-sm">Rp</span>
+          {totalAmount.toLocaleString("id-ID")},-
+        </span>
+      </div>
+
       <DashboardLineChartData />
 
       <div className="grid grid-cols-1 md:grid-cols-3 items-center justify-center gap-4 max-w-2xl m-auto text-center">
         <div className="flex flex-col items-center justify-center gap-2">
-          <span className="text-white">Total Deposit All User</span>
+          <span className="text-white">Cashout</span>
           <span className="text-base-300 bg-white rounded-lg w-full py-2">
-            Rp {totalAmount.toLocaleString("id-ID")},-
+            Rp 0,-
           </span>
         </div>
         <div className="flex flex-col items-center justify-center gap-2">
@@ -40,7 +47,6 @@ export default async function WebInfoLayout({
         <div className="flex flex-col items-center justify-center gap-2">
           <span className="text-white">Waiting for the next round</span>
           <div className="flex flex-col items-center justify-center bg-slate-500 rounded-lg py-2 w-full text-white cursor-pointer">
-            <span>Rp 50.000</span>
             <span className="text-3xl font-semibold">PLAY</span>
           </div>
         </div>
