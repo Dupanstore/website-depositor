@@ -98,7 +98,7 @@ export default async function AddDeposito() {
     <>
       <label
         htmlFor="my_modal_7"
-        className="text-green-500 hover:text-green-600 transition cursor-pointer text-5xl"
+        className="text-white transition cursor-pointer text-5xl"
       >
         <FaPlusCircle />
       </label>

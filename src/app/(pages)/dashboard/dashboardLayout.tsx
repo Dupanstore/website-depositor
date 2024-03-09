@@ -1,8 +1,7 @@
 import { getServerSession } from "next-auth";
 import Link from "next/link";
-import { FaPlusCircle } from "react-icons/fa";
 import prisma from "@/utils/db";
-import { ReactNode } from "react";
+import { ReactNode, use } from "react";
 import { redirect } from "next/navigation";
 import MainLayout from "@/app/components/mainLayout";
 import AddDeposito from "./addDeposito";
@@ -32,21 +31,22 @@ export default async function DashboardLayout({
     (total, deposit) => total + deposit.nominal_deposit,
     0
   );
+  console.log(userData);
 
   return (
     <MainLayout>
       <title>Depositor - Dashboard</title>
-      <div className="md:px-8 card bg-base-300">
+      <div className="md:px-8 card bg-info">
         <div className="card-body">
           <div className="flex items-center justify-between">
             <div className="flex flex-col">
-              <span className="md:text-3xl text-2xl font-medium mb-1 text-slate-300 capitalize">
+              <span className="md:text-3xl text-2xl font-medium mb-1 text-white capitalize">
                 {userData?.username}
               </span>
-              <span className="text-xs font-light -mb-1 md:text-base">
+              <span className="text-xs font-light -mb-1 md:text-base text-white">
                 Total Deposit
               </span>
-              <span className="md:text-4xl text-2xl font-semibold text-slate-300">
+              <span className="md:text-4xl text-2xl font-semibold text-white">
                 Rp. {totalAmount?.toLocaleString("id-ID")},-
               </span>
             </div>
