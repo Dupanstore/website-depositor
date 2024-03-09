@@ -31,7 +31,6 @@ export default async function DashboardLayout({
     (total, deposit) => total + deposit.nominal_deposit,
     0
   );
-  console.log(userData);
 
   return (
     <MainLayout>
