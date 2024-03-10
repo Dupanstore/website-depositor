@@ -57,10 +57,10 @@ export default async function ListBankManagement() {
           <ButtonForm icon={<IoIosSend size={20} />} text="Add" />
         </form>
 
-        <div className="overflow-x-auto mt-6 rounded-xl text-white">
+        <div className="overflow-x-auto mt-6 rounded-xl ">
           <table className="table text-center">
-            <thead className="text-white">
-              <tr className="bg-info">
+            <thead >
+              <tr >
                 <th>No</th>
                 <th>Bank</th>
                 <th>Action</th>
@@ -69,7 +69,7 @@ export default async function ListBankManagement() {
 
             <tbody>
               {bankList.map((doc, index) => (
-                <tr className="bg-slate-800 uppercase" key={index}>
+                <tr className="uppercase" key={index}>
                   <td>{index + 1}</td>
                   <td>{doc.bank}</td>
                   <td>

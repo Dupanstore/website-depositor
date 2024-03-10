@@ -21,10 +21,10 @@ export default async function PaymentMethod() {
     <MainLayout>
       <title>Depositor - Payment Method</title>
       <AddNewPaymentMethod session={session} bankList={bankList} />
-      <div className="overflow-x-auto mt-6 rounded-xl text-white">
+      <div className="overflow-x-auto mt-6 rounded-xl">
         <table className="table text-center">
-          <thead className="text-white">
-            <tr className="bg-info">
+          <thead>
+            <tr>
               <th>No</th>
               <th>Atas Nama</th>
               <th>Nomor Rekening</th>
@@ -35,7 +35,7 @@ export default async function PaymentMethod() {
 
           <tbody>
             {userData.rekening.map((doc: any, index: any) => (
-              <tr className="bg-slate-800" key={index}>
+              <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{doc.name}</td>
                 <td>{doc.no_rekening}</td>

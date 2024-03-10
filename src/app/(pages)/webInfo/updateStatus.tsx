@@ -80,7 +80,7 @@ export default async function UpdateStatusUserDeposit({ id }: { id: number }) {
 
           <div className="modal-action flex items-center">
             <label
-              className="cursor-pointer btn btn-warning"
+              className="cursor-pointer btn btn-warning text-white"
               htmlFor={`updateStatus${id.toString()}`}
             >
               Close
@@ -90,7 +90,7 @@ export default async function UpdateStatusUserDeposit({ id }: { id: number }) {
               <input className="hidden" name="status" value={"rejected"} />
               <ButtonForm
                 text="Reject"
-                colors="btn-error"
+                colors="btn-error text-white"
                 icon={<MdCancel size={20} />}
               />
             </form>
@@ -99,7 +99,7 @@ export default async function UpdateStatusUserDeposit({ id }: { id: number }) {
               <input className="hidden" name="status" value={"accepted"} />
               <ButtonForm
                 text="Accepted"
-                colors="btn-info"
+                colors="btn-info text-white"
                 icon={<FaCheckCircle size={20} />}
               />
             </form>

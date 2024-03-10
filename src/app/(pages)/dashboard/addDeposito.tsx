@@ -56,7 +56,7 @@ export default async function AddDeposito() {
             data: {
               nominal_deposit: parseInt(nominal_deposit),
               proof_transaction: fileName,
-              status: "submit",
+              status: "pending",
 
               sender_name: senderBankDetail?.name,
               sender_rekening: senderBankDetail?.no_rekening,

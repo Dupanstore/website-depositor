@@ -1,40 +1,56 @@
-import prisma from "@/utils/db";
-import MainLayout from "@/app/components/mainLayout";
-import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
+import prisma from "@/utils/db";
+import { redirect } from "next/navigation";
+import MainLayout from "@/app/components/mainLayout";
+import AddDeposito from "./addDeposito";
+import ShowImage from "./showImage";
 import { formatDate } from "@/utils/formatDate";
-import ShowImage from "../dashboard/showImage";
-import UpdateStatusUserDeposit from "./updateStatus";
-import Gacha from "./gacha";
 
-export default async function WebInfo() {
+export default async function Dashboard() {
   const session: any = await getServerSession();
   if (!session) {
     redirect("/login");
   }
-  const deposit = await prisma.deposit.findMany({
-    where: { status: "accept" },
+  const userData = await prisma.user.findUnique({
+    where: { id: session.user.name },
+    include: { deposit: true },
   });
-  const totalAmount = deposit.reduce(
+  const userDepositSubmit = await prisma.deposit.findMany({
+    where: { user_id: session.user.name, status: "pending" },
+  });
+  const userDepositAccept = await prisma.deposit.findMany({
+    where: { user_id: session.user.name, status: "accept" },
+  });
+  const totalAmount = userDepositAccept?.reduce(
     (total, deposit) => total + deposit.nominal_deposit,
     0
   );
-  const roleUser = await prisma.user.findUnique({
-    where: { id: session.user.name },
+  const depositData = await prisma.deposit.findMany({
+    where: { user_id: session.user.name },
   });
-  const depositData = await prisma.deposit.findMany();
 
   return (
     <MainLayout>
-      <title>Depositor - Web Info</title>
-      <div className="flex items-center text-xl text-white justify-center">
-        <span className="bg-black py-2 px-6 font-semibold rounded-xl flex items-center justify-center gap-2">
-          <span className="rounded-full bg-red-500 p-1 text-sm">Rp</span>
-          {totalAmount.toLocaleString("id-ID")},-
-        </span>
-      </div>
+      <title>Depositor - Dashboard</title>
+      <div className="md:px-8 card bg-info">
+        <div className="card-body">
+          <div className="flex items-center justify-between">
+            <div className="flex flex-col">
+              <span className="md:text-3xl text-2xl font-medium mb-1 text-white capitalize">
+                {userData?.username}
+              </span>
+              <span className="text-xs font-light -mb-1 md:text-base text-white">
+                Total Deposit
+              </span>
+              <span className="md:text-4xl text-2xl font-semibold text-white">
+                Rp. {totalAmount?.toLocaleString("id-ID")},-
+              </span>
+            </div>
 
-      <Gacha />
+            {userDepositSubmit.length === 0 && <AddDeposito />}
+          </div>
+        </div>
+      </div>
 
       <div className="overflow-x-auto mt-6 rounded-xl">
         <table className="table text-center">
@@ -51,7 +67,6 @@ export default async function WebInfo() {
               <th>Nominal</th>
               <th>Status</th>
               <th>Bukti Transfer</th>
-              {roleUser?.role === "admin" && <th>Action</th>}
             </tr>
           </thead>
 
@@ -83,11 +98,6 @@ export default async function WebInfo() {
                 <td>
                   <ShowImage path={doc.proof_transaction} />
                 </td>
-                {roleUser?.role === "admin" && doc.status === "pending" && (
-                  <td className="flex items-center justify-center">
-                    <UpdateStatusUserDeposit id={doc.id} />
-                  </td>
-                )}
               </tr>
             ))}
           </tbody>

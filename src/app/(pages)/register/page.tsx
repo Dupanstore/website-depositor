@@ -50,8 +50,8 @@ export default function Register() {
   return (
     <LoginRegisterRouteSecure>
       <title>Depositor - Register</title>
-      <div className="w-screen h-screen justify-center items-center flex px-4">
-        <div className="card w-full max-w-sm bg-base-300">
+      <div className="w-screen h-screen justify-center items-center flex px-4 bg-slate-300">
+        <div className="card w-full max-w-sm bg-white shadow-lg">
           <div className="card-body">
             <h1 className="text-3xl font-semibold text-center">REGISTER</h1>
 
@@ -90,7 +90,7 @@ export default function Register() {
                 <FaKey size={"1.5em"} className="text-slate-500" />
               </div>
 
-              <ButtonForm text="Register" />
+              <ButtonForm text="Register" colors="btn-primary" />
             </form>
 
             <Link
