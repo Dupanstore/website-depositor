@@ -1,6 +1,19 @@
+import axios from "axios";
 import Image from "next/image";
 
-export default function ShowImage({ path }: { path: string }) {
+export default async function ShowImage({ path }: { path: string }) {
+  async function getImage() {
+    try {
+      const { data } = await axios.post(`http://localhost:3000/api/getimage/`, {
+        img: path,
+      });
+      return data;
+    } catch (error) {
+      return error;
+    }
+  }
+  const { dataUrl } = await getImage();
+
   return (
     <>
       <label htmlFor={path} className="link link-info">
@@ -11,7 +24,7 @@ export default function ShowImage({ path }: { path: string }) {
       <div className="modal" role="dialog">
         <div className="modal-box">
           <Image
-            src={`/assets/${path}`}
+            src={dataUrl ? dataUrl : "/assets/default.webp"}
             width={500}
             height={500}
             alt="Bukti Transfer"

@@ -34,7 +34,7 @@ export default async function WebInfo() {
         </span>
       </div>
 
-      <Gacha />
+      <Gacha saldo={totalAmount} />
 
       <div className="overflow-x-auto mt-6 rounded-xl">
         <table className="table text-center">
