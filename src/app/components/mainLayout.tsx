@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
-import { FaHome, FaUserCircle } from "react-icons/fa";
+import { FaHistory, FaHome, FaUserAlt, FaUserCircle } from "react-icons/fa";
 import prisma from "@/utils/db";
 import Logout from "./logout";
 import { FaRegIdCard, FaUserCog } from "react-icons/fa";
@@ -16,6 +16,11 @@ const menuLink = [
     name: "Home",
   },
   {
+    path: "/profile",
+    icon: <FaUserAlt size={25} />,
+    name: "Profile",
+  },
+  {
     path: "/paymentMethod",
     icon: <FaRegIdCard size={25} />,
     name: "Payment Method",
@@ -24,6 +29,11 @@ const menuLink = [
     path: "/webInfo",
     icon: <TbWorldWww size={25} />,
     name: "Web Info",
+  },
+  {
+    path: "/bettingHistory",
+    icon: <FaHistory size={25} />,
+    name: "Riwayat Taruhan",
   },
 ];
 

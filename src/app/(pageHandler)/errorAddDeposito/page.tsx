@@ -1,4 +1,3 @@
-"use client";
 import Link from "next/link";
 import { VscError } from "react-icons/vsc";
 
@@ -12,10 +11,7 @@ export default function ErrorAddDeposito() {
           <VscError size={100} className="text-error" />
           <h1 className="text-4xl font-semibold">Error</h1>
           <p className="py-4 text-2xl">Error Add Data Deposito</p>
-          <Link
-            href={"/"}
-            className="btn btn-primary text-white text-lg"
-          >
+          <Link href={"/"} className="btn btn-primary text-white text-lg">
             OK
           </Link>
         </div>
