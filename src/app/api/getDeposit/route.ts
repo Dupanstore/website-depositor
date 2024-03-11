@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import prisma from "@/utils/db";
+import { unstable_noStore } from "next/cache";
 
 export async function GET() {
+  unstable_noStore();
   try {
     const deposit = await prisma.deposit.findMany({
       where: { status: "accept" },
