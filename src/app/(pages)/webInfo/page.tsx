@@ -12,13 +12,6 @@ export default async function WebInfo() {
   if (!session) {
     redirect("/login");
   }
-  const deposit = await prisma.deposit.findMany({
-    where: { status: "accept" },
-  });
-  const totalAmount = deposit.reduce(
-    (total, deposit) => total + deposit.nominal_deposit,
-    0
-  );
   const roleUser = await prisma.user.findUnique({
     where: { id: session.user.name },
   });
@@ -27,15 +20,7 @@ export default async function WebInfo() {
   return (
     <MainLayout>
       <title>Depositor - Web Info</title>
-      <div className="flex items-center text-xl text-white justify-center">
-        <span className="bg-black py-2 px-6 font-semibold rounded-xl flex items-center justify-center gap-2">
-          <span className="rounded-full bg-red-500 p-1 text-sm">Rp</span>
-          {totalAmount.toLocaleString("id-ID")},-
-        </span>
-      </div>
-
-      <Gacha saldo={totalAmount} />
-
+      <Gacha session={session.user.name} />
       <div className="overflow-x-auto mt-6 rounded-xl">
         <table className="table text-center">
           <thead>

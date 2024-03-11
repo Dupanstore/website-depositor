@@ -17,6 +17,7 @@ model user {
   role      String
   deposit   deposit[]
   rekening  rekening[]
+  betting   betting[]
 }
 
 model deposit {
@@ -55,4 +56,15 @@ model bank {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   bank      String   @unique
+}
+
+model betting {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  nominal   Int
+  time      Int
+
+  user    user @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id Int
 }
