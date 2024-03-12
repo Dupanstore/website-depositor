@@ -35,14 +35,15 @@ export default function Gacha({
   totalBetting: number;
 }) {
   const [dataPoints, setDataPoints] = useState<number[]>([]);
+  const [currentEarnings, setCurrentEarnings] = useState(0);
+  const [saldoRealtime, setSaldoRealtime] = useState(0);
   const [buttonPlay, setButtonPlay] = useState(false);
   const [startTime, setStartTime] = useState(0);
   const [deposit, setDeposit] = useState(0);
   const [cashout, setCashout] = useState(0);
-  const [speed, setSpeed] = useState(0);
+  const [speed, setSpeed] = useState(100);
   const intervalRef = useRef<any>(null);
   const timeoutRef = useRef<any>(null);
-  const [currentEarnings, setCurrentEarnings] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,58 +95,61 @@ export default function Gacha({
   }, [cashout]);
 
   async function startGacha() {
-    if (speed === 0) {
+    // if (speed < 100) {
+    //   Swal.fire({
+    //     icon: "error",
+    //     title: "Nominal tidak boleh kosong atau kurang dari Rp 100,-",
+    //     allowOutsideClick: false,
+    //   });
+    // } else {
+    if (deposit < speed) {
       Swal.fire({
         icon: "error",
-        title: "Nominal tidak boleh kosong",
+        title: "Error",
+        text: `Participant Balance tidak cukup. Balance saat ini Rp ${deposit.toLocaleString(
+          "id-ID"
+        )},-`,
         allowOutsideClick: false,
       });
     } else {
-      if (deposit < speed) {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: `Participant Balance tidak cukup. Balance saat ini Rp ${deposit.toLocaleString(
-            "id-ID"
-          )},-`,
-          allowOutsideClick: false,
-        });
-      } else {
+      setCashout(0);
+      const randomSeconds = Math.floor(Math.random() * 100) + 1;
+      const currentTime = Date.now();
+      setStartTime(currentTime);
+      setDataPoints([]);
+      setButtonPlay(true);
+      timeoutRef.current = setTimeout(async () => {
+        const elapsedTime = Math.floor((Date.now() - currentTime) / 1000);
         setCashout(0);
-        const randomSeconds = Math.floor(Math.random() * 100) + 1;
-        const currentTime = Date.now();
-        setStartTime(currentTime);
-        setDataPoints([]);
-        setButtonPlay(true);
-        timeoutRef.current = setTimeout(async () => {
-          const elapsedTime = Math.floor((Date.now() - currentTime) / 1000);
-          setCashout(0);
-          setButtonPlay(false);
-          try {
-            const addResult = await axios.post(`/api/addBetting`, {
-              session,
-              time: elapsedTime,
-              nominal: 0,
-            });
-            Swal.fire({
-              icon: "warning",
-              title: "Coba lagi",
-              text: `Rp 0,-`,
-              confirmButtonText: "OK",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                window.location.reload();
-              }
-            });
-          } catch (error) {
-            Swal.fire({
-              icon: "error",
-              title: "Server Error 404",
-              allowOutsideClick: false,
-            });
-          }
-        }, randomSeconds * 1000);
-      }
+        setButtonPlay(false);
+        try {
+          const addResult = await axios.post(`/api/addBetting`, {
+            session,
+            time: elapsedTime,
+            nominal: speed * elapsedTime,
+            status: "lose",
+          });
+          Swal.fire({
+            icon: "warning",
+            title: "Coba lagi",
+            text: `Anda Kalah dalam taruhan coba lagi, Rp ${
+              speed * elapsedTime
+            },-`,
+            confirmButtonText: "OK",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Server Error 404",
+            allowOutsideClick: false,
+          });
+        }
+      }, randomSeconds * 1000);
+      // }
     }
   }
 
@@ -176,6 +180,7 @@ export default function Gacha({
           session,
           time: elapsedTime,
           nominal: speed * elapsedTime,
+          status: "win",
         });
         Swal.fire({
           icon: "success",
@@ -204,6 +209,7 @@ export default function Gacha({
       const earnings = elapsedTime * speed;
       setDataPoints((prevDataPoints) => [...prevDataPoints, earnings]);
       setCurrentEarnings(earnings);
+      setSaldoRealtime(deposit - earnings);
     }, 1000);
   };
 
@@ -212,7 +218,10 @@ export default function Gacha({
       <div className="flex items-center text-xl text-white justify-center">
         <span className="bg-black py-2 px-6 font-semibold rounded-xl flex items-center justify-center gap-2">
           <span className="rounded-full bg-red-500 p-1 text-sm">Rp</span>
-          {deposit.toLocaleString("id-ID")},-
+          {buttonPlay
+            ? saldoRealtime.toLocaleString("id-ID")
+            : deposit.toLocaleString("id-ID")}
+          ,-
         </span>
       </div>
       <Line data={data} options={options} className="my-4 max-h-96" />
@@ -228,6 +237,15 @@ export default function Gacha({
 
         <div className="flex flex-col items-center justify-center">
           <span>Speed</span>
+          <div
+            className={`h-12 border-2 rounded-lg w-full flex items-center justify-center`}
+          >
+            Rp 100,-
+          </div>
+        </div>
+
+        {/* <div className="flex flex-col items-center justify-center">
+          <span>Speed</span>
           {buttonPlay ? (
             <div className="input input-disabled w-full flex items-center justify-center">
               {speed}
@@ -241,7 +259,7 @@ export default function Gacha({
               onChange={(e) => setSpeed(parseInt(e.target.value))}
             />
           )}
-        </div>
+        </div> */}
 
         <div className="flex flex-col items-center justify-center">
           <span>Waiting for the next round</span>

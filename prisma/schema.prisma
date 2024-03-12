@@ -65,6 +65,7 @@ model betting {
   updatedAt DateTime @updatedAt
   nominal   Int
   time      Int
+  status    String
 
   user    user @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id Int

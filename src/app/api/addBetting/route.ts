@@ -8,6 +8,7 @@ export async function POST(req: Request) {
       data: {
         nominal: data.nominal,
         time: data.time,
+        status: data.status,
         user: { connect: { id: data.session } },
       },
       include: { user: true },

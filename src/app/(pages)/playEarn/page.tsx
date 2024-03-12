@@ -12,6 +12,7 @@ export default async function WebInfo() {
   }
   const betting = await prisma.betting.findMany({
     where: { user_id: session.user.name },
+    orderBy: [{ createdAt: "desc" }],
   });
   const bettingWin = await prisma.betting.findMany({
     where: { user_id: session.user.name, nominal: { not: 0 } },
@@ -46,10 +47,10 @@ export default async function WebInfo() {
                 <td>Rp {doc.nominal.toLocaleString("id-ID")},-</td>
                 <td
                   className={`font-semibold ${
-                    doc.nominal === 0 ? "text-error" : "text-success"
+                    doc.status === "win" ? "text-success" : "text-error"
                   }`}
                 >
-                  {doc.nominal === 0 ? "Kalah" : "Menang"}
+                  {doc.status === "win" ? "Menang" : "Kalah"}
                 </td>
               </tr>
             ))}
