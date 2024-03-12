@@ -45,7 +45,7 @@ export default async function ListBankManagement() {
 
   return (
     <MainLayout>
-      <title>Depositor - Bank Management</title>
+      <title>Riddles - Bank Management</title>
       <div className="max-w-md m-auto">
         <form className="flex gap-4" action={onSubmit}>
           <input
@@ -59,8 +59,8 @@ export default async function ListBankManagement() {
 
         <div className="overflow-x-auto mt-6 rounded-xl ">
           <table className="table text-center">
-            <thead >
-              <tr >
+            <thead>
+              <tr>
                 <th>No</th>
                 <th>Bank</th>
                 <th>Action</th>

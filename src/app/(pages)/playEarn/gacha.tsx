@@ -27,7 +27,13 @@ ChartJS.register(
   Legend
 );
 
-export default function Gacha({ session }: { session: number }) {
+export default function Gacha({
+  session,
+  totalBetting,
+}: {
+  session: number;
+  totalBetting: number;
+}) {
   const [dataPoints, setDataPoints] = useState<number[]>([]);
   const [buttonPlay, setButtonPlay] = useState(false);
   const [startTime, setStartTime] = useState(0);
@@ -47,7 +53,7 @@ export default function Gacha({ session }: { session: number }) {
         console.error("Failed to fetch data:", error);
       }
     };
-    const intervalId = setInterval(fetchData, 5000);
+    const intervalId = setInterval(fetchData, 2500);
     return () => clearInterval(intervalId);
   }, [session]);
 
@@ -99,7 +105,7 @@ export default function Gacha({ session }: { session: number }) {
         Swal.fire({
           icon: "error",
           title: "Error",
-          text: `Saldo deposit tidak cukup. Saldo saat ini Rp ${deposit.toLocaleString(
+          text: `Participant Balance tidak cukup. Balance saat ini Rp ${deposit.toLocaleString(
             "id-ID"
           )},-`,
           allowOutsideClick: false,
@@ -154,7 +160,7 @@ export default function Gacha({ session }: { session: number }) {
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: `Saldo deposit tidak cukup. Saldo saat ini Rp ${deposit.toLocaleString(
+        text: `Participant Balance tidak cukup. Balance saat ini Rp ${deposit.toLocaleString(
           "id-ID"
         )},-`,
         allowOutsideClick: false,
@@ -210,23 +216,14 @@ export default function Gacha({ session }: { session: number }) {
         </span>
       </div>
       <Line data={data} options={options} className="my-4 max-h-96" />
-      <div className="grid grid-cols-1 md:grid-cols-3 items-center justify-center gap-4 max-w-3xl m-auto text-center">
+      <div className="grid grid-cols-1 md:grid-cols-4 items-center justify-center gap-4 m-auto text-center">
         <div className="flex flex-col items-center justify-center">
           <span>Cashout</span>
-          {buttonPlay ? (
-            <div
-              onClick={handleCashout}
-              className={`btn hover:bg-slate-800 bg-slate-700 transition text-white w-full`}
-            >
-              Rp {currentEarnings},-
-            </div>
-          ) : (
-            <div
-              className={`btn !bg-slate-400 btn-disabled !text-white w-full`}
-            >
-              Rp {cashout},-
-            </div>
-          )}
+          <div
+            className={`h-12 border-2 rounded-lg w-full flex items-center justify-center`}
+          >
+            Rp {totalBetting.toLocaleString("id-ID")},-
+          </div>
         </div>
 
         <div className="flex flex-col items-center justify-center">
@@ -239,7 +236,7 @@ export default function Gacha({ session }: { session: number }) {
             <input
               type="number"
               required
-              defaultValue={speed}
+              defaultValue={""}
               className={`input w-full input-bordered`}
               onChange={(e) => setSpeed(parseInt(e.target.value))}
             />
@@ -250,18 +247,28 @@ export default function Gacha({ session }: { session: number }) {
           <span>Waiting for the next round</span>
           {buttonPlay ? (
             <div
-              className={`btn btn-disabled !bg-slate-400 !text-white w-full`}
+              onClick={handleCashout}
+              className={`btn btn-error text-white w-full`}
             >
-              WAITING
+              STOP
             </div>
           ) : (
             <div
               onClick={startGacha}
-              className={`btn bg-slate-700 hover:bg-slate-800 transition text-white w-full`}
+              className={`btn btn-success text-white w-full`}
             >
               PLAY
             </div>
           )}
+        </div>
+
+        <div className="flex flex-col items-center justify-center">
+          <span>Earn</span>
+          <div
+            className={`h-12 border-2 rounded-lg w-full flex items-center justify-center`}
+          >
+            Rp {currentEarnings},-
+          </div>
         </div>
       </div>
     </>

@@ -9,6 +9,9 @@ export async function GET() {
       where: { status: "accept" },
     });
     const betting = await prisma.betting.findMany();
+    const withdraw = await prisma.withdraw.findMany({
+      where: { status: "accept" },
+    });
     const totalAmount = deposit.reduce(
       (total, deposit) => total + deposit.nominal_deposit,
       0
@@ -17,7 +20,11 @@ export async function GET() {
       (total, betting) => total + betting.nominal,
       0
     );
-    const result = totalAmount - totalBetting;
+    const totalWithdraw = withdraw.reduce(
+      (total, withdraw) => total + withdraw.nominal,
+      0
+    );
+    const result = totalAmount - totalBetting - totalWithdraw;
     return NextResponse.json({ result });
   } catch (error) {
     return NextResponse.json({ error });

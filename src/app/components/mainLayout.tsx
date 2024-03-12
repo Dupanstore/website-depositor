@@ -7,7 +7,8 @@ import prisma from "@/utils/db";
 import Logout from "./logout";
 import { FaRegIdCard, FaUserCog } from "react-icons/fa";
 import { BsBank2 } from "react-icons/bs";
-import { TbWorldWww } from "react-icons/tb";
+import { BiMoneyWithdraw } from "react-icons/bi";
+import { FaMoneyBill1Wave, FaPlay } from "react-icons/fa6";
 
 const menuLink = [
   {
@@ -21,23 +22,28 @@ const menuLink = [
     name: "Profile",
   },
   {
+    path: "/withdraw",
+    icon: <BiMoneyWithdraw size={25} />,
+    name: "Penarikan",
+  },
+  {
     path: "/paymentMethod",
     icon: <FaRegIdCard size={25} />,
     name: "Payment Method",
   },
   {
-    path: "/webInfo",
-    icon: <TbWorldWww size={25} />,
-    name: "Web Info",
-  },
-  {
-    path: "/bettingHistory",
-    icon: <FaHistory size={25} />,
-    name: "Riwayat Taruhan",
+    path: "/playEarn",
+    icon: <FaPlay size={25} />,
+    name: "Play Earn",
   },
 ];
 
 const menuLinkAdmin = [
+  {
+    path: "/userDeposit",
+    icon: <FaMoneyBill1Wave size={25} />,
+    name: "User Deposit",
+  },
   {
     path: "/userManagement",
     icon: <FaUserCog size={25} />,
@@ -61,21 +67,28 @@ export default async function MainLayout({
   }
   const userData = await prisma.user.findUnique({
     where: { id: session.user.name },
-    include: { deposit: true },
   });
-  const userDepositAccept = await prisma.deposit.findMany({
+  const userWithdraw = await prisma.withdraw.findMany({
     where: { user_id: session.user.name, status: "accept" },
   });
-  const totalAmount = userDepositAccept?.reduce(
-    (total, deposit) => total + deposit.nominal_deposit,
+  const betting = await prisma.betting.findMany({
+    where: { user_id: session.user.name },
+  });
+  const totalWithdraw = userWithdraw.reduce(
+    (total, withdraw) => total + withdraw.nominal,
     0
   );
+  const totalBetting = betting.reduce(
+    (total, betting) => total + betting.nominal,
+    0
+  );
+  const resultSaldo = totalBetting - totalWithdraw;
 
   return (
     <>
       <div className="flex items-center justify-between bg-info py-3 px-4 md:px-8 fixed w-full z-10 border-b-8 border-base-100">
         <Link href={"/"} className="font-semibold text-2xl text-base-100">
-          DEPOSITOR
+          RIDDLES
         </Link>
 
         <label htmlFor="account" className="text-base-100 cursor-pointer">
@@ -95,9 +108,9 @@ export default async function MainLayout({
                     <p className="text-base-100 text-sm mb-2">
                       {userData?.email}
                     </p>
-                    <p className="text-xs -mb-2 text-base-100">Total Deposit</p>
+                    <p className="text-xs -mb-2 text-base-100">Total Earn</p>
                     <p className="text-3xl font-semibold text-base-100">
-                      Rp. {totalAmount?.toLocaleString("id-ID")},-
+                      Rp. {resultSaldo?.toLocaleString("id-ID")},-
                     </p>
                   </div>
                 </div>

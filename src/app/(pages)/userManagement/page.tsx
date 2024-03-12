@@ -20,7 +20,7 @@ export default async function UserManagement() {
 
   return (
     <MainLayout>
-      <title>Depositor - User Management</title>
+      <title>Riddles - User Management</title>
       <div className="overflow-x-auto rounded-xl">
         <table className="table text-center">
           <thead>

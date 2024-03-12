@@ -18,6 +18,7 @@ model user {
   deposit   deposit[]
   rekening  rekening[]
   betting   betting[]
+  withdraw  withdraw[]
 }
 
 model deposit {
@@ -64,6 +65,20 @@ model betting {
   updatedAt DateTime @updatedAt
   nominal   Int
   time      Int
+
+  user    user @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id Int
+}
+
+model withdraw {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String
+  no_rekening String
+  bank        String
+  nominal     Int
+  status      String
 
   user    user @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id Int

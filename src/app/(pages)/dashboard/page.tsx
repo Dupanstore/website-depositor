@@ -18,20 +18,30 @@ export default async function Dashboard() {
   const userDepositSubmit = await prisma.deposit.findMany({
     where: { user_id: session.user.name, status: "pending" },
   });
-  const userDepositAccept = await prisma.deposit.findMany({
-    where: { user_id: session.user.name, status: "accept" },
-  });
-  const totalAmount = userDepositAccept?.reduce(
-    (total, deposit) => total + deposit.nominal_deposit,
-    0
-  );
   const depositData = await prisma.deposit.findMany({
     where: { user_id: session.user.name },
   });
 
+  const userWithdraw = await prisma.withdraw.findMany({
+    where: { user_id: session.user.name, status: "accept" },
+  });
+  const betting = await prisma.betting.findMany({
+    where: { user_id: session.user.name },
+  });
+  const totalWithdraw = userWithdraw.reduce(
+    (total, withdraw) => total + withdraw.nominal,
+    0
+  );
+  const totalBetting = betting.reduce(
+    (total, betting) => total + betting.nominal,
+    0
+  );
+  const resultSaldo = totalBetting - totalWithdraw;
+  console.log(resultSaldo);
+
   return (
     <MainLayout>
-      <title>Depositor - Dashboard</title>
+      <title>Riddles - Dashboard</title>
       <div className="md:px-8 card bg-info">
         <div className="card-body">
           <div className="flex items-center justify-between">
@@ -40,10 +50,10 @@ export default async function Dashboard() {
                 {userData?.username}
               </span>
               <span className="text-xs font-light -mb-1 md:text-base text-white">
-                Total Deposit
+                Total Earn
               </span>
               <span className="md:text-4xl text-2xl font-semibold text-white">
-                Rp. {totalAmount?.toLocaleString("id-ID")},-
+                Rp. {resultSaldo?.toLocaleString("id-ID")},-
               </span>
             </div>
 

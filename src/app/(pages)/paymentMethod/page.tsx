@@ -19,7 +19,7 @@ export default async function PaymentMethod() {
 
   return (
     <MainLayout>
-      <title>Depositor - Payment Method</title>
+      <title>Ridlles - Payment Method</title>
       <AddNewPaymentMethod session={session} bankList={bankList} />
       <div className="overflow-x-auto mt-6 rounded-xl">
         <table className="table text-center">

@@ -52,7 +52,7 @@ export default async function Profile() {
 
   return (
     <MainLayout>
-      <title>Depositor - Profile</title>
+      <title>Riddles - Profile</title>
       <div className="max-w-md m-auto">
         <h1 className="text-center font-semibold mb-8 text-xl">My Profile</h1>
         <form className="flex flex-col gap-4" action={onSubmit}>
