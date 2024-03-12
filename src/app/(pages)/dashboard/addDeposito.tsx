@@ -8,6 +8,8 @@ import { promisify } from "util";
 import { join } from "path";
 import { writeFile } from "fs";
 import { revalidatePath } from "next/cache";
+import Link from "next/link";
+import InputCurrency from "./inputCurrency";
 
 export default async function AddDeposito() {
   const session: any = await getServerSession();
@@ -109,7 +111,7 @@ export default async function AddDeposito() {
           <h3 className="text-lg font-bold">Add New Deposit</h3>
 
           <form className="grid py-6 gap-4" action={onSubmit}>
-            <div>
+            {/* <div>
               <label htmlFor="Nominal" className="text-sm">
                 Nominal
               </label>
@@ -118,9 +120,13 @@ export default async function AddDeposito() {
                 name="nominal_deposit"
                 required
                 type="number"
+                min={"1"}
+                step={"any"}
                 className="input input-bordered w-full"
               />
-            </div>
+            </div> */}
+
+            <InputCurrency />
 
             <div>
               <label htmlFor="transfer" className="text-sm">
@@ -141,31 +147,40 @@ export default async function AddDeposito() {
               <span className="text-xs font-light italic text-error -mt-3">
                 *Rekening Anda
               </span>
-              {senderBank?.rekening.map((doc, index) => (
-                <div className="card bg-base-300" key={index}>
-                  <div className="card-body py-3 px-4">
-                    <div className="flex items-center gap-1">
-                      <div className="form-control">
-                        <label className="label cursor-pointer">
-                          <input
-                            type="radio"
-                            name="sender_bank"
-                            className="radio checked:bg-blue-500"
-                            required
-                            value={doc.id}
-                          />
-                        </label>
-                      </div>
-                      <span className="flex flex-col uppercase">
-                        <span className="text-slate-500 text-sm">
-                          {doc.bank} - {doc.name}
+              {senderBank?.rekening.length === 0 ? (
+                <Link
+                  href={"/paymentMethod"}
+                  className="underline link link-hover text-sky-500 hover:text-sky-600 transition"
+                >
+                  Belum ada rekening atur disini
+                </Link>
+              ) : (
+                senderBank?.rekening.map((doc, index) => (
+                  <div className="card bg-base-300" key={index}>
+                    <div className="card-body py-3 px-4">
+                      <div className="flex items-center gap-1">
+                        <div className="form-control">
+                          <label className="label cursor-pointer">
+                            <input
+                              type="radio"
+                              name="sender_bank"
+                              className="radio checked:bg-blue-500"
+                              required
+                              value={doc.id}
+                            />
+                          </label>
+                        </div>
+                        <span className="flex flex-col uppercase">
+                          <span className="text-slate-500 text-sm">
+                            {doc.bank} - {doc.name}
+                          </span>
+                          <span>{doc.no_rekening}</span>
                         </span>
-                        <span>{doc.no_rekening}</span>
-                      </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
 
             <div className="grid gap-2 mt-2">
