@@ -10,7 +10,7 @@ export default async function AddWithdraw({ session }: { session: any }) {
     include: {
       deposit: true,
       rekening: true,
-      betting: true,
+      betting: { where: { status: "win" } },
       withdraw: { where: { status: "accept" } },
     },
   });

@@ -111,23 +111,7 @@ export default async function AddDeposito() {
           <h3 className="text-lg font-bold">Add New Deposit</h3>
 
           <form className="grid py-6 gap-4" action={onSubmit}>
-            {/* <div>
-              <label htmlFor="Nominal" className="text-sm">
-                Nominal
-              </label>
-              <input
-                id="Nominal"
-                name="nominal_deposit"
-                required
-                type="number"
-                min={"1"}
-                step={"any"}
-                className="input input-bordered w-full"
-              />
-            </div> */}
-
             <InputCurrency />
-
             <div>
               <label htmlFor="transfer" className="text-sm">
                 Upload Bukti Transfer

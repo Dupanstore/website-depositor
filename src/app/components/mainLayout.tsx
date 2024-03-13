@@ -72,7 +72,7 @@ export default async function MainLayout({
     where: { user_id: session.user.name, status: "accept" },
   });
   const betting = await prisma.betting.findMany({
-    where: { user_id: session.user.name },
+    where: { user_id: session.user.name, status: "win" },
   });
   const totalWithdraw = userWithdraw.reduce(
     (total, withdraw) => total + withdraw.nominal,
