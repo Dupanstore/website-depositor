@@ -67,6 +67,7 @@ model betting {
   nominal   Int
   time      Int
   status    String
+  speed     Int
 
   user    user @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id Int

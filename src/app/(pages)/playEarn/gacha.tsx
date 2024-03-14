@@ -43,7 +43,6 @@ export default function Gacha({
   const [startTime, setStartTime] = useState(0);
   const [deposit, setDeposit] = useState(0);
   const [cashout, setCashout] = useState(0);
-  // const [speed, setSpeed] = useState(100);
   const intervalRef = useRef<any>(null);
   const timeoutRef = useRef<any>(null);
 
@@ -139,11 +138,12 @@ export default function Gacha({
             time: elapsedTime,
             nominal: speed * elapsedTime,
             status: "lose",
+            speed,
           });
           Swal.fire({
             icon: "warning",
             title: "Coba lagi",
-            text: `Anda Kalah dalam taruhan coba lagi, Rp ${
+            text: `Anda Kalah dalam taruhan coba lagi, Rp -${
               speed * elapsedTime
             },-`,
             allowOutsideClick: false,
@@ -198,6 +198,7 @@ export default function Gacha({
           time: elapsedTime,
           nominal: speed * elapsedTime,
           status: "win",
+          speed,
         });
         Swal.fire({
           icon: "success",
@@ -247,8 +248,10 @@ export default function Gacha({
           ,-
         </span>
       </div>
+
       <Line data={data} options={options} className="my-4 max-h-96" />
-      <div className="grid grid-cols-1 md:grid-cols-4 items-center justify-center gap-4 m-auto text-center">
+
+      <div className="grid grid-cols-1 lg:grid-cols-5 items-center justify-center gap-4 m-auto text-center">
         <div className="flex flex-col items-center justify-center">
           <span>Cashout</span>
           <div
@@ -293,6 +296,16 @@ export default function Gacha({
           >
             Rp {currentEarnings},-
           </div>
+        </div>
+
+        <div className="flex flex-col items-center justify-center">
+          <span>Riwayat</span>
+          <label
+            htmlFor="bettingHistory"
+            className="btn btn-primary drawer-button w-full text-white"
+          >
+            History
+          </label>
         </div>
       </div>
     </>

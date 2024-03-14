@@ -6,6 +6,7 @@ import { formatDate } from "@/utils/formatDate";
 import Gacha from "./gacha";
 import { VscError } from "react-icons/vsc";
 import Link from "next/link";
+import BettingHistory from "./history";
 
 export default async function WebInfo() {
   const session: any = await getServerSession();
@@ -126,43 +127,14 @@ export default async function WebInfo() {
   } else {
     return (
       <MainLayout>
-        <title>Riddles - Play Earn</title>
-        <Gacha
-          session={session.user.name}
-          totalBetting={totalCashout}
-          speed={speed!}
-        />
-        <div className="overflow-x-auto mt-6 rounded-xl">
-          <table className="table text-center">
-            <thead className="bg-info text-white">
-              <tr>
-                <th>No</th>
-                <th>Tanggal</th>
-                <th>Waktu</th>
-                <th>Nominal</th>
-                <th>Hasil</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {betting.map((doc, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{formatDate(doc.createdAt.toISOString())}</td>
-                  <td>{doc.time} Detik</td>
-                  <td>Rp {doc.nominal.toLocaleString("id-ID")},-</td>
-                  <td
-                    className={`font-semibold ${
-                      doc.status === "win" ? "text-success" : "text-error"
-                    }`}
-                  >
-                    {doc.status === "win" ? "Menang" : "Kalah"}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <BettingHistory betting={betting}>
+          <title>Riddles - Play Earn</title>
+          <Gacha
+            session={session.user.name}
+            totalBetting={totalCashout}
+            speed={speed!}
+          />
+        </BettingHistory>
       </MainLayout>
     );
   }
