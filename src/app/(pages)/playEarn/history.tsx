@@ -11,8 +11,6 @@ export default async function BettingHistory({
   children: ReactNode;
   betting: any;
 }) {
-  console.log(betting);
-
   return (
     <div className="drawer">
       <input id="bettingHistory" type="checkbox" className="drawer-toggle" />
