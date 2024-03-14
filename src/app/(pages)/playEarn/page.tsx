@@ -14,7 +14,10 @@ export default async function WebInfo() {
   }
   const user = await prisma.user.findUnique({
     where: { id: session.user.name },
-    include: { deposit: { where: { status: "accept" } } },
+    include: {
+      deposit: { where: { status: "accept" } },
+      withdraw: { where: { status: "accept" } },
+    },
   });
   const betting = await prisma.betting.findMany({
     where: { user_id: session.user.name },
@@ -23,6 +26,7 @@ export default async function WebInfo() {
   const bettingWin = await prisma.betting.findMany({
     where: { user_id: session.user.name, status: "win" },
   });
+
   const totalBetting = bettingWin.reduce(
     (total, betting) => total + betting.nominal,
     0
@@ -31,6 +35,12 @@ export default async function WebInfo() {
     (total, deposit) => total + deposit.nominal_deposit,
     0
   );
+  const userWithdraw = user?.withdraw.reduce(
+    (total, withdraw) => total + withdraw.nominal,
+    0
+  );
+
+  const totalCashout = totalBetting - userWithdraw!;
 
   if (userDeposit === 0) {
     return (
@@ -62,7 +72,7 @@ export default async function WebInfo() {
     return (
       <MainLayout>
         <title>Riddles - Play Earn</title>
-        <Gacha session={session.user.name} totalBetting={totalBetting} />
+        <Gacha session={session.user.name} totalBetting={totalCashout} />
         <div className="overflow-x-auto mt-6 rounded-xl">
           <table className="table text-center">
             <thead className="bg-info text-white">

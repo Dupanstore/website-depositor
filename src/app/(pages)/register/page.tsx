@@ -26,6 +26,7 @@ export default function Register() {
               email,
               password: hashPassword,
               role: "user",
+              maxWin: 0,
             },
           });
           return { message: "success", response };
