@@ -9,18 +9,18 @@ import prisma from "@/utils/db";
 export default async function UpdateStatusUserDeposit({ id }: { id: number }) {
   async function onSubmitAccept(formData: FormData) {
     "use server";
-    const status: any = formData.get("status");
+    const maxWin: any = formData.get("maxWin");
     async function handleStatusSubmit() {
       try {
-        if (status === "accepted") {
-          const response = await prisma.deposit.update({
-            where: { id },
-            data: { status: "accept" },
-          });
-          return { message: "ok", response };
-        } else {
-          return { message: "error" };
-        }
+        const responseMaxWin = await prisma.user.update({
+          where: { id },
+          data: { maxWin: parseInt(maxWin) },
+        });
+        const responseDeposit = await prisma.deposit.update({
+          where: { id },
+          data: { status: "accept" },
+        });
+        return { message: "ok", responseDeposit, responseMaxWin };
       } catch (error) {
         return { message: "error", error };
       }
@@ -35,18 +35,13 @@ export default async function UpdateStatusUserDeposit({ id }: { id: number }) {
 
   async function onSubmitRejected(formData: FormData) {
     "use server";
-    const status: any = formData.get("status");
     async function handleStatusSubmit() {
       try {
-        if (status === "rejected") {
-          const response = await prisma.deposit.update({
-            where: { id },
-            data: { status: "reject" },
-          });
-          return { message: "ok", response };
-        } else {
-          return { message: "error" };
-        }
+        const response = await prisma.deposit.update({
+          where: { id },
+          data: { status: "reject" },
+        });
+        return { message: "ok", response };
       } catch (error) {
         return { message: "error", error };
       }
@@ -74,11 +69,11 @@ export default async function UpdateStatusUserDeposit({ id }: { id: number }) {
         className="modal-toggle"
       />
       <div className="modal" role="dialog">
-        <div className="modal-box">
+        <div className="modal-box relative">
           <h3 className="text-lg font-bold">Update Status</h3>
           <p className="py-4">Apakah anda ingin Menerima atau Menolak ?</p>
 
-          <div className="modal-action flex items-center">
+          <div className="modal-action flex items-center pt-14">
             <label
               className="cursor-pointer btn btn-warning text-white"
               htmlFor={`updateStatus${id.toString()}`}
@@ -87,7 +82,6 @@ export default async function UpdateStatusUserDeposit({ id }: { id: number }) {
             </label>
 
             <form className="grid py-6 gap-4" action={onSubmitRejected}>
-              <input className="hidden" name="status" value={"rejected"} />
               <ButtonForm
                 text="Reject"
                 colors="btn-error text-white"
@@ -96,7 +90,17 @@ export default async function UpdateStatusUserDeposit({ id }: { id: number }) {
             </form>
 
             <form className="grid py-6 gap-4" action={onSubmitAccept}>
-              <input className="hidden" name="status" value={"accepted"} />
+              <div className="absolute text-start left-6 top-32 right-6">
+                <label htmlFor="maxWin">Max Win(%)</label>
+                <input
+                  id="maxWin"
+                  name="maxWin"
+                  className="input input-bordered w-full"
+                  type="number"
+                  required
+                />
+              </div>
+
               <ButtonForm
                 text="Accepted"
                 colors="btn-info text-white"

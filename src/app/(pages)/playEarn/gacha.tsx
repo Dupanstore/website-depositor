@@ -30,9 +30,11 @@ ChartJS.register(
 export default function Gacha({
   session,
   totalBetting,
+  speed,
 }: {
   session: number;
   totalBetting: number;
+  speed: number;
 }) {
   const [dataPoints, setDataPoints] = useState<number[]>([]);
   const [currentEarnings, setCurrentEarnings] = useState(0);
@@ -41,7 +43,7 @@ export default function Gacha({
   const [startTime, setStartTime] = useState(0);
   const [deposit, setDeposit] = useState(0);
   const [cashout, setCashout] = useState(0);
-  const [speed, setSpeed] = useState(100);
+  // const [speed, setSpeed] = useState(100);
   const intervalRef = useRef<any>(null);
   const timeoutRef = useRef<any>(null);
 
@@ -261,7 +263,7 @@ export default function Gacha({
           <div
             className={`h-12 border-2 rounded-lg w-full flex items-center justify-center`}
           >
-            Rp 100,-
+            Rp {speed},-
           </div>
         </div>
 

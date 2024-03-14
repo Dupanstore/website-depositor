@@ -1,9 +1,11 @@
-import { FaEdit, FaUserAlt } from "react-icons/fa";
+import { FaEdit, FaMoneyBillWave, FaUserAlt } from "react-icons/fa";
 import prisma from "@/utils/db";
 import ButtonForm from "@/app/components/button";
 import { IoIosSend } from "react-icons/io";
 import { redirect } from "next/navigation";
 import { isEmail } from "validator";
+import { MdEmail } from "react-icons/md";
+import { RiAdminFill } from "react-icons/ri";
 
 export default async function EditUser({ id }: { id: number }) {
   const userInfo = await prisma.user.findUnique({ where: { id } });
@@ -13,6 +15,7 @@ export default async function EditUser({ id }: { id: number }) {
     const username: any = formData.get("username");
     const role: any = formData.get("role");
     const email: any = formData.get("email");
+    const maxWin: any = formData.get("maxWin");
     const validateEmail = isEmail(email);
 
     async function handleSubmit() {
@@ -23,6 +26,7 @@ export default async function EditUser({ id }: { id: number }) {
               username,
               email,
               role: role.toLowerCase(),
+              maxWin: parseInt(maxWin),
             },
             where: { id },
           });
@@ -83,7 +87,22 @@ export default async function EditUser({ id }: { id: number }) {
                   required
                   defaultValue={userInfo?.email}
                 />
-                <FaUserAlt size={"1.5em"} className="text-slate-500" />
+                <MdEmail size={"1.5em"} className="text-slate-500" />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="maxWin">Max Win (%)</label>
+              <div className="flex items-center justify-between input input-bordered">
+                <input
+                  name="maxWin"
+                  id="maxWin"
+                  className="w-full"
+                  required
+                  type="number"
+                  defaultValue={userInfo?.maxWin}
+                />
+                <FaMoneyBillWave size={"1.5em"} className="text-slate-500" />
               </div>
             </div>
 
@@ -102,7 +121,7 @@ export default async function EditUser({ id }: { id: number }) {
                   <option value={"user"}>USER</option>
                   <option value={"admin"}>ADMIN</option>
                 </select>
-                <FaUserAlt size={"1.5em"} className="text-slate-500" />
+                <RiAdminFill size={"1.5em"} className="text-slate-500" />
               </div>
             </div>
 

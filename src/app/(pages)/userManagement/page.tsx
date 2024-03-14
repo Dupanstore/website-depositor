@@ -29,6 +29,7 @@ export default async function UserManagement() {
               <th>Username</th>
               <th>Email</th>
               <th>Role</th>
+              <th>Max Win</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -40,6 +41,7 @@ export default async function UserManagement() {
                 <td>{doc.username}</td>
                 <td>{doc.email}</td>
                 <td className="capitalize">{doc.role}</td>
+                <td>{doc.maxWin}%</td>
                 <td className="flex items-center justify-center gap-4">
                   <EditUser id={doc.id} />
                   {doc.role === "user" && <DeleteUser id={doc.id} />}
