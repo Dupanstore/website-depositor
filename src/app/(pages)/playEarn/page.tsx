@@ -19,6 +19,9 @@ export default async function WebInfo() {
       withdraw: { where: { status: "accept" } },
     },
   });
+  const bettingAllUser = await prisma.betting.findMany({
+    orderBy: [{ createdAt: "desc" }],
+  });
   const betting = await prisma.betting.findMany({
     where: { user_id: session.user.name },
     orderBy: [{ createdAt: "desc" }],
@@ -129,7 +132,7 @@ export default async function WebInfo() {
   } else {
     return (
       <MainLayout>
-        <BettingHistory betting={betting}>
+        <BettingHistory bettingUser={betting} bettingAllUser={bettingAllUser}>
           <title>Riddles - Play Earn</title>
           <Gacha
             session={session.user.name}

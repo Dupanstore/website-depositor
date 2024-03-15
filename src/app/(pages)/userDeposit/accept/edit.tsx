@@ -5,20 +5,32 @@ import prisma from "@/utils/db";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export default async function EditMaxWin({ id }: { id: number }) {
-  const userMaxWin = await prisma.user.findUnique({ where: { id } });
+export default async function EditDeposit({
+  userId,
+  depositId,
+}: {
+  userId: number;
+  depositId: number;
+}) {
+  const userMaxWin = await prisma.user.findUnique({ where: { id: userId } });
 
   async function onSubmit(formData: FormData) {
     "use server";
     const maxWin: any = formData.get("maxWin");
+    const status: any = formData.get("status");
 
     async function handleSubmit() {
       try {
-        const response = await prisma.user.update({
-          where: { id },
+        const responseMaxWin = await prisma.user.update({
+          where: { id: userId },
           data: { maxWin: parseInt(maxWin) },
         });
-        return { message: "ok", response };
+
+        const responseStatus = await prisma.deposit.update({
+          where: { id: depositId },
+          data: { status },
+        });
+        return { message: "ok", responseMaxWin, responseStatus };
       } catch (error) {
         return { error, message: "error" };
       }
@@ -34,16 +46,23 @@ export default async function EditMaxWin({ id }: { id: number }) {
 
   return (
     <>
-      <label htmlFor={`maxwin${id}`} className="text-info cursor-pointer">
+      <label
+        htmlFor={`maxwin${depositId}`}
+        className="text-info cursor-pointer"
+      >
         <FaEdit size={25} />
       </label>
 
-      <input type="checkbox" id={`maxwin${id}`} className="modal-toggle" />
+      <input
+        type="checkbox"
+        id={`maxwin${depositId}`}
+        className="modal-toggle"
+      />
       <div className="modal" role="dialog">
         <div className="modal-box text-start">
-          <h3 className="text-lg font-bold mb-8">Max Win(%)</h3>
+          <h3 className="text-lg font-bold mb-8">Edit</h3>
 
-          <form action={onSubmit}>
+          <form action={onSubmit} className="flex flex-col gap-4">
             <div>
               <label htmlFor="maxWin">Max Win(%)</label>
               <input
@@ -56,10 +75,23 @@ export default async function EditMaxWin({ id }: { id: number }) {
               />
             </div>
 
+            <div>
+              <label htmlFor="Status">Status</label>
+              <select
+                className="select select-bordered w-full"
+                id="Status"
+                required
+                name="status"
+              >
+                <option value={"accept"}>ACCEPT</option>
+                <option value={"reject"}>REJECT</option>
+              </select>
+            </div>
+
             <div className="modal-action">
               <label
                 className="btn btn-warning cursor-pointer text-white"
-                htmlFor={`maxwin${id}`}
+                htmlFor={`maxwin${depositId}`}
               >
                 Close
               </label>
@@ -74,7 +106,7 @@ export default async function EditMaxWin({ id }: { id: number }) {
 
         <label
           className="modal-backdrop cursor-pointer"
-          htmlFor={`maxwin${id}`}
+          htmlFor={`maxwin${depositId}`}
         ></label>
       </div>
     </>

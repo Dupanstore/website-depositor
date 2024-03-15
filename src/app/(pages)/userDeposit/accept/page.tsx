@@ -3,7 +3,7 @@ import { formatDate } from "@/utils/formatDate";
 import UserDepositLayout from "../userDepositLayout";
 import ShowImage from "../../dashboard/showImage";
 import GetUserMaxWin from "./getUserMaxWin";
-import EditMaxWin from "./editMaxWin";
+import EditDeposit from "./edit";
 
 export default async function UserDepositAccept() {
   const depositData = await prisma.deposit.findMany({
@@ -27,7 +27,7 @@ export default async function UserDepositAccept() {
               <th>Nominal</th>
               <th>Max Win</th>
               <th>Bukti Transfer</th>
-              <th>Edit MaxWin</th>
+              <th>Action</th>
             </tr>
           </thead>
 
@@ -48,7 +48,7 @@ export default async function UserDepositAccept() {
                   <ShowImage path={doc.proof_transaction} />
                 </td>
                 <td>
-                  <EditMaxWin id={doc.user_id} />
+                  <EditDeposit userId={doc.user_id} depositId={doc.id} />
                 </td>
               </tr>
             ))}

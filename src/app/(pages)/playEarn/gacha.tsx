@@ -40,6 +40,7 @@ export default function Gacha({
   const [currentEarnings, setCurrentEarnings] = useState(0);
   const [saldoRealtime, setSaldoRealtime] = useState(0);
   const [buttonPlay, setButtonPlay] = useState(false);
+  const [buttonStop, setButtonStop] = useState(false);
   const [startTime, setStartTime] = useState(0);
   const [deposit, setDeposit] = useState(0);
   const [cashout, setCashout] = useState(0);
@@ -47,17 +48,41 @@ export default function Gacha({
   const timeoutRef = useRef<any>(null);
 
   useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await axios.get(`/api/getDeposit`);
+        setDeposit(data.result);
+      } catch (error) {
+        console.log(error);
+        setDeposit(0);
+      }
+    })();
+  }, []);
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(`/api/getDeposit`);
         setDeposit(data.result);
       } catch (error) {
-        console.error("Failed to fetch data:", error);
+        console.log(error);
+        setDeposit(0);
       }
     };
     const intervalId = setInterval(fetchData, 2500);
     return () => clearInterval(intervalId);
   }, [session]);
+  useEffect(() => {
+    if (buttonPlay) {
+      startUpdatingChart();
+    } else {
+      clearInterval(intervalRef.current);
+    }
+  }, [buttonPlay]);
+  useEffect(() => {
+    if (cashout > 0) {
+      clearInterval(intervalRef.current);
+    }
+  }, [cashout]);
 
   const data = {
     labels:
@@ -82,19 +107,6 @@ export default function Gacha({
     },
   };
 
-  useEffect(() => {
-    if (buttonPlay) {
-      startUpdatingChart();
-    } else {
-      clearInterval(intervalRef.current);
-    }
-  }, [buttonPlay]);
-  useEffect(() => {
-    if (cashout > 0) {
-      clearInterval(intervalRef.current);
-    }
-  }, [cashout]);
-
   async function getServerTime() {
     try {
       const { data } = await axios.get("/api/getServerTime");
@@ -114,12 +126,12 @@ export default function Gacha({
           "id-ID"
         )},-`,
         allowOutsideClick: false,
-        timer: 3000,
+        timer: 2000,
         showConfirmButton: false,
       });
       setTimeout(() => {
         window.location.reload();
-      }, 3000);
+      }, 2000);
     } else {
       setCashout(0);
       const randomSeconds = Math.floor(Math.random() * 100) + 1;
@@ -147,29 +159,30 @@ export default function Gacha({
               speed * elapsedTime
             },-`,
             allowOutsideClick: false,
-            timer: 3000,
+            timer: 2000,
             showConfirmButton: false,
           });
           setTimeout(() => {
             window.location.reload();
-          }, 3000);
+          }, 2000);
         } catch (error) {
           Swal.fire({
             icon: "error",
             title: "Server Error 404",
             allowOutsideClick: false,
-            timer: 3000,
+            timer: 2000,
             showConfirmButton: false,
           });
           setTimeout(() => {
             window.location.reload();
-          }, 3000);
+          }, 2000);
         }
       }, randomSeconds * 1000);
     }
   }
 
   async function handleCashout() {
+    setButtonStop(true);
     if (!buttonPlay) return;
     clearTimeout(timeoutRef.current);
     clearInterval(intervalRef.current);
@@ -185,12 +198,12 @@ export default function Gacha({
           "id-ID"
         )},-`,
         allowOutsideClick: false,
-        timer: 3000,
+        timer: 2000,
         showConfirmButton: false,
       });
       setTimeout(() => {
         window.location.reload();
-      }, 3000);
+      }, 2000);
     } else {
       try {
         const addResult = await axios.post(`/api/addBetting`, {
@@ -205,25 +218,26 @@ export default function Gacha({
           title: "Selamat",
           text: `Anda mendapatkan Rp ${speed * elapsedTime},-`,
           allowOutsideClick: false,
-          timer: 3000,
+          timer: 2000,
           showConfirmButton: false,
         });
         setTimeout(() => {
           window.location.reload();
-        }, 3000);
+        }, 2000);
       } catch (error) {
         Swal.fire({
           icon: "error",
           title: "Server Error 404",
           allowOutsideClick: false,
-          timer: 3000,
+          timer: 2000,
           showConfirmButton: false,
         });
         setTimeout(() => {
           window.location.reload();
-        }, 3000);
+        }, 2000);
       }
     }
+    setButtonStop(false);
   }
 
   const startUpdatingChart = () => {
@@ -273,12 +287,18 @@ export default function Gacha({
         <div className="flex flex-col items-center justify-center">
           <span>Waiting for the next round</span>
           {buttonPlay ? (
-            <div
-              onClick={handleCashout}
-              className={`btn btn-error text-white w-full`}
-            >
-              STOP
-            </div>
+            buttonStop ? (
+              <div className={`btn btn-disabled text-white w-full`}>STOP</div>
+            ) : (
+              <div
+                onClick={handleCashout}
+                className={`btn btn-error text-white w-full`}
+              >
+                STOP
+              </div>
+            )
+          ) : deposit === 0 ? (
+            <div className={`btn btn-disabled text-white w-full`}>PLAY</div>
           ) : (
             <div
               onClick={startGacha}

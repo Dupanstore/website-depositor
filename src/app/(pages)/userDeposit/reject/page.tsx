@@ -2,6 +2,7 @@ import prisma from "@/utils/db";
 import { formatDate } from "@/utils/formatDate";
 import UserDepositLayout from "../userDepositLayout";
 import ShowImage from "../../dashboard/showImage";
+import DeleteDeposit from "./delete";
 
 export default async function UserDepositReject() {
   const depositData = await prisma.deposit.findMany({
@@ -24,6 +25,7 @@ export default async function UserDepositReject() {
               <th>Bank Penerima</th>
               <th>Nominal</th>
               <th>Bukti Transfer</th>
+              <th>Action</th>
             </tr>
           </thead>
 
@@ -41,6 +43,9 @@ export default async function UserDepositReject() {
                 <td>{doc.nominal_deposit.toLocaleString("id-ID")}</td>
                 <td>
                   <ShowImage path={doc.proof_transaction} />
+                </td>
+                <td>
+                  <DeleteDeposit doc={doc} />
                 </td>
               </tr>
             ))}

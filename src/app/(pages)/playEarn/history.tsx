@@ -1,15 +1,15 @@
-import { formatDate } from "@/utils/formatDate";
-import { formatTime } from "@/utils/formatTime";
-import Image from "next/image";
 import { ReactNode } from "react";
 import { IoClose } from "react-icons/io5";
+import HistoryControl from "./historyControl";
 
 export default async function BettingHistory({
   children,
-  betting,
+  bettingUser,
+  bettingAllUser,
 }: {
   children: ReactNode;
-  betting: any;
+  bettingUser: any;
+  bettingAllUser: any;
 }) {
   return (
     <div className="drawer">
@@ -31,47 +31,10 @@ export default async function BettingHistory({
             </label>
           </div>
 
-          <div>
-            {betting.map((doc: any) => (
-              <div className="flex items-center gap-2" key={doc.id}>
-                <Image
-                  src={"/logoHistoryBet.png"}
-                  alt="logo"
-                  width={65}
-                  height={65}
-                />
-
-                <div className="flex justify-between w-full">
-                  <div className="flex flex-col gap-3">
-                    <span className="font-semibold">Crash FIAT 85%</span>
-                    <span className="flex gap-3 text-gray-500 font-light">
-                      <span className="text-xs">
-                        {formatTime(doc.createdAt)}
-                      </span>
-                      <span className="text-xs">
-                        {formatDate(doc.createdAt)}
-                      </span>
-                    </span>
-                  </div>
-
-                  <div className="text-end flex flex-col gap-3">
-                    {doc.status === "win" ? (
-                      <span className="text-success font-semibold">
-                        +Rp{doc.nominal.toLocaleString("id-ID")}
-                      </span>
-                    ) : (
-                      <span className="text-error font-semibold">
-                        -Rp{doc.nominal.toLocaleString("id-ID")}
-                      </span>
-                    )}
-                    <span className="text-xs font-light text-gray-500">
-                      Rp{doc.speed}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <HistoryControl
+            bettingUser={bettingUser}
+            bettingAllUser={bettingAllUser}
+          />
         </ul>
       </div>
     </div>

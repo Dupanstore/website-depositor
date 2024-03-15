@@ -5,6 +5,8 @@ import prisma from "@/utils/db";
 import AddNewPaymentMethod from "./addNew";
 import DeletePaymentMethod from "./delete";
 import EditPaymentMethod from "./edit";
+import Link from "next/link";
+import { BsBank2 } from "react-icons/bs";
 
 export default async function PaymentMethod() {
   const session: any = await getServerSession();
@@ -20,7 +22,15 @@ export default async function PaymentMethod() {
   return (
     <MainLayout>
       <title>Ridlles - Payment Method</title>
-      <AddNewPaymentMethod session={session} bankList={bankList} />
+      <div className="flex gap-2">
+        <AddNewPaymentMethod session={session} bankList={bankList} />
+        {userData.role === "admin" && (
+          <Link href={"/listBankManagement"} className="btn btn-info">
+            <BsBank2 size={20} />
+            List Bank
+          </Link>
+        )}
+      </div>
       <div className="overflow-x-auto mt-6 rounded-xl">
         <table className="table text-center">
           <thead>

@@ -107,11 +107,6 @@ export default async function AddNewPaymentMethod({
             </div>
           </form>
         </div>
-
-        <label
-          className="modal-backdrop cursor-pointer"
-          htmlFor="addPayment"
-        ></label>
       </div>
     </>
   );

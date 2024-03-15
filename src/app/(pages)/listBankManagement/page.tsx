@@ -6,6 +6,8 @@ import DeleteBank from "./delete";
 import ButtonForm from "@/app/components/button";
 import { IoIosSend } from "react-icons/io";
 import { getServerSession } from "next-auth";
+import Link from "next/link";
+import { FaArrowLeft } from "react-icons/fa";
 
 export default async function ListBankManagement() {
   const session: any = await getServerSession();
@@ -47,7 +49,14 @@ export default async function ListBankManagement() {
     <MainLayout>
       <title>Riddles - Bank Management</title>
       <div className="max-w-md m-auto">
-        <form className="flex gap-4" action={onSubmit}>
+        <Link
+          href={"/paymentMethod"}
+          className="btn btn-sm btn-error text-white"
+        >
+          <FaArrowLeft size={20} />
+        </Link>
+
+        <form className="flex gap-2 mt-4" action={onSubmit}>
           <input
             className="input input-bordered w-full"
             required
@@ -57,9 +66,9 @@ export default async function ListBankManagement() {
           <ButtonForm icon={<IoIosSend size={20} />} text="Add" />
         </form>
 
-        <div className="overflow-x-auto mt-6 rounded-xl ">
+        <div className="overflow-x-auto mt-4 rounded-xl">
           <table className="table text-center">
-            <thead>
+            <thead className="bg-info text-white">
               <tr>
                 <th>No</th>
                 <th>Bank</th>
