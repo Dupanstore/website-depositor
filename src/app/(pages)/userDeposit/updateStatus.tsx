@@ -6,18 +6,24 @@ import { FcInfo } from "react-icons/fc";
 import { MdCancel } from "react-icons/md";
 import prisma from "@/utils/db";
 
-export default async function UpdateStatusUserDeposit({ id }: { id: number }) {
+export default async function UpdateStatusUserDeposit({
+  idDeposit,
+  idUser,
+}: {
+  idDeposit: number;
+  idUser: number;
+}) {
   async function onSubmitAccept(formData: FormData) {
     "use server";
     const maxWin: any = formData.get("maxWin");
     async function handleStatusSubmit() {
       try {
         const responseMaxWin = await prisma.user.update({
-          where: { id },
+          where: { id: idUser },
           data: { maxWin: parseInt(maxWin) },
         });
         const responseDeposit = await prisma.deposit.update({
-          where: { id },
+          where: { id: idDeposit },
           data: { status: "accept" },
         });
         return { message: "ok", responseDeposit, responseMaxWin };
@@ -33,12 +39,12 @@ export default async function UpdateStatusUserDeposit({ id }: { id: number }) {
     }
   }
 
-  async function onSubmitRejected(formData: FormData) {
+  async function onSubmitRejected() {
     "use server";
     async function handleStatusSubmit() {
       try {
         const response = await prisma.deposit.update({
-          where: { id },
+          where: { id: idDeposit },
           data: { status: "reject" },
         });
         return { message: "ok", response };
@@ -57,7 +63,7 @@ export default async function UpdateStatusUserDeposit({ id }: { id: number }) {
   return (
     <>
       <label
-        htmlFor={`updateStatus${id.toString()}`}
+        htmlFor={`updateStatus${idDeposit.toString()}`}
         className="cursor-pointer"
       >
         <FcInfo className="text-error" size={30} />
@@ -65,7 +71,7 @@ export default async function UpdateStatusUserDeposit({ id }: { id: number }) {
 
       <input
         type="checkbox"
-        id={`updateStatus${id.toString()}`}
+        id={`updateStatus${idDeposit.toString()}`}
         className="modal-toggle"
       />
       <div className="modal" role="dialog">
@@ -76,7 +82,7 @@ export default async function UpdateStatusUserDeposit({ id }: { id: number }) {
           <div className="modal-action flex items-center pt-14">
             <label
               className="cursor-pointer btn btn-warning text-white"
-              htmlFor={`updateStatus${id.toString()}`}
+              htmlFor={`updateStatus${idDeposit.toString()}`}
             >
               Close
             </label>
@@ -112,7 +118,7 @@ export default async function UpdateStatusUserDeposit({ id }: { id: number }) {
 
         <label
           className="modal-backdrop cursor-pointer"
-          htmlFor={`updateStatus${id.toString()}`}
+          htmlFor={`updateStatus${idDeposit.toString()}`}
         >
           Close
         </label>

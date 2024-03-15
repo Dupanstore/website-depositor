@@ -45,7 +45,10 @@ export default async function UserDepositPending() {
                   <ShowImage path={doc.proof_transaction} />
                 </td>
                 <td className="flex items-center justify-center">
-                  <UpdateStatusUserDeposit id={doc.id} />
+                  <UpdateStatusUserDeposit
+                    idUser={doc.user_id}
+                    idDeposit={doc.id}
+                  />
                 </td>
               </tr>
             ))}
