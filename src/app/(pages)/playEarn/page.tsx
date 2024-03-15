@@ -41,32 +41,35 @@ export default async function WebInfo() {
   );
 
   const totalCashout = totalBetting - userWithdraw!;
+  const totalSpeedLimit = userDeposit! - userWithdraw!;
   const maxWin = `${user?.maxWin}000`;
 
   function speedLimit() {
-    if (userDeposit! < 10000) {
+    if (totalSpeedLimit < 10000) {
+      return 0;
+    } else if (totalSpeedLimit >= 10000 && totalSpeedLimit < 50000) {
       return 1;
-    } else if (userDeposit! >= 10000 && userDeposit! < 50000) {
+    } else if (totalSpeedLimit >= 50000 && totalSpeedLimit < 100000) {
       return 5;
-    } else if (userDeposit! >= 50000 && userDeposit! < 100000) {
+    } else if (totalSpeedLimit >= 100000 && totalSpeedLimit < 300000) {
       return 10;
-    } else if (userDeposit! >= 100000 && userDeposit! < 300000) {
+    } else if (totalSpeedLimit >= 300000 && totalSpeedLimit < 500000) {
       return 30;
-    } else if (userDeposit! >= 300000 && userDeposit! < 500000) {
+    } else if (totalSpeedLimit >= 500000 && totalSpeedLimit < 1000000) {
       return 50;
-    } else if (userDeposit! >= 500000 && userDeposit! < 1000000) {
+    } else if (totalSpeedLimit >= 1000000 && totalSpeedLimit < 3000000) {
       return 100;
-    } else if (userDeposit! >= 1000000 && userDeposit! < 3000000) {
+    } else if (totalSpeedLimit >= 3000000 && totalSpeedLimit < 5000000) {
       return 300;
-    } else if (userDeposit! >= 3000000 && userDeposit! < 5000000) {
+    } else if (totalSpeedLimit >= 5000000 && totalSpeedLimit < 10000000) {
       return 500;
-    } else if (userDeposit! >= 5000000 && userDeposit! < 10000000) {
+    } else if (totalSpeedLimit >= 10000000 && totalSpeedLimit < 30000000) {
       return 1000;
-    } else if (userDeposit! >= 10000000 && userDeposit! < 30000000) {
+    } else if (totalSpeedLimit >= 30000000 && totalSpeedLimit < 50000000) {
       return 3000;
-    } else if (userDeposit! >= 30000000 && userDeposit! < 50000000) {
+    } else if (totalSpeedLimit >= 50000000 && totalSpeedLimit < 100000000) {
       return 5000;
-    } else if (userDeposit! >= 50000000 && userDeposit! < 100000000) {
+    } else if (totalSpeedLimit >= 100000000) {
       return 10000;
     }
   }
