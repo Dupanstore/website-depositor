@@ -42,7 +42,7 @@ export default async function WebInfo() {
 
   const totalCashout = totalBetting - userWithdraw!;
   const totalSpeedLimit = userDeposit! - userWithdraw!;
-  const maxWin = `${user?.maxWin}000`;
+  const maxWin = userDeposit! + parseInt(`${user?.maxWin}000`);
 
   function speedLimit() {
     if (totalSpeedLimit < 10000) {
@@ -101,7 +101,7 @@ export default async function WebInfo() {
         </div>
       </div>
     );
-  } else if (totalCashout.toString() >= maxWin) {
+  } else if (userDeposit! >= maxWin) {
     return (
       <div className="flex items-center justify-center w-screen h-screen p-4">
         <title>Winning Limit</title>
