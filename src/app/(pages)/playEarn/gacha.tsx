@@ -266,7 +266,7 @@ export default function Gacha({
           <div
             className={`h-12 border-2 rounded-lg w-full flex items-center justify-center`}
           >
-            Rp {speed},-
+            Rp {speed.toLocaleString("id-ID")},-
           </div>
         </div>
 

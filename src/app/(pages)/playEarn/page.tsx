@@ -2,7 +2,6 @@ import prisma from "@/utils/db";
 import MainLayout from "@/app/components/mainLayout";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
-import { formatDate } from "@/utils/formatDate";
 import Gacha from "./gacha";
 import { VscError } from "react-icons/vsc";
 import Link from "next/link";
@@ -45,29 +44,29 @@ export default async function WebInfo() {
   const maxWin = `${user?.maxWin}000`;
 
   function speedLimit() {
-    if (totalCashout < 10000) {
+    if (userDeposit! < 10000) {
       return 1;
-    } else if (totalCashout >= 10000 && totalCashout < 50000) {
+    } else if (userDeposit! >= 10000 && userDeposit! < 50000) {
       return 5;
-    } else if (totalCashout >= 50000 && totalCashout < 100000) {
+    } else if (userDeposit! >= 50000 && userDeposit! < 100000) {
       return 10;
-    } else if (totalCashout >= 100000 && totalCashout < 300000) {
+    } else if (userDeposit! >= 100000 && userDeposit! < 300000) {
       return 30;
-    } else if (totalCashout >= 300000 && totalCashout < 500000) {
+    } else if (userDeposit! >= 300000 && userDeposit! < 500000) {
       return 50;
-    } else if (totalCashout >= 500000 && totalCashout < 1000000) {
+    } else if (userDeposit! >= 500000 && userDeposit! < 1000000) {
       return 100;
-    } else if (totalCashout >= 1000000 && totalCashout < 3000000) {
+    } else if (userDeposit! >= 1000000 && userDeposit! < 3000000) {
       return 300;
-    } else if (totalCashout >= 3000000 && totalCashout < 5000000) {
+    } else if (userDeposit! >= 3000000 && userDeposit! < 5000000) {
       return 500;
-    } else if (totalCashout >= 5000000 && totalCashout < 10000000) {
+    } else if (userDeposit! >= 5000000 && userDeposit! < 10000000) {
       return 1000;
-    } else if (totalCashout >= 10000000 && totalCashout < 30000000) {
+    } else if (userDeposit! >= 10000000 && userDeposit! < 30000000) {
       return 3000;
-    } else if (totalCashout >= 30000000 && totalCashout < 50000000) {
+    } else if (userDeposit! >= 30000000 && userDeposit! < 50000000) {
       return 5000;
-    } else if (totalCashout >= 50000000 && totalCashout < 100000000) {
+    } else if (userDeposit! >= 50000000 && userDeposit! < 100000000) {
       return 10000;
     }
   }
