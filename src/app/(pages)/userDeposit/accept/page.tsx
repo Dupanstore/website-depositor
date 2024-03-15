@@ -48,7 +48,7 @@ export default async function UserDepositAccept() {
                   <ShowImage path={doc.proof_transaction} />
                 </td>
                 <td>
-                  <EditMaxWin id={doc.id} />
+                  <EditMaxWin id={doc.user_id} />
                 </td>
               </tr>
             ))}
