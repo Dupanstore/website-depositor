@@ -42,6 +42,7 @@ export default function Gacha({
   const [buttonPlay, setButtonPlay] = useState(false);
   const [buttonStop, setButtonStop] = useState(false);
   const [startTime, setStartTime] = useState(0);
+  const [button, setButton] = useState(false);
   const [deposit, setDeposit] = useState(0);
   const [cashout, setCashout] = useState(0);
   const intervalRef = useRef<any>(null);
@@ -144,6 +145,8 @@ export default function Gacha({
         const elapsedTime = Math.floor((currentTimePlay - currentTime) / 1000);
         setCashout(0);
         setButtonPlay(false);
+        setButtonStop(true);
+        setButton(true);
         try {
           const addResult = await axios.post(`/api/addBetting`, {
             session,
@@ -165,6 +168,7 @@ export default function Gacha({
           setTimeout(() => {
             window.location.reload();
           }, 2000);
+          setButton(false);
         } catch (error) {
           Swal.fire({
             icon: "error",
@@ -176,6 +180,7 @@ export default function Gacha({
           setTimeout(() => {
             window.location.reload();
           }, 2000);
+          setButton(false);
         }
       }, randomSeconds * 1000);
     }
@@ -183,6 +188,7 @@ export default function Gacha({
 
   async function handleCashout() {
     setButtonStop(true);
+    setButton(true);
     if (!buttonPlay) return;
     clearTimeout(timeoutRef.current);
     clearInterval(intervalRef.current);
@@ -238,6 +244,7 @@ export default function Gacha({
       }
     }
     setButtonStop(false);
+    setButton(false);
   }
 
   const startUpdatingChart = () => {
@@ -286,7 +293,9 @@ export default function Gacha({
 
         <div className="flex flex-col items-center justify-center">
           <span>Waiting for the next round</span>
-          {buttonPlay ? (
+          {button ? (
+            <div className={`btn btn-disabled text-white w-full`}>PLAY</div>
+          ) : buttonPlay ? (
             buttonStop ? (
               <div className={`btn btn-disabled text-white w-full`}>STOP</div>
             ) : (

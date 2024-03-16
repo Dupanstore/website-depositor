@@ -6,6 +6,7 @@ import Gacha from "./gacha";
 import { VscError } from "react-icons/vsc";
 import Link from "next/link";
 import BettingHistory from "./history";
+import GetUserById from "./getUserById";
 
 export default async function WebInfo() {
   const session: any = await getServerSession();
@@ -43,11 +44,14 @@ export default async function WebInfo() {
     0
   );
 
-  const totalCashout = totalBetting - userWithdraw!;
-  const totalSpeedLimit = userDeposit! - userWithdraw!;
-  const maxWin = userDeposit! + parseInt(`${user?.maxWin}000`);
+  function maxWin() {
+    const maxWinUser: any = user?.maxWin || 0;
+    const maxWinValue = parseInt(maxWinUser) || 0;
+    return userDeposit! + (userDeposit! * maxWinValue) / 100;
+  }
 
-  function speedLimit() {
+  function speed() {
+    const totalSpeedLimit = userDeposit! - userWithdraw!;
     if (totalSpeedLimit < 10000) {
       return 0;
     } else if (totalSpeedLimit >= 10000 && totalSpeedLimit < 50000) {
@@ -76,7 +80,6 @@ export default async function WebInfo() {
       return 10000;
     }
   }
-  const speed = speedLimit();
 
   if (userDeposit === 0) {
     return (
@@ -104,7 +107,7 @@ export default async function WebInfo() {
         </div>
       </div>
     );
-  } else if (userDeposit! >= maxWin) {
+  } else if (totalBetting >= maxWin()) {
     return (
       <div className="flex items-center justify-center w-screen h-screen p-4">
         <title>Winning Limit</title>
@@ -132,13 +135,42 @@ export default async function WebInfo() {
   } else {
     return (
       <MainLayout>
-        <BettingHistory bettingUser={betting} bettingAllUser={bettingAllUser}>
+        <BettingHistory bettingUser={betting}>
           <title>Riddles - Play Earn</title>
           <Gacha
             session={session.user.name}
-            totalBetting={totalCashout}
-            speed={speed!}
+            totalBetting={totalBetting - userWithdraw!}
+            speed={speed()!}
           />
+
+          <div className="overflow-x-auto mt-8">
+            <table className="table text-xs font-semibold">
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Waktu</th>
+                  <th>Speed</th>
+                  <th>Profit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bettingAllUser.map((doc, index) => (
+                  <tr key={index}>
+                    <GetUserById id={doc.user_id} />
+                    <td>{doc.time}x</td>
+                    <td>Rp {doc.speed.toLocaleString("id-ID")}</td>
+                    <td
+                      className={`${
+                        doc.status === "win" ? "text-success" : "text-error"
+                      }`}
+                    >
+                      Rp {doc.nominal.toLocaleString("id-ID")}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </BettingHistory>
       </MainLayout>
     );
