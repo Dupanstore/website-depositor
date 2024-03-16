@@ -22,6 +22,7 @@ export default async function WebInfo() {
   });
   const bettingAllUser = await prisma.betting.findMany({
     orderBy: [{ createdAt: "desc" }],
+    take: 100,
   });
   const betting = await prisma.betting.findMany({
     where: { user_id: session.user.name },
