@@ -260,7 +260,7 @@ export default function Gacha({
 
   return (
     <>
-      <div className="flex items-center text-xl text-white justify-center">
+      {/* <div className="flex items-center text-xl text-white justify-center">
         <span className="bg-black py-2 px-6 font-semibold rounded-xl flex items-center justify-center gap-2">
           <span className="rounded-full bg-red-500 p-1 text-sm">Rp</span>
           {buttonPlay
@@ -268,64 +268,127 @@ export default function Gacha({
             : deposit.toLocaleString("id-ID")}
           ,-
         </span>
+      </div> */}
+
+      <div className="flex rounded-md items-center text-xs text-white justify-center bg-[#d7d7d7]">
+        <span className="bg-green py-2 px-4 rounded-xl flex items-center justify-center">
+          <span className="rounded-full bg-red-500 p-2 text-xs"></span>
+          <span className="pl-1 text-gray-500 flex flex-col">
+            87428
+            <span className="text-error">1.3x</span>
+          </span>
+        </span>
+        <span className="py-2 px-4 rounded-xl flex items-center justify-center">
+          <span className="rounded-full bg-green-500 p-2 text-xs"></span>
+          <span className="pl-1 text-gray-500 flex flex-col">
+            87428
+            <span className="text-success">1.3x</span>
+          </span>
+        </span>
+        <span className="py-2 px-4 rounded-xl flex items-center justify-center">
+          <span className="rounded-full bg-green-500 p-2 text-xs"></span>
+          <span className="pl-1 text-gray-500 flex flex-col">
+            87428
+            <span className="text-success">1.3x</span>
+          </span>
+        </span>
+        <span className="py-2 px-4 rounded-xl flex items-center justify-center">
+          <span className="rounded-full bg-red-500 p-2 text-xs"></span>
+          <span className="pl-1 text-gray-500 flex flex-col">
+            87428
+            <span className="text-error">1.3x</span>
+          </span>
+        </span>
       </div>
 
       <Line data={data} options={options} className="my-4 max-h-96" />
 
-      <div className="grid grid-cols-1 lg:grid-cols-5 items-center justify-center gap-4 m-auto text-center">
-        <div className="flex flex-col items-center justify-center">
-          <span>Cashout</span>
-          <div
-            className={`h-12 border-2 rounded-lg w-full flex items-center justify-center`}
-          >
-            Rp {totalBetting.toLocaleString("id-ID")},-
-          </div>
-        </div>
-
-        <div className="flex flex-col items-center justify-center">
-          <span>Speed</span>
-          <div
-            className={`h-12 border-2 rounded-lg w-full flex items-center justify-center`}
-          >
-            Rp {speed.toLocaleString("id-ID")},-
-          </div>
-        </div>
-
-        <div className="flex flex-col items-center justify-center">
-          <span>Waiting for the next round</span>
+      <div className="grid grid-cols-1 lg:grid-cols-4 items-center justify-center gap-4 m-auto text-center">
+        <div className="flex flex-col items-center justify-center mb-4">
+          <span className="bg-transparent text-transparent">
+            Waiting for the next round
+          </span>
           {button ? (
-            <div className={`btn btn-disabled text-white w-full`}>PLAY</div>
+            <div className={`btn btn-disabled text-white w-full`}>RUNNING</div>
           ) : buttonPlay ? (
             buttonStop ? (
               <div className={`btn btn-disabled text-white w-full`}>STOP</div>
             ) : (
               <div
                 onClick={handleCashout}
-                className={`btn btn-error text-white w-full`}
+                className={`btn btn-warning text-white w-full flex flex-col`}
               >
-                STOP
+                <span>Rp {currentEarnings.toLocaleString("id-ID")}</span>
+                <span>Cashout</span>
               </div>
             )
           ) : deposit === 0 ? (
-            <div className={`btn btn-disabled text-white w-full`}>PLAY</div>
+            <div className={`btn btn-disabled text-white w-full`}>RUNNING</div>
           ) : (
             <div
               onClick={startGacha}
               className={`btn btn-success text-white w-full`}
             >
-              PLAY
+              RUNNING
             </div>
           )}
         </div>
 
-        <div className="flex flex-col items-center justify-center">
+        {/* <div className="flex flex-col items-center justify-center">
+          <span>Cashout</span>
+          <div
+            className={`h-12 border-2 rounded-lg w-full flex items-center justify-center`}
+          >
+            Rp {totalBetting.toLocaleString("id-ID")},-
+          </div>
+        </div> */}
+
+        <div className="flex flex-col">
+          <span>
+            Cashout{" "}
+            <span className="rounded-full border p-1 text-xs text-green-500">
+              !
+            </span>
+          </span>
+          <div
+            className={`h-12 border-2 rounded-lg w-full flex items-center pl-4`}
+          >
+            <span className="rounded-full bg-red-500 p-1 text-xs text-white">
+              Rp
+            </span>{" "}
+            {totalBetting.toLocaleString("id-ID")},-
+          </div>
+        </div>
+
+        {/* <div className="flex flex-col items-center justify-center">
+          <span>Speed</span>
+          <div
+            className={`h-12 border-2 rounded-lg w-full flex items-center justify-center`}
+          >
+            Rp {speed.toLocaleString("id-ID")},-
+          </div>
+        </div> */}
+
+        <div className="flex flex-col">
+          <span>Speed</span>
+          <div
+            className={`h-12 border-2 rounded-lg w-full flex items-center pl-4`}
+          >
+            <span className="rounded-full bg-red-500 p-1 text-xs text-white">
+              Rp
+            </span>{" "}
+            {speed.toLocaleString("id-ID")},-
+          </div>
+        </div>
+
+        {/* <div className="flex flex-col items-center justify-center">
           <span>Profit</span>
           <div
             className={`h-12 border-2 rounded-lg w-full flex items-center justify-center`}
           >
             Rp {currentEarnings},-
           </div>
-        </div>
+        </div> */}
 
         <div className="flex flex-col items-center justify-center">
           <span>Riwayat</span>
