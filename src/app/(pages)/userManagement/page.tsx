@@ -20,7 +20,7 @@ export default async function UserManagement() {
 
   return (
     <MainLayout>
-      <title>Riddles - User Management</title>
+      <title>HeGame - User Management</title>
       <div className="overflow-x-auto rounded-xl">
         <table className="table text-center">
           <thead>

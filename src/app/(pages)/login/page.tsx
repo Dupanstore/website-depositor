@@ -1,12 +1,11 @@
 import LoginRegisterRouteSecure from "@/app/components/loginRegisterRouteSecure";
 import FormLogin from "./form";
 import Link from "next/link";
-import Title from "@/app/components/title";
 
 export default function Login() {
   return (
     <LoginRegisterRouteSecure>
-      <Title text="Login" />
+      <title>HeGame - Login</title>
       <div className="w-screen h-screen justify-center items-center flex px-4 bg-slate-300">
         <div className="card w-full max-w-sm bg-white shadow-lg">
           <div className="card-body">

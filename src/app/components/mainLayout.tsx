@@ -34,7 +34,7 @@ const menuLink = [
   {
     path: "/playEarn",
     icon: <FaPlane size={25} />,
-    name: "Play Earn",
+    name: "Aviator",
   },
 ];
 

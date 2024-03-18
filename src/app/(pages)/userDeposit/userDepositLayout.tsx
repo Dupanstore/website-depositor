@@ -25,7 +25,7 @@ export default async function UserDepositLayout({
 
   return (
     <MainLayout>
-      <title>Riddles - User Deposit</title>
+      <title>HeGame - User Deposit</title>
       <div className="flex gap-4 border-b pb-2">
         <Link
           href={"/userDeposit"}

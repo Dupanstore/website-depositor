@@ -8,7 +8,6 @@ import { IoIosSend } from "react-icons/io";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
-import Title from "@/app/components/title";
 
 export default async function ListBankManagement() {
   const session: any = await getServerSession();
@@ -48,7 +47,7 @@ export default async function ListBankManagement() {
 
   return (
     <MainLayout>
-      <Title text="Bank Management" />
+      <title>HeGame - Bank Management</title>
       <div className="max-w-md m-auto">
         <Link
           href={"/paymentMethod"}
