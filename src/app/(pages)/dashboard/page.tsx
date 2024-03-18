@@ -5,6 +5,7 @@ import MainLayout from "@/app/components/mainLayout";
 import AddDeposito from "./addDeposito";
 import ShowImage from "./showImage";
 import { formatDate } from "@/utils/formatDate";
+import Title from "@/app/components/title";
 
 export default async function Dashboard() {
   const session: any = await getServerSession();
@@ -40,7 +41,7 @@ export default async function Dashboard() {
 
   return (
     <MainLayout>
-      <title>Riddles - Dashboard</title>
+      <Title text="Dashboard" />
       <div className="md:px-8 card bg-info">
         <div className="card-body">
           <div className="flex items-center justify-between">

@@ -5,6 +5,7 @@ import AddWithdraw from "./addWithdraw";
 import prisma from "@/utils/db";
 import UpdateStatusWithdraw from "./updateStatus";
 import { formatDate } from "@/utils/formatDate";
+import Title from "@/app/components/title";
 
 export default async function Withdraw() {
   const session: any = await getServerSession();
@@ -22,7 +23,7 @@ export default async function Withdraw() {
 
   return (
     <MainLayout>
-      <title>Riddles - Withdraw</title>
+      <Title text="Withdraw" />
       {withdrawPending.length === 0 && <AddWithdraw session={session} />}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
         {userData?.role === "admin"

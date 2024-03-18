@@ -7,6 +7,7 @@ import DeletePaymentMethod from "./delete";
 import EditPaymentMethod from "./edit";
 import Link from "next/link";
 import { BsBank2 } from "react-icons/bs";
+import Title from "@/app/components/title";
 
 export default async function PaymentMethod() {
   const session: any = await getServerSession();
@@ -21,7 +22,7 @@ export default async function PaymentMethod() {
 
   return (
     <MainLayout>
-      <title>Ridlles - Payment Method</title>
+      <Title text="Payment Method" />
       <div className="flex gap-2">
         <AddNewPaymentMethod session={session} bankList={bankList} />
         {userData.role === "admin" && (

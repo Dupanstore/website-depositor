@@ -1,4 +1,5 @@
 import MainLayout from "@/app/components/mainLayout";
+import Title from "@/app/components/title";
 import prisma from "@/utils/db";
 import { hash } from "bcrypt";
 import { getServerSession } from "next-auth";
@@ -53,6 +54,7 @@ export default async function Profile() {
   return (
     <MainLayout>
       <title>Riddles - Profile</title>
+      <Title text="Profile" />
       <div className="max-w-md m-auto">
         <h1 className="text-center font-semibold mb-8 text-xl">My Profile</h1>
         <form className="flex flex-col gap-4" action={onSubmit}>

@@ -7,7 +7,8 @@ import prisma from "@/utils/db";
 import Logout from "./logout";
 import { FaRegIdCard, FaUserCog } from "react-icons/fa";
 import { BiMoneyWithdraw } from "react-icons/bi";
-import { FaMoneyBill1Wave, FaPlay } from "react-icons/fa6";
+import { FaMoneyBill1Wave, FaPlane } from "react-icons/fa6";
+import Image from "next/image";
 
 const menuLink = [
   {
@@ -32,7 +33,7 @@ const menuLink = [
   },
   {
     path: "/playEarn",
-    icon: <FaPlay size={25} />,
+    icon: <FaPlane size={25} />,
     name: "Play Earn",
   },
 ];
@@ -83,9 +84,10 @@ export default async function MainLayout({
       <div className="flex items-center justify-between bg-info py-3 px-4 md:px-8 fixed w-full z-10 border-b-8 border-base-100">
         <Link
           href={"/playEarn"}
-          className="font-semibold text-2xl text-base-100"
+          className="font-semibold text-2xl text-base-100 flex items-center"
         >
-          RIDDLES
+          <Image src={"/logo.png"} alt="logo" width={30} height={30} />
+          <span>HeGame</span>
         </Link>
 
         <label htmlFor="account" className="text-base-100 cursor-pointer">

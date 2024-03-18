@@ -7,6 +7,7 @@ import { VscError } from "react-icons/vsc";
 import Link from "next/link";
 import BettingHistory from "./history";
 import GetUserById from "./getUserById";
+import Title from "@/app/components/title";
 
 export default async function WebInfo() {
   const session: any = await getServerSession();
@@ -137,7 +138,7 @@ export default async function WebInfo() {
     return (
       <MainLayout>
         <BettingHistory bettingUser={betting}>
-          <title>Riddles - Play Earn</title>
+          <Title text="Aviator" />
           <Gacha
             session={session.user.name}
             totalBetting={totalBetting - userWithdraw!}
