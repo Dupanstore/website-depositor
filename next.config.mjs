@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: { serverActions: { allowedOrigins: ["riddle.my.id"] } },
+  experimental: { serverActions: { allowedOrigins: ["hegame.click"] } },
 };
 
 export default nextConfig;
