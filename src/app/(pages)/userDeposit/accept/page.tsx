@@ -8,6 +8,9 @@ import EditDeposit from "./edit";
 export default async function UserDepositAccept() {
   const depositData = await prisma.deposit.findMany({
     where: { status: "accept" },
+    include: {
+      user: true, // Include user data berdasarkan relasi
+    },
   });
 
   return (
@@ -18,6 +21,7 @@ export default async function UserDepositAccept() {
             <tr>
               <th>No</th>
               <th>Tanggal</th>
+              <th>Username</th>
               <th>Pengirim</th>
               <th>Rekening Pengirim</th>
               <th>Bank Pengirim</th>
@@ -36,6 +40,7 @@ export default async function UserDepositAccept() {
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{formatDate(doc.createdAt.toISOString())}</td>
+                <td>{doc.user.username}</td> 
                 <td>{doc.sender_name}</td>
                 <td>{doc.sender_rekening}</td>
                 <td className="uppercase">{doc.sender_bank}</td>
