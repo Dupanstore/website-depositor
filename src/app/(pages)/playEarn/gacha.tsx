@@ -370,7 +370,7 @@ export default function Gacha({
         </div> */}
 
         <div className="flex flex-col">
-          <span>Speed</span>
+          <span>Spend</span>
           <div
             className={`h-12 border-2 rounded-lg w-full flex items-center pl-4`}
           >
