@@ -22,7 +22,6 @@ export default async function UserDepositAccept() {
               <th>No</th>
               <th>Tanggal</th>
               <th>Username</th>
-
               <th>Pengirim</th>
               <th>Rekening Pengirim</th>
               <th>Bank Pengirim</th>
