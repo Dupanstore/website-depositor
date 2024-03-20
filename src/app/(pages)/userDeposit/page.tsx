@@ -20,7 +20,7 @@ export default async function UserDepositPending() {
             <tr>
               <th>No</th>
               <th>Tanggal</th>
-              <th>Username</th>
+              <th>Username</th> 
               <th>Pengirim</th>
               <th>Rekening Pengirim</th>
               <th>Bank Pengirim</th>
