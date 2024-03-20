@@ -39,6 +39,10 @@ export default async function UserDepositPending() {
                 <td>{index + 1}</td>
                 <td>{formatDate(doc.createdAt.toISOString())}</td>
                 <td>{doc.user.username}</td> 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 15a598b4a2b80390b559c20c2ffbb98533d9c156
                 <td>{doc.sender_name}</td>
                 <td>{doc.sender_rekening}</td>
                 <td className="uppercase">{doc.sender_bank}</td>
