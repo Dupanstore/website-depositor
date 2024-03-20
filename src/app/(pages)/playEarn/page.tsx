@@ -149,8 +149,8 @@ export default async function WebInfo() {
               <thead>
                 <tr>
                   <th>Username</th>
-                  <th>Waktu</th>
-                  <th>Speed</th>
+                  <th>Payout</th>
+                  <th>Spend</th>
                   <th>Profit</th>
                 </tr>
               </thead>
