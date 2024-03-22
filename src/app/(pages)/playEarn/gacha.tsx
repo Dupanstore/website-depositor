@@ -15,8 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
 import axios from "axios";
 import Swal from "sweetalert2";
-
-ChartJS.register(
+ ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
@@ -135,7 +134,7 @@ export default function Gacha({
       }, 2000);
     } else {
       setCashout(0);
-      const randomSeconds = Math.floor(Math.random() * 100) + 1;
+      const randomSeconds = Math.floor(Math.random() * 20) + 1;
       const currentTime = await getServerTime();
       setStartTime(currentTime);
       setDataPoints([]);
@@ -357,7 +356,7 @@ export default function Gacha({
               Rp
             </span>{" "}
             {totalBetting.toLocaleString("id-ID")},-
-          </div>
+           </div>
         </div>
 
         {/* <div className="flex flex-col items-center justify-center">
@@ -380,8 +379,7 @@ export default function Gacha({
             {speed.toLocaleString("id-ID")},-
           </div>
         </div>
-
-        {/* <div className="flex flex-col items-center justify-center">
+         {/* <div className="flex flex-col items-center justify-center">
           <span>Profit</span>
           <div
             className={`h-12 border-2 rounded-lg w-full flex items-center justify-center`}
@@ -400,6 +398,7 @@ export default function Gacha({
           </label>
         </div>
       </div>
+      
     </>
   );
 }

@@ -4,7 +4,8 @@ import { IoIosSend } from "react-icons/io";
 import prisma from "@/utils/db";
 import { FaPlusCircle } from "react-icons/fa";
 
-export default async function AddWithdraw({ session }: { session: any }) {
+export default async function AddWithdraw({ session  }: { session: any 
+}) {
   const userData = await prisma.user.findUnique({
     where: { id: session.user.name },
     include: {
@@ -14,16 +15,36 @@ export default async function AddWithdraw({ session }: { session: any }) {
       withdraw: { where: { status: "accept" } },
     },
   });
-  const totalBetting = userData?.betting.reduce(
-    (total, betting) => total + betting.nominal,
-    0
-  );
-  const totalWithdraw = userData?.withdraw.reduce(
+  const Withdraw = await prisma.withdraw.findMany({
+    where: { user_id: session.user.name, status: "accept" },
+  });
+  const winbetting = await prisma.betting.findMany({
+    where: { user_id: session.user.name, status: "win" },
+  });
+  const loseBets = await prisma.betting.findMany({
+    where: { user_id: session.user.name, status: "lose" },
+  });
+  
+  const totalWithdraw = Withdraw.reduce(
     (total, withdraw) => total + withdraw.nominal,
     0
   );
-  const result = totalBetting! - totalWithdraw!;
+  const totBetting = winbetting.reduce(
+    (total, betting) => total + betting.nominal,
+    0
+  );
+  let sresultSaldo = totBetting - totalWithdraw;
 
+  // Cek jika ada taruhan yang kalah untuk pengguna
+  const userId = session.user.name; // Mengasumsikan session.user.name berisi user_id
+  const userLoseBets = loseBets.filter((bet) => bet.user_id === userId);
+
+  // Hitung total kecepatan yang hilang dari taruhan yang kalah berdasarkan user_id
+  const totalSpeedLoss = userLoseBets.reduce((total, betting) => total + betting.speed, 0);
+
+  // Kurangi total kecepatan yang hilang dari sresultSaldo
+  const resultSaldo = sresultSaldo -= totalSpeedLoss;
+ 
   async function onSubmit(formData: FormData) {
     "use server";
     const bank: any = formData.get("bank");
@@ -37,7 +58,7 @@ export default async function AddWithdraw({ session }: { session: any }) {
           where: { id: parseInt(bank) },
         });
 
-        if (nominal > result) {
+        if (nominal > resultSaldo) {
           return { message: "balanceNotEnough" };
         } else {
           try {
@@ -87,7 +108,7 @@ export default async function AddWithdraw({ session }: { session: any }) {
           <div className="card bg-blue-600 shadow-xl mb-4">
             <div className="card-body text-center text-white">
               <span className="font-medium text-2xl -mb-3">
-                Rp {result.toLocaleString("id-ID")},-
+                Rp {resultSaldo.toLocaleString("id-ID")},-
               </span>
               <span className="text-xs">Saldo</span>
             </div>

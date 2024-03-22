@@ -66,18 +66,32 @@ export default async function MainLayout({
   const userWithdraw = await prisma.withdraw.findMany({
     where: { user_id: session.user.name, status: "accept" },
   });
-  const betting = await prisma.betting.findMany({
+  const winbetting = await prisma.betting.findMany({
     where: { user_id: session.user.name, status: "win" },
   });
+  const loseBets = await prisma.betting.findMany({
+    where: { user_id: session.user.name, status: "lose" },
+  });
+  
   const totalWithdraw = userWithdraw.reduce(
     (total, withdraw) => total + withdraw.nominal,
     0
   );
-  const totalBetting = betting.reduce(
+  const totalBetting = winbetting.reduce(
     (total, betting) => total + betting.nominal,
     0
   );
-  const resultSaldo = totalBetting - totalWithdraw;
+  let sresultSaldo = totalBetting - totalWithdraw;
+
+  // Cek jika ada taruhan yang kalah untuk pengguna
+  const userId = session.user.name; // Mengasumsikan session.user.name berisi user_id
+  const userLoseBets = loseBets.filter((bet) => bet.user_id === userId);
+
+  // Hitung total kecepatan yang hilang dari taruhan yang kalah berdasarkan user_id
+  const totalSpeedLoss = userLoseBets.reduce((total, betting) => total + betting.speed, 0);
+
+  // Kurangi total kecepatan yang hilang dari sresultSaldo
+  const resultSaldo = sresultSaldo -= totalSpeedLoss;
 
   return (
     <>
