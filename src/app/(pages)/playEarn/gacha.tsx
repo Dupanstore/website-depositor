@@ -46,6 +46,7 @@ export default function Gacha({
   const [cashout, setCashout] = useState(0);
   const intervalRef = useRef<any>(null);
   const timeoutRef = useRef<any>(null);
+  const [cashoutClicked, setCashoutClicked] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -83,7 +84,14 @@ export default function Gacha({
       clearInterval(intervalRef.current);
     }
   }, [cashout]);
-
+  useEffect(() => {
+    checkTabInstance();
+  
+    // Membersihkan session storage saat komponen dibongkar (unmounted)
+    return () => {
+      sessionStorage.removeItem('777');
+    };
+  }, []);
   const data = {
     labels:
       dataPoints.length > 0
@@ -184,8 +192,21 @@ export default function Gacha({
       }, randomSeconds * 1000);
     }
   }
-
+  function checkTabInstance() {
+    const tabInstanceKey = '777';
+    const isTabInstanceExists = sessionStorage.getItem(tabInstanceKey);
+  
+    if (isTabInstanceExists) {
+      // Jika halaman sudah dibuka di tab lain, redirect ke halaman lain atau tampilkan pesan kesalahan
+      window.location.href = '/error-page'; // Ganti dengan halaman error atau halaman lainnya
+    } else {
+      // Jika halaman belum dibuka di tab lain, set flag di session storage
+      sessionStorage.setItem(tabInstanceKey, 'true');
+    }
+  }
+  
   async function handleCashout() {
+    setCashoutClicked(true);
     setButtonStop(true);
     setButton(true);
     if (!buttonPlay) return;
@@ -358,7 +379,7 @@ export default function Gacha({
             {totalBetting.toLocaleString("id-ID")},-
            </div>
         </div>
-
+        
         {/* <div className="flex flex-col items-center justify-center">
           <span>Speed</span>
           <div

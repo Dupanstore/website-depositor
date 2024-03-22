@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { FaPowerOff } from "react-icons/fa6";
 
 export default function Logout() {
+ 
   const router = useRouter();
   return (
     <div

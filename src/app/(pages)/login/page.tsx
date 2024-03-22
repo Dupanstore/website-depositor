@@ -3,6 +3,7 @@ import FormLogin from "./form";
 import Link from "next/link";
 
  export default function Login() {
+ 
   return (
     <LoginRegisterRouteSecure>
       <title>HeGame - Login</title>

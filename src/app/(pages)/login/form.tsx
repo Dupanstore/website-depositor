@@ -5,6 +5,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaKey, FaUserAlt } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { useEffect } from "react";
+import { checkTabInstance } from '../playEarn/gacha';
+
 
 type inputs = {
   username: string;
@@ -45,7 +48,38 @@ export default function FormLogin() {
       });
     }
   };
+  // Contoh penggunaan dalam sebuah useEffect di file lain
+useEffect(() => {
+  checkTabInstance();
+  
+  // Membersihkan session storage saat komponen dibongkar (unmounted)
+  return () => {
+    sessionStorage.removeItem('777');
+  };
+}, []);
+  useEffect(() => {
+    function handleUnload() {
+      sessionStorage.removeItem('777');
+    }
+  
+    window.addEventListener('unload', handleUnload);
+  
+    
+    return () => {
+      sessionStorage.removeItem('777');
+    };
+  }, []);
+  useEffect(() => {
+    function handleBeforeUnload() {
+      sessionStorage.removeItem('777');
+    }
 
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      sessionStorage.removeItem('777');
+    };
+  }, []);
   return (
     <form
       className="text-start w-full mt-8 flex flex-col gap-4"
