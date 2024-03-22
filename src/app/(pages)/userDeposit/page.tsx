@@ -7,9 +7,6 @@ import UserDepositLayout from "./userDepositLayout";
 export default async function UserDepositPending() {
   const depositData = await prisma.deposit.findMany({
     where: { status: "pending" },
-    include: {
-      user: true, // Include user data berdasarkan relasi
-    },
   });
 
   return (
@@ -20,11 +17,6 @@ export default async function UserDepositPending() {
             <tr>
               <th>No</th>
               <th>Tanggal</th>
-<<<<<<< HEAD
-              <th>Username</th> 
-=======
-              <th>Username</th>
->>>>>>> 9e8700578a99b26bded55b9f851fd6a09a51dfd8
               <th>Pengirim</th>
               <th>Rekening Pengirim</th>
               <th>Bank Pengirim</th>
@@ -42,14 +34,6 @@ export default async function UserDepositPending() {
               <tr key={index}>
                 <td>{index + 1}</td>
                 <td>{formatDate(doc.createdAt.toISOString())}</td>
-                <td>{doc.user.username}</td> 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-
->>>>>>> 15a598b4a2b80390b559c20c2ffbb98533d9c156
->>>>>>> 9e8700578a99b26bded55b9f851fd6a09a51dfd8
                 <td>{doc.sender_name}</td>
                 <td>{doc.sender_rekening}</td>
                 <td className="uppercase">{doc.sender_bank}</td>
