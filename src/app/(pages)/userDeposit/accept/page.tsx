@@ -21,7 +21,11 @@ export default async function UserDepositAccept() {
             <tr>
               <th>No</th>
               <th>Tanggal</th>
+<<<<<<< HEAD
               <th>Username</th> 
+=======
+              <th>Username</th>
+>>>>>>> 9e8700578a99b26bded55b9f851fd6a09a51dfd8
               <th>Pengirim</th>
               <th>Rekening Pengirim</th>
               <th>Bank Pengirim</th>
@@ -41,6 +45,13 @@ export default async function UserDepositAccept() {
                 <td>{index + 1}</td>
                 <td>{formatDate(doc.createdAt.toISOString())}</td>
                 <td>{doc.user.username}</td> 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> 15a598b4a2b80390b559c20c2ffbb98533d9c156
+>>>>>>> 9e8700578a99b26bded55b9f851fd6a09a51dfd8
                 <td>{doc.sender_name}</td>
                 <td>{doc.sender_rekening}</td>
                 <td className="uppercase">{doc.sender_bank}</td>
