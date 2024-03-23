@@ -7,22 +7,24 @@ import { VscError } from "react-icons/vsc";
 import Link from "next/link";
 import BettingHistory from "./history";
 import GetUserById from "./getUserById";
- 
+
+interface UserRole {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  username: string;
+  password: string;
+  email: string;
+  role: string;
+  maxWin: number;
+}
+
 export default async function WebInfo() {
   const session: any = await getServerSession();
   if (!session) {
     redirect("/login");
   }
-  interface UserRole {
-    id: number;
-    createdAt: Date;
-    updatedAt: Date;
-    username: string;
-    password: string;
-    email: string;
-    role: string;
-    maxWin: number;
-  }
+
   const roleUser = await prisma.user.findUnique({
     where: { id: session.user.name },
   });
@@ -65,7 +67,7 @@ export default async function WebInfo() {
   const loseBets = await prisma.betting.findMany({
     where: { user_id: session.user.name, status: "lose" },
   });
-  
+
   const totalWithdraw = Withdraw.reduce(
     (total, withdraw) => total + withdraw.nominal,
     0
@@ -85,6 +87,8 @@ export default async function WebInfo() {
 
   // Kurangi total kecepatan yang hilang dari sresultSaldo
   const resultSaldo = sresultSaldo -= totalSpeedLoss;
+
+
 
   function maxWin() {
     const maxWinUser: any = user?.maxWin || 0;
@@ -184,8 +188,8 @@ export default async function WebInfo() {
             totalBetting={resultSaldo}
             speed={speed()!}
             roleUser={roleUser as UserRole} // Ubah tipe roleUser menjadi UserRole
-            />
- 
+          />
+
           <div className="overflow-x-auto mt-8">
             <table className="table text-xs font-semibold">
               <thead>
@@ -203,9 +207,8 @@ export default async function WebInfo() {
                     <td>{doc.time}x</td>
                     <td>Rp {doc.speed.toLocaleString("id-ID")}</td>
                     <td
-                      className={`${
-                        doc.status === "win" ? "text-success" : "text-error"
-                      }`}
+                      className={`${doc.status === "win" ? "text-success" : "text-error"
+                        }`}
                     >
                       Rp {doc.nominal.toLocaleString("id-ID")}
                     </td>

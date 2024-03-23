@@ -17,7 +17,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useRouter } from 'next/router';
 
- ChartJS.register(
+ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
@@ -37,6 +37,7 @@ interface UserRole {
   role: string;
   maxWin: number;
 }
+
 export default function Gacha({
   session,
   totalBetting,
@@ -47,7 +48,6 @@ export default function Gacha({
   totalBetting: number;
   speed: number;
   roleUser: UserRole; // Menggunakan antarmuka UserRole di sini
-
 }) {
   const [dataPoints, setDataPoints] = useState<number[]>([]);
   const [currentEarnings, setCurrentEarnings] = useState(0);
@@ -63,8 +63,8 @@ export default function Gacha({
   const [cashoutClicked, setCashoutClicked] = useState(false);
   const [customValue, setCustomValue] = useState<number>(0);
 
-  
-   useEffect(() => {
+
+  useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState !== 'visible') {
         window.location.href = '/'; // Redirect ke halaman tujuan
@@ -77,19 +77,49 @@ export default function Gacha({
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, []);
- 
+
   useEffect(() => {
-     if (typeof window !== "undefined") {
-       const storedCustomValue = localStorage.getItem("customValue");
-      if (storedCustomValue) {
-        setCustomValue(parseInt(storedCustomValue, 10)); 
+    // if (typeof window !== "undefined") {
+    //   const storedCustomValue = localStorage.getItem("customValue");
+    //   if (storedCustomValue) {
+    //     setCustomValue(parseInt(storedCustomValue, 10));
+    //   }
+    // }
+
+    (async () => {
+      try {
+        const { data } = await axios.get(`/api/getBang`);
+        console.log(data)
+        setCustomValue(data?.response?.bang || 0);
+      } catch (error) {
+        console.log(error);
+        setCustomValue(0);
       }
-    }
+    })()
+
+
   }, []);
-   const handleChangeCustomValue = (newValue: number) => {
-    setCustomValue(newValue);  
-    localStorage.setItem("customValue", newValue.toString());  
+
+  const submitCustomValue = async () => {
+    try {
+      const { data } = await axios.post(`/api/postBang`, {
+        session,
+        value: customValue,
+      });
+
+      console.log('data', data);
+      setCustomValue(data?.response?.bang || 0);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Plase try again",
+        allowOutsideClick: false,
+        timer: 2000,
+        showConfirmButton: false,
+      });
+    }
   };
+
   useEffect(() => {
     (async () => {
       try {
@@ -101,6 +131,7 @@ export default function Gacha({
       }
     })();
   }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -111,9 +142,11 @@ export default function Gacha({
         setDeposit(0);
       }
     };
+
     const intervalId = setInterval(fetchData, 2500);
     return () => clearInterval(intervalId);
   }, [session]);
+
   useEffect(() => {
     if (buttonPlay) {
       startUpdatingChart();
@@ -121,12 +154,13 @@ export default function Gacha({
       clearInterval(intervalRef.current);
     }
   }, [buttonPlay]);
+
   useEffect(() => {
     if (cashout > 0) {
       clearInterval(intervalRef.current);
     }
   }, [cashout]);
-  
+
   const data = {
     labels:
       dataPoints.length > 0
@@ -182,6 +216,8 @@ export default function Gacha({
       setStartTime(currentTime);
       setDataPoints([]);
       setButtonPlay(true);
+
+      console.log(randomSeconds)
       timeoutRef.current = setTimeout(async () => {
         const currentTimePlay = await getServerTime();
         const elapsedTime = Math.floor((currentTimePlay - currentTime) / 1000);
@@ -200,9 +236,8 @@ export default function Gacha({
           Swal.fire({
             icon: "warning",
             title: "Coba lagi",
-            text: `Anda Kalah dalam taruhan coba lagi, Rp -${
-              speed * elapsedTime
-            },-`,
+            text: `Anda Kalah dalam taruhan coba lagi, Rp -${speed * elapsedTime
+              },-`,
             allowOutsideClick: false,
             timer: 2000,
             showConfirmButton: false,
@@ -227,8 +262,8 @@ export default function Gacha({
       }, randomSeconds * 1000);
     }
   }
-  
-  
+
+
   async function handleCashout() {
     setCashoutClicked(true);
     setButtonStop(true);
@@ -313,20 +348,29 @@ export default function Gacha({
           ,-
         </span>
       </div> */}
- <div>
-      {roleUser.role === 'admin' && ( // Cek apakah pengguna memiliki peran admin
-         <div>
-        <input
-  type="number"
-  value={customValue}
-  onChange={(e) => handleChangeCustomValue(parseInt(e.target.value, 10))}
-  placeholder="Masukkan nilai customValue"
-/>
-         {/* Tampilkan nilai customValue */}
-         <p>Nilai customValue: {customValue}</p>
-       </div>
-      )}
-    </div>
+      <div>
+        {roleUser.role === 'admin' && ( // Cek apakah pengguna memiliki peran admin
+          <div className="">
+            <div className="flex">
+              <input
+                type="number"
+                value={customValue}
+                onChange={(e) => setCustomValue(parseInt(e.target?.value || '0'))}
+                placeholder="Masukkan nilai customValue"
+              />
+              <div
+                // onClick={handleCashout}
+                onClick={(e) => submitCustomValue()}
+                className={`btn ml-2 bg-gray-400 text-white`}
+              >
+                Submit
+              </div>
+            </div>
+            {/* Tampilkan nilai customValue */}
+            <p>Nilai customValue: {customValue}</p>
+          </div>
+        )}
+      </div>
 
       <div className="flex rounded-md items-center text-xs text-white justify-center bg-[#d7d7d7]">
         <span className="bg-green py-2 px-4 rounded-xl flex items-center justify-center">
@@ -415,9 +459,9 @@ export default function Gacha({
               Rp
             </span>{" "}
             {totalBetting.toLocaleString("id-ID")},-
-           </div>
+          </div>
         </div>
-        
+
         {/* <div className="flex flex-col items-center justify-center">
           <span>Speed</span>
           <div
@@ -438,7 +482,7 @@ export default function Gacha({
             {speed.toLocaleString("id-ID")},-
           </div>
         </div>
-         {/* <div className="flex flex-col items-center justify-center">
+        {/* <div className="flex flex-col items-center justify-center">
           <span>Profit</span>
           <div
             className={`h-12 border-2 rounded-lg w-full flex items-center justify-center`}
@@ -457,7 +501,7 @@ export default function Gacha({
           </label>
         </div>
       </div>
-      
+
     </>
   );
 }

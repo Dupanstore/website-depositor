@@ -86,3 +86,10 @@ model withdraw {
   user    user @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id Int
 }
+
+model durability {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  bang      Int?
+}
