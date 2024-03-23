@@ -15,6 +15,8 @@ import { useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useRouter } from 'next/router';
+
  ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -25,15 +27,27 @@ import Swal from "sweetalert2";
   Filler,
   Legend
 );
-
+interface UserRole {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+  username: string;
+  password: string;
+  email: string;
+  role: string;
+  maxWin: number;
+}
 export default function Gacha({
   session,
   totalBetting,
   speed,
+  roleUser,
 }: {
   session: number;
   totalBetting: number;
   speed: number;
+  roleUser: UserRole; // Menggunakan antarmuka UserRole di sini
+
 }) {
   const [dataPoints, setDataPoints] = useState<number[]>([]);
   const [currentEarnings, setCurrentEarnings] = useState(0);
@@ -47,7 +61,35 @@ export default function Gacha({
   const intervalRef = useRef<any>(null);
   const timeoutRef = useRef<any>(null);
   const [cashoutClicked, setCashoutClicked] = useState(false);
+  const [customValue, setCustomValue] = useState<number>(0);
 
+  
+   useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState !== 'visible') {
+        window.location.href = '/'; // Redirect ke halaman tujuan
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+ 
+  useEffect(() => {
+     if (typeof window !== "undefined") {
+       const storedCustomValue = localStorage.getItem("customValue");
+      if (storedCustomValue) {
+        setCustomValue(parseInt(storedCustomValue, 10)); 
+      }
+    }
+  }, []);
+   const handleChangeCustomValue = (newValue: number) => {
+    setCustomValue(newValue);  
+    localStorage.setItem("customValue", newValue.toString());  
+  };
   useEffect(() => {
     (async () => {
       try {
@@ -84,14 +126,7 @@ export default function Gacha({
       clearInterval(intervalRef.current);
     }
   }, [cashout]);
-  useEffect(() => {
-    checkTabInstance();
   
-    // Membersihkan session storage saat komponen dibongkar (unmounted)
-    return () => {
-      sessionStorage.removeItem('777');
-    };
-  }, []);
   const data = {
     labels:
       dataPoints.length > 0
@@ -142,7 +177,7 @@ export default function Gacha({
       }, 2000);
     } else {
       setCashout(0);
-      const randomSeconds = Math.floor(Math.random() * 20) + 1;
+      const randomSeconds = Math.floor(Math.random() * customValue) + 1;
       const currentTime = await getServerTime();
       setStartTime(currentTime);
       setDataPoints([]);
@@ -192,18 +227,7 @@ export default function Gacha({
       }, randomSeconds * 1000);
     }
   }
-  function checkTabInstance() {
-    const tabInstanceKey = '777';
-    const isTabInstanceExists = sessionStorage.getItem(tabInstanceKey);
   
-    if (isTabInstanceExists) {
-      // Jika halaman sudah dibuka di tab lain, redirect ke halaman lain atau tampilkan pesan kesalahan
-      window.location.href = '/error-page'; // Ganti dengan halaman error atau halaman lainnya
-    } else {
-      // Jika halaman belum dibuka di tab lain, set flag di session storage
-      sessionStorage.setItem(tabInstanceKey, 'true');
-    }
-  }
   
   async function handleCashout() {
     setCashoutClicked(true);
@@ -289,6 +313,20 @@ export default function Gacha({
           ,-
         </span>
       </div> */}
+ <div>
+      {roleUser.role === 'admin' && ( // Cek apakah pengguna memiliki peran admin
+         <div>
+        <input
+  type="number"
+  value={customValue}
+  onChange={(e) => handleChangeCustomValue(parseInt(e.target.value, 10))}
+  placeholder="Masukkan nilai customValue"
+/>
+         {/* Tampilkan nilai customValue */}
+         <p>Nilai customValue: {customValue}</p>
+       </div>
+      )}
+    </div>
 
       <div className="flex rounded-md items-center text-xs text-white justify-center bg-[#d7d7d7]">
         <span className="bg-green py-2 px-4 rounded-xl flex items-center justify-center">

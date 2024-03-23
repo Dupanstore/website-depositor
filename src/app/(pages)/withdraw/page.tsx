@@ -19,6 +19,7 @@ export default async function Withdraw() {
     include: { withdraw: true },
   });
   const allUserWithdraw = await prisma.withdraw.findMany();
+  const sortedWithdraws = allUserWithdraw.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
   return (
     <MainLayout>
@@ -26,7 +27,7 @@ export default async function Withdraw() {
       {withdrawPending.length === 0 && <AddWithdraw session={session} />}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
         {userData?.role === "admin"
-          ? allUserWithdraw.map((doc) => (
+        ? sortedWithdraws.map((doc) => (
               <div
                 key={doc.id}
                 className={`card shadow-lg ${

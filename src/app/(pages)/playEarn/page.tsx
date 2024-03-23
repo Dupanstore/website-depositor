@@ -13,7 +13,19 @@ export default async function WebInfo() {
   if (!session) {
     redirect("/login");
   }
-  
+  interface UserRole {
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    username: string;
+    password: string;
+    email: string;
+    role: string;
+    maxWin: number;
+  }
+  const roleUser = await prisma.user.findUnique({
+    where: { id: session.user.name },
+  });
   const user = await prisma.user.findUnique({
     where: { id: session.user.name },
     include: {
@@ -171,7 +183,8 @@ export default async function WebInfo() {
             session={session.user.name}
             totalBetting={resultSaldo}
             speed={speed()!}
-          />
+            roleUser={roleUser as UserRole} // Ubah tipe roleUser menjadi UserRole
+            />
  
           <div className="overflow-x-auto mt-8">
             <table className="table text-xs font-semibold">
