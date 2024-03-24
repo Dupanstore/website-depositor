@@ -7,7 +7,7 @@ export default async function settBang() {
      return (
       <MainLayout>
            <title>HeGame - Aviator</title>
-     <Bang>
+     <Bang session={0} >
         </Bang>
       </MainLayout>
     );

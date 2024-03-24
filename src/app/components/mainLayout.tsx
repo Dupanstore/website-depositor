@@ -9,7 +9,6 @@ import { FaRegIdCard, FaUserCog } from "react-icons/fa";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { FaMoneyBill1Wave, FaPlane , FaFire , FaWallet } from "react-icons/fa6";
 import Image from "next/image";
-import ParticipantBalance from "@/app/components/ParticipantBalance";
 
 const menuLink = [
   {
@@ -119,14 +118,14 @@ export default async function MainLayout({
           <span>HeGame</span>
         </Link>
         <div
-        className={`text-white bg-black w-40 rounded-lg p-1 inline-block text-right pr-20`}  
+        className={`text-white bg-black w-30 rounded-lg p-1 inline-block text-right pr-10`}  
         
         > 
-          <span className="rounded-full bg-red-500 p-1 text-white" style={{fontSize:"10px"}}>Rp</span> <span style={{fontSize:"8px"}}>{totalDeposit.toLocaleString("id-ID")},-</span> <br/> 
-          <span className="rounded-full bg-red-500 p-1 text-white" style={{fontSize:"10px"}}>Rp</span> <span style={{fontSize:"10px"}}>{totalBetting.toLocaleString("id-ID")},-</span>
+          <span className="rounded-full bg-red-500 p-1 text-white" style={{fontSize:"7px"}}>Rp</span> <span style={{fontSize:"5px"}}>{totalDeposit.toLocaleString("id-ID")},-</span> <br/> 
+          <span className="rounded-full bg-red-500 p-1 text-white" style={{fontSize:"7px"}}>Rp</span> <span style={{fontSize:"7px"}}>{resultSaldo.toLocaleString("id-ID")},-</span>
           
         </div>
-        <label className="rounded-lg bg-warning text-base-100 cursor-pointer p-4" htmlFor="userDeposit" style={{position:"absolute",left:"65%"}}><FaWallet color="white" size={25} /></label>
+        <label className="rounded-lg bg-warning text-base-100 cursor-pointer p-2" htmlFor="userDeposit" style={{position:"absolute",left:"65%"}}><FaWallet color="white" size={15} /></label>
         <label htmlFor="account" className="text-base-100 cursor-pointer">
           <FaUserCircle size={35} />
         </label>
