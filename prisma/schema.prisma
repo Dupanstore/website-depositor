@@ -16,30 +16,29 @@ model user {
   email     String
   role      String
   maxWin    Int
+  betting   betting[]
   deposit   deposit[]
   rekening  rekening[]
-  betting   betting[]
   withdraw  withdraw[]
 }
 
 model deposit {
-  id                Int      @id @default(autoincrement())
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  nominal_deposit   Int
-  proof_transaction String
-  status            String
-
-  sender_name     String
-  sender_rekening String
-  sender_bank     String
-
+  id                 Int      @id @default(autoincrement())
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  nominal_deposit    Int
+  proof_transaction  String
+  status             String
+  sender_name        String
+  sender_rekening    String
+  sender_bank        String
   recipient_name     String
   recipient_rekening String
   recipient_bank     String
+  user_id            Int
+  user               user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  user    user @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id Int
+  @@index([user_id], map: "deposit_user_id_fkey")
 }
 
 model rekening {
@@ -49,8 +48,10 @@ model rekening {
   name        String
   no_rekening String
   bank        String
-  user        user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id     Int
+  user        user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id], map: "rekening_user_id_fkey")
 }
 
 model bank {
@@ -59,7 +60,12 @@ model bank {
   updatedAt DateTime @updatedAt
   bank      String   @unique
 }
-
+model durability {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  bang      Int   
+}
 model betting {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
@@ -68,9 +74,10 @@ model betting {
   time      Int
   status    String
   speed     Int
+  user_id   Int
+  user      user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  user    user @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id Int
+  @@index([user_id], map: "betting_user_id_fkey")
 }
 
 model withdraw {
@@ -82,14 +89,8 @@ model withdraw {
   bank        String
   nominal     Int
   status      String
+  user_id     Int
+  user        user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  user    user @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id Int
-}
-
-model durability {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  bang      Int?
+  @@index([user_id], map: "withdraw_user_id_fkey")
 }
