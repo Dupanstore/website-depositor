@@ -157,12 +157,26 @@ export default function Gacha({
     ],
   };
   const options = {
+    responsive: true,
     plugins: {
       legend: {
         display: false,
       },
     },
+    scales: {
+      x: {
+        grid: {
+          display: false // Menonaktifkan gridlines pada sumbu X
+        }
+      },
+      y: {
+        grid: {
+          display: false // Menonaktifkan gridlines pada sumbu Y
+        }
+      }
+    }
   };
+
 
   async function getServerTime() {
     try {
@@ -248,6 +262,7 @@ export default function Gacha({
     setCashoutClicked(true);
     setButtonStop(true);
     setButton(true);
+   
     if (!buttonPlay) return;
     clearTimeout(timeoutRef.current);
     clearInterval(intervalRef.current);
@@ -255,6 +270,7 @@ export default function Gacha({
     const elapsedTime = Math.floor((currentTime - startTime) / 1000);
     setCashout(speed * elapsedTime);
     setButtonPlay(false);
+ 
     if (deposit < speed * elapsedTime) {
       Swal.fire({
         icon: "error",
@@ -297,13 +313,10 @@ export default function Gacha({
           timer: 2000,
           showConfirmButton: false,
         });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
+    
       }
     }
-    setButtonStop(false);
-    setButton(false);
+  
   }
 
   const startUpdatingChart = () => {
@@ -319,16 +332,27 @@ export default function Gacha({
 
   return (
     <>
-      {/* <div className="flex items-center text-xl text-white justify-center">
-        <span className="bg-black py-2 px-6 font-semibold rounded-xl flex items-center justify-center gap-2">
-          <span className="rounded-full bg-red-500 p-1 text-sm">Rp</span>
+    
+  
+
+      <div className="items-center justify-center text-black" style={{position:'absolute', top:'8%', left:'30%'}}>
+        {buttonPlay && (
+          <div className="bg-info p-2" style={{ background: "linear-gradient(to bottom, #ffffff 0%, yellow 100%)"}}>
+            <p>You win : <span className="rounded-full bg-red-500 p-1 text-xs text-white">Rp</span> {currentEarnings}.0</p>
+          </div>
+        )}
+      </div>
+      {roleUser.role === 'admin' && ( // Cek apakah pengguna memiliki peran admin
+      <div className="flex rounded-md items-center text-xs text-white justify-center bg-[#d7d7d7]">
+        <span className="bg-black py-2 px-4 font-semibold rounded-xl flex items-center justify-center gap-2">
+          <span className="rounded-full bg-red-500 p-2 text-sm">Rp</span>
           {buttonPlay
             ? saldoRealtime.toLocaleString("id-ID")
             : deposit.toLocaleString("id-ID")}
           ,-
         </span>
-      </div> */}
-  
+      </div> 
+)}
 
       <div className="flex rounded-md items-center text-xs text-white justify-center bg-[#d7d7d7]">
         <span className="bg-green py-2 px-4 rounded-xl flex items-center justify-center">
@@ -361,7 +385,9 @@ export default function Gacha({
         </span>
       </div>
 
-      <Line data={data} options={options} className="my-4 max-h-96" />
+
+
+      <Line data={data} options={options} className="max-h-96" />
 
       <div className="grid grid-cols-1 lg:grid-cols-4 items-center justify-center gap-4 m-auto text-center">
         <div className="flex flex-col items-center justify-center mb-4">

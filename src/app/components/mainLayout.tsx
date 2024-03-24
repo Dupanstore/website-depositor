@@ -7,9 +7,10 @@ import prisma from "@/utils/db";
 import Logout from "./logout";
 import { FaRegIdCard, FaUserCog } from "react-icons/fa";
 import { BiMoneyWithdraw } from "react-icons/bi";
-import { FaMoneyBill1Wave, FaPlane , FaFire } from "react-icons/fa6";
+import { FaMoneyBill1Wave, FaPlane , FaFire , FaWallet } from "react-icons/fa6";
 import Image from "next/image";
- 
+import ParticipantBalance from "@/app/components/ParticipantBalance";
+
 const menuLink = [
   {
     path: "/",
@@ -72,6 +73,9 @@ export default async function MainLayout({
   const userWithdraw = await prisma.withdraw.findMany({
     where: { user_id: session.user.name, status: "accept" },
   });
+  const userDeposit = await prisma.deposit.findMany({
+    where: { user_id: session.user.name, status: "accept" },
+  });
   const winbetting = await prisma.betting.findMany({
     where: { user_id: session.user.name, status: "win" },
   });
@@ -89,6 +93,10 @@ export default async function MainLayout({
   );
   let sresultSaldo = totalBetting - totalWithdraw;
 
+  const totalDeposit = userDeposit.reduce(
+    (total, deposit) => total + deposit.nominal_deposit,
+    0
+  );
   // Cek jika ada taruhan yang kalah untuk pengguna
   const userId = session.user.name; // Mengasumsikan session.user.name berisi user_id
   const userLoseBets = loseBets.filter((bet) => bet.user_id === userId);
@@ -98,18 +106,27 @@ export default async function MainLayout({
 
   // Kurangi total kecepatan yang hilang dari sresultSaldo
   const resultSaldo = sresultSaldo -= totalSpeedLoss;
+  const allUserWithdraw = await prisma.withdraw.findMany();
 
   return (
     <>
       <div className="flex items-center justify-between bg-info py-3 px-4 md:px-8 fixed w-full z-10 border-b-8 border-base-100">
         <Link
           href={"/playEarn"}
-          className="font-semibold text-2xl text-base-100 flex items-center"
+          className="font-semibold font-semibold text-2xl text-base-100 flex items-center"
         >
           <Image src={"/logo.png"} alt="logo" width={30} height={30} />
           <span>HeGame</span>
         </Link>
-
+        <div
+        className={`text-white bg-black w-40 rounded-lg p-1 inline-block text-right pr-20`}  
+        
+        > 
+          <span className="rounded-full bg-red-500 p-1 text-white" style={{fontSize:"10px"}}>Rp</span> <span style={{fontSize:"8px"}}>{totalDeposit.toLocaleString("id-ID")},-</span> <br/> 
+          <span className="rounded-full bg-red-500 p-1 text-white" style={{fontSize:"10px"}}>Rp</span> <span style={{fontSize:"10px"}}>{totalBetting.toLocaleString("id-ID")},-</span>
+          
+        </div>
+        <label className="rounded-lg bg-warning text-base-100 cursor-pointer p-4" htmlFor="userDeposit" style={{position:"absolute",left:"65%"}}><FaWallet color="white" size={25} /></label>
         <label htmlFor="account" className="text-base-100 cursor-pointer">
           <FaUserCircle size={35} />
         </label>
