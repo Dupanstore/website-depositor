@@ -214,23 +214,44 @@ export default function Gacha({
       console.log(randomSeconds)
       timeoutRef.current = setTimeout(async () => {
         const currentTimePlay = await getServerTime();
-        const elapsedTime = Math.floor((currentTimePlay - currentTime) / 1000);
+        const elapsedTime = Math.floor((currentTimePlay - currentTime) / 100);
         setCashout(0);
         setButtonPlay(false);
         setButtonStop(true);
         setButton(true);
+
+          // Check if realtime balance decreased by 1%
+      const newRealtimeBalance = deposit - speed * elapsedTime;
+      const isBalanceDecreased = newRealtimeBalance < saldoRealtime * 0.99;
+
+      if (isBalanceDecreased) {
+        // Stop the randomSeconds
+        clearTimeout(timeoutRef.current);
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "Saldo realtime berkurang 1%. Permainan dihentikan.",
+          allowOutsideClick: false,
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+        return; // Exit the function
+      }
         try {
           const addResult = await axios.post(`/api/addBetting`, {
             session,
             time: elapsedTime,
-            nominal: speed * elapsedTime,
+            nominal: 0 ,
             status: "lose",
             speed,
           });
           Swal.fire({
             icon: "warning",
             title: "Coba lagi",
-            text: `Anda Kalah dalam taruhan coba lagi, Rp -${speed * elapsedTime
+            text: `Anda Kalah dalam taruhan coba lagi, Rp -${speed 
               },-`,
             allowOutsideClick: false,
             timer: 2000,
@@ -253,7 +274,7 @@ export default function Gacha({
           }, 2000);
           setButton(false);
         }
-      }, randomSeconds * 1000);
+      }, randomSeconds * 100);
     }
   }
 
@@ -267,8 +288,8 @@ export default function Gacha({
     clearTimeout(timeoutRef.current);
     clearInterval(intervalRef.current);
     const currentTime = await getServerTime();
-    const elapsedTime = Math.floor((currentTime - startTime) / 1000);
-    setCashout(speed * elapsedTime);
+    const elapsedTime = Math.floor((currentTime - startTime) / 100);
+    setCashout(speed * elapsedTime * 0.1);
     setButtonPlay(false);
  
     if (deposit < speed * elapsedTime) {
@@ -290,14 +311,14 @@ export default function Gacha({
         const addResult = await axios.post(`/api/addBetting`, {
           session,
           time: elapsedTime,
-          nominal: speed * elapsedTime,
+          nominal: speed * elapsedTime * 0.1,
           status: "win",
           speed,
         });
         Swal.fire({
           icon: "success",
           title: "Selamat",
-          text: `Anda mendapatkan Rp ${speed * elapsedTime},-`,
+          text: `Anda mendapatkan Rp ${speed * elapsedTime * 0.1},-`,
           allowOutsideClick: false,
           timer: 2000,
           showConfirmButton: false,
@@ -322,12 +343,12 @@ export default function Gacha({
   const startUpdatingChart = () => {
     intervalRef.current = setInterval(async () => {
       const currentTime = await getServerTime();
-      const elapsedTime = Math.floor((currentTime - startTime) / 1000);
-      const earnings = elapsedTime * speed;
+      const elapsedTime = Math.floor((currentTime - startTime) / 100);
+      const earnings = elapsedTime * speed * 0.1;
       setDataPoints((prevDataPoints) => [...prevDataPoints, earnings]);
       setCurrentEarnings(earnings);
       setSaldoRealtime(deposit - earnings);
-    }, 1000);
+    }, 100);
   };
 
   return (
