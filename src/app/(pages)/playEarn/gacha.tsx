@@ -15,8 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useRouter } from 'next/router';
-
+ 
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -100,25 +99,6 @@ export default function Gacha({
 
   }, []);
 
-  const submitCustomValue = async () => {
-    try {
-      const { data } = await axios.post(`/api/postBang`, {
-        session,
-        value: customValue,
-      });
-
-      console.log('data', data);
-      setCustomValue(data?.response?.bang || 0);
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Plase try again",
-        allowOutsideClick: false,
-        timer: 2000,
-        showConfirmButton: false,
-      });
-    }
-  };
 
   useEffect(() => {
     (async () => {
@@ -348,29 +328,7 @@ export default function Gacha({
           ,-
         </span>
       </div> */}
-      <div>
-        {roleUser.role === 'admin' && ( // Cek apakah pengguna memiliki peran admin
-          <div className="">
-            <div className="flex">
-              <input
-                type="number"
-                value={customValue}
-                onChange={(e) => setCustomValue(parseInt(e.target?.value || '0'))}
-                placeholder="Masukkan nilai customValue"
-              />
-              <div
-                // onClick={handleCashout}
-                onClick={(e) => submitCustomValue()}
-                className={`btn ml-2 bg-gray-400 text-white`}
-              >
-                Submit
-              </div>
-            </div>
-            {/* Tampilkan nilai customValue */}
-            <p>Nilai customValue: {customValue}</p>
-          </div>
-        )}
-      </div>
+  
 
       <div className="flex rounded-md items-center text-xs text-white justify-center bg-[#d7d7d7]">
         <span className="bg-green py-2 px-4 rounded-xl flex items-center justify-center">

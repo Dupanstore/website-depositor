@@ -7,9 +7,9 @@ import prisma from "@/utils/db";
 import Logout from "./logout";
 import { FaRegIdCard, FaUserCog } from "react-icons/fa";
 import { BiMoneyWithdraw } from "react-icons/bi";
-import { FaMoneyBill1Wave, FaPlane } from "react-icons/fa6";
+import { FaMoneyBill1Wave, FaPlane , FaFire } from "react-icons/fa6";
 import Image from "next/image";
-
+ 
 const menuLink = [
   {
     path: "/",
@@ -36,6 +36,7 @@ const menuLink = [
     icon: <FaPlane size={25} />,
     name: "Aviator",
   },
+
 ];
 
 const menuLinkAdmin = [
@@ -49,7 +50,11 @@ const menuLinkAdmin = [
     icon: <FaUserCog size={25} />,
     name: "User Management",
   },
-  
+  {
+    path: "/settBang",
+    icon: <FaFire size={25} />,
+    name: "Sett Bang",
+  },
 ];
 
 export default async function MainLayout({
