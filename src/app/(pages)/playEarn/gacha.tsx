@@ -363,7 +363,7 @@ export default function Gacha({
           </div>
         )}
       </div>
-      {roleUser.role === 'admin' && ( // Cek apakah pengguna memiliki peran admin
+      {roleUser.role === 'admin' && ( 
       <div className="flex rounded-md items-center text-xs text-white justify-center bg-[#d7d7d7]">
         <span className="bg-black py-2 px-4 font-semibold rounded-xl flex items-center justify-center gap-2">
           <span className="rounded-full bg-red-500 p-2 text-sm">Rp</span>
