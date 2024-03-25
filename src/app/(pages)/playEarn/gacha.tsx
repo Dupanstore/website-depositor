@@ -158,11 +158,13 @@ export default function Gacha({
         label: "",
         data: dataPoints.map((value, index) => ({ x: index + 1, y: value })),
         borderColor: "rgb(53, 162, 235)",
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
+        borderDash: [5, 5], 
+              tension: 0.4, // Mengatur tension untuk membuat garis lebih smooth
+        // Mengatur garis menjadi terputus dengan pola 5 piksel putus, 5 piksel tidak
       },
     ],
   };
-
+  
   const options = {
     responsive: true,
     plugins: {
@@ -173,15 +175,21 @@ export default function Gacha({
     scales: {
       x: {
         grid: {
-          display: false // Menonaktifkan gridlines pada sumbu X
-        }
+          display: false, // Menonaktifkan gridlines pada sumbu X
+        },
+        max: dataPoints.length + 1, // Menambahkan nilai maksimum sumbu X
       },
       y: {
         grid: {
-          display: false // Menonaktifkan gridlines pada sumbu Y
-        }
-      }
-    }
+          display: false, // Menonaktifkan gridlines pada sumbu Y
+        },
+      },
+    },
+    elements: {
+      point: {
+        radius: 0, // Menyembunyikan titik pada garis
+      },
+    },
   };
 
   async function startGacha() {
