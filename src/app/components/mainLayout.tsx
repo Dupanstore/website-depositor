@@ -9,7 +9,6 @@ import { FaRegIdCard, FaUserCog } from "react-icons/fa";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { FaMoneyBill1Wave, FaPlane, FaFire, FaWallet } from "react-icons/fa6";
 import Image from "next/image";
-import AddDeposito from "../(pages)/dashboard/addDeposito";
 
 const menuLink = [
   {
@@ -69,9 +68,6 @@ export default async function MainLayout({
   }
   const userData = await prisma.user.findUnique({
     where: { id: session.user.name },
-  });
-  const userDepositSubmit = await prisma.deposit.findMany({
-    where: { user_id: session.user.name, status: "pending" },
   });
   const userWithdraw = await prisma.withdraw.findMany({
     where: { user_id: session.user.name, status: "accept" },
@@ -141,9 +137,8 @@ export default async function MainLayout({
   <label className="flex w-10 items-center justify-center rounded-full w-27 h-30 bg-blue-600 text-base-100 cursor-pointer w-[39px]" htmlFor="userDeposit"
    // Mengatur ukuran bulatan
     >
-<FaWallet color="white" size={15} className="mb-0"  >
- 
-   </label>
+    <FaWallet color="white" size={15} className="mb-0" />
+  </label>
 </div>
 
 
