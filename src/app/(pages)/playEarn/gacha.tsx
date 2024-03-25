@@ -15,7 +15,11 @@ import { useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
 import axios from "axios";
 import Swal from "sweetalert2";
- 
+import { useCountdown } from "@/hooks/countdown";
+import useRealtimeDeposit from "@/hooks/realtimeDeposit";
+import { depositCheckerToStopGacha, getServerTime } from "@/services/gachaService";
+import { usePercentage } from "@/hooks/getPercentage";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -26,6 +30,7 @@ ChartJS.register(
   Filler,
   Legend
 );
+
 interface UserRole {
   id: number;
   createdAt: Date;
@@ -55,13 +60,20 @@ export default function Gacha({
   const [buttonStop, setButtonStop] = useState(false);
   const [startTime, setStartTime] = useState(0);
   const [button, setButton] = useState(false);
-  const [deposit, setDeposit] = useState(0);
+  const [deposit, setDeposit] = useState<number>(0);
   const [cashout, setCashout] = useState(0);
   const intervalRef = useRef<any>(null);
   const timeoutRef = useRef<any>(null);
   const [cashoutClicked, setCashoutClicked] = useState(false);
   const [customValue, setCustomValue] = useState<number>(0);
+  const [startCountdown, setStartCountdown] = useState<boolean>(false);
+  const [percentage, setPercentage] = useState<number>(0);
 
+  usePercentage({ setPercentage })
+
+  // custom hooks
+  const countdown = useCountdown({ startCountdown, startGacha, setStartCountdown, setButton });
+  const { totalInitialDeposit } = useRealtimeDeposit({ setDeposit, deposit, session });
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -78,13 +90,25 @@ export default function Gacha({
   }, []);
 
   useEffect(() => {
-    // if (typeof window !== "undefined") {
-    //   const storedCustomValue = localStorage.getItem("customValue");
-    //   if (storedCustomValue) {
-    //     setCustomValue(parseInt(storedCustomValue, 10));
-    //   }
-    // }
+    if (buttonPlay) {
+      depositCheckerToStopGacha(
+        session,
+        speed,
+        intervalRef,
+        timeoutRef,
+        deposit,
+        totalInitialDeposit,
+        startTime,
+        setCashout,
+        setButtonPlay,
+        setButtonStop,
+        setButton,
+        percentage
+      );
+    }
+  }, [deposit]);
 
+  useEffect(() => {
     (async () => {
       try {
         const { data } = await axios.get(`/api/getBang`);
@@ -95,10 +119,7 @@ export default function Gacha({
         setCustomValue(0);
       }
     })()
-
-
   }, []);
-
 
   useEffect(() => {
     (async () => {
@@ -111,21 +132,6 @@ export default function Gacha({
       }
     })();
   }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data } = await axios.get(`/api/getDeposit`);
-        setDeposit(data.result);
-      } catch (error) {
-        console.log(error);
-        setDeposit(0);
-      }
-    };
-
-    const intervalId = setInterval(fetchData, 2500);
-    return () => clearInterval(intervalId);
-  }, [session]);
 
   useEffect(() => {
     if (buttonPlay) {
@@ -156,6 +162,7 @@ export default function Gacha({
       },
     ],
   };
+
   const options = {
     responsive: true,
     plugins: {
@@ -177,17 +184,6 @@ export default function Gacha({
     }
   };
 
-
-  async function getServerTime() {
-    try {
-      const { data } = await axios.get("/api/getServerTime");
-      return data.time;
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  }
-
   async function startGacha() {
     if (deposit < speed) {
       Swal.fire({
@@ -200,6 +196,7 @@ export default function Gacha({
         timer: 2000,
         showConfirmButton: false,
       });
+
       setTimeout(() => {
         window.location.reload();
       }, 2000);
@@ -215,48 +212,51 @@ export default function Gacha({
       timeoutRef.current = setTimeout(async () => {
         const currentTimePlay = await getServerTime();
         const elapsedTime = Math.floor((currentTimePlay - currentTime) / 100);
+
         setCashout(0);
         setButtonPlay(false);
         setButtonStop(true);
         setButton(true);
 
-          // Check if realtime balance decreased by 1%
-      const newRealtimeBalance = deposit - speed * elapsedTime;
-      const isBalanceDecreased = newRealtimeBalance < saldoRealtime * 0.99;
+        // Check if realtime balance decreased by 1%
+        const newRealtimeBalance = deposit - speed * elapsedTime;
+        const isBalanceDecreased = newRealtimeBalance < saldoRealtime * 0.99;
 
-      if (isBalanceDecreased) {
-        // Stop the randomSeconds
-        clearTimeout(timeoutRef.current);
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "Saldo realtime berkurang 1%. Permainan dihentikan.",
-          allowOutsideClick: false,
-          timer: 2000,
-          showConfirmButton: false,
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
-        return; // Exit the function
-      }
+        if (isBalanceDecreased) {
+          // Stop the randomSeconds
+          clearTimeout(timeoutRef.current);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Saldo realtime berkurang 1%. Permainan dihentikan.",
+            allowOutsideClick: false,
+            timer: 2000,
+            showConfirmButton: false,
+          });
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+          return; // Exit the function
+        }
+
         try {
           const addResult = await axios.post(`/api/addBetting`, {
             session,
             time: elapsedTime,
-            nominal: 0 ,
+            nominal: 0,
             status: "lose",
             speed,
           });
           Swal.fire({
             icon: "warning",
             title: "Coba lagi",
-            text: `Anda Kalah dalam taruhan coba lagi, Rp -${speed 
+            text: `Anda Kalah dalam taruhan coba lagi, Rp -${speed
               },-`,
             allowOutsideClick: false,
             timer: 2000,
             showConfirmButton: false,
           });
+
           setTimeout(() => {
             window.location.reload();
           }, 2000);
@@ -269,21 +269,22 @@ export default function Gacha({
             timer: 2000,
             showConfirmButton: false,
           });
+
           setTimeout(() => {
             window.location.reload();
           }, 2000);
           setButton(false);
         }
-      }, randomSeconds * 100);
+      }, randomSeconds * 100); // real
+      // }, 10000); //for testing 1 %
     }
   }
-
 
   async function handleCashout() {
     setCashoutClicked(true);
     setButtonStop(true);
     setButton(true);
-   
+
     if (!buttonPlay) return;
     clearTimeout(timeoutRef.current);
     clearInterval(intervalRef.current);
@@ -291,7 +292,7 @@ export default function Gacha({
     const elapsedTime = Math.floor((currentTime - startTime) / 100);
     setCashout(speed * elapsedTime * 0.1);
     setButtonPlay(false);
- 
+
     if (deposit < speed * elapsedTime) {
       Swal.fire({
         icon: "error",
@@ -334,10 +335,10 @@ export default function Gacha({
           timer: 2000,
           showConfirmButton: false,
         });
-    
+
       }
     }
-  
+
   }
 
   const startUpdatingChart = () => {
@@ -353,27 +354,34 @@ export default function Gacha({
 
   return (
     <>
-    
-  
 
-      <div className="items-center justify-center text-black" style={{position:'absolute', top:'8%', left:'30%'}}>
+      {
+        startCountdown && countdown != 0 && (<div className="items-center justify-center text-black" style={{ position: 'absolute', top: '10%', left: '40%' }}>
+          <div className="bg-info p-2" style={{ background: "linear-gradient(to bottom, #ffffff 0%, #87CEEB 100%)" }}>
+            <p>Start In: {countdown}</p>
+          </div>
+        </div>)
+      }
+
+      <div className="items-center justify-center text-black" style={{ position: 'absolute', top: '8%', left: '30%' }}>
         {buttonPlay && (
-          <div className="bg-info p-2" style={{ background: "linear-gradient(to bottom, #ffffff 0%, yellow 100%)"}}>
+          <div className="bg-info p-2" style={{ background: "linear-gradient(to bottom, #ffffff 0%, yellow 100%)" }}>
             <p>You win : <span className="rounded-full bg-red-500 p-1 text-xs text-white">Rp</span> {currentEarnings}.0</p>
           </div>
         )}
       </div>
-      {roleUser.role === 'admin' && ( 
-      <div className="flex rounded-md items-center text-xs text-white justify-center bg-[#d7d7d7]">
-        <span className="bg-black py-2 px-4 font-semibold rounded-xl flex items-center justify-center gap-2">
-          <span className="rounded-full bg-red-500 p-2 text-sm">Rp</span>
-          {buttonPlay
-            ? saldoRealtime.toLocaleString("id-ID")
-            : deposit.toLocaleString("id-ID")}
-          ,-
-        </span>
-      </div> 
-)}
+
+      {roleUser.role === 'admin' && (
+        <div className="flex rounded-md items-center text-xs text-white justify-center bg-[#d7d7d7]">
+          <span className="bg-black py-2 px-4 font-semibold rounded-xl flex items-center justify-center gap-2">
+            <span className="rounded-full bg-red-500 p-2 text-sm">Rp</span>
+            {buttonPlay
+              ? saldoRealtime.toLocaleString("id-ID")
+              : deposit.toLocaleString("id-ID")}
+            ,-
+          </span>
+        </div>
+      )}
 
       <div className="flex rounded-md items-center text-xs text-white justify-center bg-[#d7d7d7]">
         <span className="bg-green py-2 px-4 rounded-xl flex items-center justify-center">
@@ -433,7 +441,10 @@ export default function Gacha({
             <div className={`btn btn-disabled text-white w-full`}>RUNNING</div>
           ) : (
             <div
-              onClick={startGacha}
+              onClick={() => {
+                setButton(true);
+                setStartCountdown(true)
+              }}
               className={`btn btn-success text-white w-full`}
             >
               RUNNING

@@ -60,12 +60,21 @@ model bank {
   updatedAt DateTime @updatedAt
   bank      String   @unique
 }
+
 model durability {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  bang      Int   
+  bang      Int
 }
+
+model percentage {
+  id        Int      @id @default(autoincrement())
+  value     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model betting {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())

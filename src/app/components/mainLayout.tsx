@@ -7,7 +7,7 @@ import prisma from "@/utils/db";
 import Logout from "./logout";
 import { FaRegIdCard, FaUserCog } from "react-icons/fa";
 import { BiMoneyWithdraw } from "react-icons/bi";
-import { FaMoneyBill1Wave, FaPlane , FaFire , FaWallet } from "react-icons/fa6";
+import { FaMoneyBill1Wave, FaPlane, FaFire, FaWallet } from "react-icons/fa6";
 import Image from "next/image";
 
 const menuLink = [
@@ -81,7 +81,7 @@ export default async function MainLayout({
   const loseBets = await prisma.betting.findMany({
     where: { user_id: session.user.name, status: "lose" },
   });
-  
+
   const totalWithdraw = userWithdraw.reduce(
     (total, withdraw) => total + withdraw.nominal,
     0
@@ -118,14 +118,27 @@ export default async function MainLayout({
           <span>HeGame</span>
         </Link>
         <div
-        className={`text-white bg-black w-30 rounded-lg p-1 inline-block text-right pr-10`}  
-        
-        > 
-          <span className="rounded-full bg-red-500 p-1 text-white" style={{fontSize:"7px"}}>Rp</span> <span style={{fontSize:"5px"}}>{totalDeposit.toLocaleString("id-ID")},-</span> <br/> 
-          <span className="rounded-full bg-red-500 p-1 text-white" style={{fontSize:"7px"}}>Rp</span> <span style={{fontSize:"7px"}}>{resultSaldo.toLocaleString("id-ID")},-</span>
-          
+          className={`text-white bg-black w-30 p-1 flex text-right rounded-tr-3xl rounded-br-3xl rounded-tl-3xl rounded-bl-3xl`}
+        >
+          <div className="flex flex-col justify-end mr-1 pl-2">
+            <div className="flex items-center justify-end">
+              <span className="rounded-full flex bg-red-500 p-1 text-white text-[7px] mr-0.5">
+                Rp
+              </span>
+              <span className="text-[9px]">{totalDeposit.toLocaleString("id-ID")},-</span> <br />
+            </div>
+            <div className="flex items-center justify-end">
+              <span className="rounded-full flex bg-red-500 p-1 text-white text-[7px] mr-0.5">
+                Rp</span>
+              <span className="text-[9px]">{resultSaldo.toLocaleString("id-ID")},-</span>
+            </div>
+          </div>
+          <label className="flex items-center justify-center rounded-full bg-warning text-base-100 cursor-pointer w-[39px]" htmlFor="userDeposit">
+            <FaWallet color="white" size={15} className="mb-0" />
+          </label>
         </div>
-        <label className="rounded-lg bg-warning text-base-100 cursor-pointer p-2" htmlFor="userDeposit" style={{position:"absolute",left:"65%"}}><FaWallet color="white" size={15} /></label>
+
+
         <label htmlFor="account" className="text-base-100 cursor-pointer">
           <FaUserCircle size={35} />
         </label>

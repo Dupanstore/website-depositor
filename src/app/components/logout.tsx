@@ -4,15 +4,17 @@ import { useRouter } from "next/navigation";
 import { FaPowerOff } from "react-icons/fa6";
 
 export default function Logout() {
- 
+
   const router = useRouter();
   return (
     <div
       className="flex items-center justify-between cursor-pointer"
       onClick={() => (
-        signOut({ redirect: false }),
-        router.push("/login"),
-        setTimeout(() => window.location.reload(), 1000)
+        signOut({ redirect: false }).then((value) => {
+          router.push("/login")
+        })
+
+        // setTimeout(() => window.location.reload(), 1000)
       )}
     >
       <div className="flex items-center gap-3">

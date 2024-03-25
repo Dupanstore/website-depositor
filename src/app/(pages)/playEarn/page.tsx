@@ -46,6 +46,7 @@ export default async function WebInfo() {
   const bettingWin = await prisma.betting.findMany({
     where: { user_id: session.user.name, status: "win" },
   });
+
   const totalBetting = bettingWin.reduce(
     (total, betting) => total + betting.nominal,
     0
