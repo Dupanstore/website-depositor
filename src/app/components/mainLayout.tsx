@@ -141,7 +141,7 @@ export default async function MainLayout({
   <label className="flex w-10 items-center justify-center rounded-full w-27 h-30 bg-blue-600 text-base-100 cursor-pointer w-[39px]" htmlFor="userDeposit"
    // Mengatur ukuran bulatan
     >
-<FaWallet color="white" size={15} className="mb-0">
+<FaWallet color="white" size={15} className="mb-0"  >
  
    </label>
 </div>
