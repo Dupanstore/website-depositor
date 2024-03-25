@@ -9,6 +9,7 @@ import { FaRegIdCard, FaUserCog } from "react-icons/fa";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { FaMoneyBill1Wave, FaPlane, FaFire, FaWallet } from "react-icons/fa6";
 import Image from "next/image";
+import AddDeposito from "../(pages)/dashboard/addDeposito";
 
 const menuLink = [
   {
@@ -69,6 +70,9 @@ export default async function MainLayout({
   const userData = await prisma.user.findUnique({
     where: { id: session.user.name },
   });
+  const userDepositSubmit = await prisma.deposit.findMany({
+    where: { user_id: session.user.name, status: "pending" },
+  });
   const userWithdraw = await prisma.withdraw.findMany({
     where: { user_id: session.user.name, status: "accept" },
   });
@@ -115,33 +119,36 @@ export default async function MainLayout({
           className="font-semibold font-semibold text-2xl text-base-100 flex items-center"
         >
           <Image src={"/logo.png"} alt="logo" width={30} height={30} />
-          <span>HeGame</span>
+          <span className="text-[15px]" >HeGame</span>
         </Link>
         <div
-  className={`flex text-white bg-blue-500 w-30 p-1 flex rounded-tr-3xl rounded-br-3xl rounded-tl-3xl rounded-bl-3xl`}
-  
+  className={`flex text-white bg-blue-800 w-30 h-11 ml-auto p-1 flex rounded-tr-3xl rounded-br-3xl rounded-tl-3xl rounded-bl-3xl`}
+ 
 >
   <div className="flex flex-col  ml-1 mr-1 pl-2">
     <div className="flex items-center justify-end">
-      <span className="rounded-full flex bg-red-500 p-1 text-white text-[7px] mr-0.5">
+      <span className="rounded-full mt-[-7px] flex bg-red-500 p-1 text-white text-[8px] mr-0.5 font-sans">
         Rp
       </span>
-      <span className="text-[9px]">{totalDeposit.toLocaleString("id-ID")},-</span> <br />
+      <span className="text-[9px] mt-[-6px] font-sans">{totalDeposit.toLocaleString("id-ID")},-</span> <br />
     </div>
     <div className="flex items-center justify-end">
-      <span className="rounded-full flex bg-red-500 p-1 text-white text-[7px] mr-0.5">
+      <span className="rounded-full mt-[-7px] flex bg-red-500 p-1 text-white text-[8px] mr-0.5 font-sans">
         Rp</span>
-      <span className="text-[9px]">{resultSaldo.toLocaleString("id-ID")},-</span>
+      <span className="text-[9px] mt-[-6px] font-sans">{resultSaldo.toLocaleString("id-ID")},-</span>
     </div>
   </div>
-  <label className="flex items-center justify-center rounded-full bg-blue-700 text-base-100 cursor-pointer w-[39px]" htmlFor="userDeposit">
-    <FaWallet color="white" size={15} className="mb-0" />
-  </label>
+  <label className="flex w-10 items-center justify-center rounded-full w-27 h-30 bg-blue-600 text-base-100 cursor-pointer w-[39px]" htmlFor="userDeposit"
+   // Mengatur ukuran bulatan
+    >
+<FaWallet color="white" size={15} className="mb-0">
+ 
+   </label>
 </div>
 
 
-        <label htmlFor="account" className="text-base-100 cursor-pointer">
-          <FaUserCircle size={35} />
+        <label htmlFor="account" className="flex  items-center justify-center rounded-full w-30 h-35 bg-black text-base-100 cursor-pointer ">
+        <Image src={"/avatar.svg"} alt="logo" width={45} height={45} />
         </label>
 
         <input type="checkbox" id="account" className="modal-toggle" />
