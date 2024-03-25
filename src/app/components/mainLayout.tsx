@@ -134,7 +134,7 @@ export default async function MainLayout({
       <span className="text-[9px] mt-[-6px] font-sans">{resultSaldo.toLocaleString("id-ID")},-</span>
     </div>
   </div>
-  <label className="flex w-10 items-center justify-center rounded-full w-27 h-30 bg-blue-600 text-base-100 cursor-pointer w-[39px]" htmlFor="userDeposit"
+  <label className="flex w-10 items-center justify-center rounded-full w-27 h-30 bg-blue-600 text-base-100 cursor-pointer w-[39px]"  htmlFor="my_modal_7"
    // Mengatur ukuran bulatan
     >
     <FaWallet color="white" size={15} className="mb-0" />

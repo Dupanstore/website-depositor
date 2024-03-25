@@ -87,7 +87,7 @@ export default function Gacha({
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, []);
+  }, []);  
 
   useEffect(() => {
     if (buttonPlay) {
@@ -353,14 +353,14 @@ export default function Gacha({
     <>
 
       {
-        startCountdown && countdown != 0 && (<div className="items-center justify-center text-black" style={{ position: 'absolute', top: '10%', left: '40%' }}>
+        startCountdown && countdown != 0 && (<div className="items-center justify-center text-black" style={{ position: 'absolute', top: '3%', left: '40%' }}>
           <div className="bg-info p-2" style={{ background: "linear-gradient(to bottom, #ffffff 0%, #87CEEB 100%)" }}>
             <p>Start In: {countdown}</p>
           </div>
         </div>)
       }
 
-      <div className="items-center justify-center text-black" style={{ position: 'absolute', top: '8%', left: '30%' }}>
+      <div className="items-center justify-center text-black" style={{ position: 'absolute', top: '3%', left: '30%' }}>
         {buttonPlay && (
           <div className="bg-info p-2" style={{ background: "linear-gradient(to bottom, #ffffff 0%, yellow 100%)" }}>
             <p>You win : <span className="rounded-full bg-red-500 p-1 text-xs text-white">Rp</span> {currentEarnings}.0</p>
