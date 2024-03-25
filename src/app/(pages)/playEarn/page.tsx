@@ -205,7 +205,7 @@ export default async function WebInfo() {
                 {bettingAllUser.map((doc, index) => (
                   <tr key={index}>
                     <GetUserById id={doc.user_id} />
-                    <td>{doc.time}x</td>
+                    <td>{doc.time*0.1}x</td>
                     <td>Rp {doc.speed.toLocaleString("id-ID")}</td>
                     <td
                       className={`${doc.status === "win" ? "text-success" : "text-error"

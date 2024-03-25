@@ -118,25 +118,26 @@ export default async function MainLayout({
           <span>HeGame</span>
         </Link>
         <div
-          className={`text-white bg-black w-30 p-1 flex text-right rounded-tr-3xl rounded-br-3xl rounded-tl-3xl rounded-bl-3xl`}
-        >
-          <div className="flex flex-col justify-end mr-1 pl-2">
-            <div className="flex items-center justify-end">
-              <span className="rounded-full flex bg-red-500 p-1 text-white text-[7px] mr-0.5">
-                Rp
-              </span>
-              <span className="text-[9px]">{totalDeposit.toLocaleString("id-ID")},-</span> <br />
-            </div>
-            <div className="flex items-center justify-end">
-              <span className="rounded-full flex bg-red-500 p-1 text-white text-[7px] mr-0.5">
-                Rp</span>
-              <span className="text-[9px]">{resultSaldo.toLocaleString("id-ID")},-</span>
-            </div>
-          </div>
-          <label className="flex items-center justify-center rounded-full bg-warning text-base-100 cursor-pointer w-[39px]" htmlFor="userDeposit">
-            <FaWallet color="white" size={15} className="mb-0" />
-          </label>
-        </div>
+  className={`flex text-white bg-blue-500 w-30 p-1 flex rounded-tr-3xl rounded-br-3xl rounded-tl-3xl rounded-bl-3xl`}
+  
+>
+  <div className="flex flex-col  ml-1 mr-1 pl-2">
+    <div className="flex items-center justify-end">
+      <span className="rounded-full flex bg-red-500 p-1 text-white text-[7px] mr-0.5">
+        Rp
+      </span>
+      <span className="text-[9px]">{totalDeposit.toLocaleString("id-ID")},-</span> <br />
+    </div>
+    <div className="flex items-center justify-end">
+      <span className="rounded-full flex bg-red-500 p-1 text-white text-[7px] mr-0.5">
+        Rp</span>
+      <span className="text-[9px]">{resultSaldo.toLocaleString("id-ID")},-</span>
+    </div>
+  </div>
+  <label className="flex items-center justify-center rounded-full bg-blue-700 text-base-100 cursor-pointer w-[39px]" htmlFor="userDeposit">
+    <FaWallet color="white" size={15} className="mb-0" />
+  </label>
+</div>
 
 
         <label htmlFor="account" className="text-base-100 cursor-pointer">

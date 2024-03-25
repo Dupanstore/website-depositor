@@ -211,7 +211,7 @@ export default function Gacha({
       console.log(randomSeconds)
       timeoutRef.current = setTimeout(async () => {
         const currentTimePlay = await getServerTime();
-        const elapsedTime = Math.floor((currentTimePlay - currentTime) / 100);
+        const elapsedTime = Math.floor((currentTimePlay - currentTime) / 300);
 
         setCashout(0);
         setButtonPlay(false);
@@ -270,13 +270,10 @@ export default function Gacha({
             showConfirmButton: false,
           });
 
-          setTimeout(() => {
-            window.location.reload();
-          }, 2000);
-          setButton(false);
+         
         }
-      }, randomSeconds * 100); // real
-      // }, 10000); //for testing 1 %
+      }, randomSeconds * 1000); // real
+       // }, 10000); //for testing 1 %
     }
   }
 
@@ -289,7 +286,7 @@ export default function Gacha({
     clearTimeout(timeoutRef.current);
     clearInterval(intervalRef.current);
     const currentTime = await getServerTime();
-    const elapsedTime = Math.floor((currentTime - startTime) / 100);
+    const elapsedTime = Math.floor((currentTime - startTime) / 300);
     setCashout(speed * elapsedTime * 0.1);
     setButtonPlay(false);
 
@@ -326,7 +323,7 @@ export default function Gacha({
         });
         setTimeout(() => {
           window.location.reload();
-        }, 2000);
+        }, 1000);
       } catch (error) {
         Swal.fire({
           icon: "error",
@@ -344,12 +341,12 @@ export default function Gacha({
   const startUpdatingChart = () => {
     intervalRef.current = setInterval(async () => {
       const currentTime = await getServerTime();
-      const elapsedTime = Math.floor((currentTime - startTime) / 100);
+      const elapsedTime = Math.floor((currentTime - startTime) / 300);
       const earnings = elapsedTime * speed * 0.1;
       setDataPoints((prevDataPoints) => [...prevDataPoints, earnings]);
       setCurrentEarnings(earnings);
       setSaldoRealtime(deposit - earnings);
-    }, 100);
+    }, 300);
   };
 
   return (
